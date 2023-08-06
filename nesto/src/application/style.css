@@ -1,0 +1,32 @@
+#root{
+	-fx-background-color: #51688c;
+}
+
+
+#side_anchorpane{
+	-fx-background-color: #5b6ad0;
+	-fx-border-color:#000000;
+	-fx-border-width:1px 1px 1px 1px;
+	-fx-border-radius:20px;
+	-fx-background-radius:20px;
+	-fx-border-style:solid;
+
+}
+
+#inner_pane{
+	-fx-background-color: #748CF1;
+	
+	-fx-border-width:2px 2px 2px 2px;
+	-fx-border-radius:20px;
+	-fx-background-radius:20px;
+	-fx-border-style:solid;
+	-fx-border-color: #748CF1 ;
+}
+
+#second_pane{
+	-fx-background-color: #51688c;
+	
+	-fx-background-radius:20px;
+	
+
+}
