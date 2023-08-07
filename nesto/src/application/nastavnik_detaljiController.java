@@ -1,29 +1,36 @@
 package application;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import models.Nastavnik;
 import models.Predmet;
 import models.Preduslov;
 import models.Student;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 public class nastavnik_detaljiController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
@@ -148,16 +155,15 @@ public class nastavnik_detaljiController implements Initializable {
 				while (rs.next()) {
 					Preduslov p = new Preduslov();
 					p.getPredmet().setNazivPred(rs.getString("nazivPred"));
-					p.getPredmet().setPredavanja_sati(rs.getInt("satiPredavanja"));
-					p.getPredmet().setAv_sati(rs.getInt("satiAV"));
-					p.getPredmet().setLab_sati(rs.getInt("satiLV"));
-					p.getPredmet().setECTS(rs.getInt("ECTS"));
+					p.getPredmet().setPredavanja_sati(rs.getString("satiPredavanja"));
+					p.getPredmet().setAv_sati(rs.getString("satiAV"));
+					p.getPredmet().setLab_sati(rs.getString("satiLV"));
+					p.getPredmet().setECTS(rs.getString("ECTS"));
 					p.getPredmet().setSemestar(rs.getString("semestar"));
-					p.getPredmet().getNastavnikN().setIme(rs.getString("nastavnikN.ime"));
-					p.getPredmet().getNastavnikN().setPrezime(rs.getString("nastavnikN.prezime"));
-					p.getPredmet().getNastavnikP().setIme(rs.getString("nastavnikP.ime"));
-					p.getPredmet().getNastavnikP().setPrezime(rs.getString("nastavnikP.prezime"));
-
+					p.getNastavnikN().setIme(rs.getString("nastavnikN.ime"));
+					p.getNastavnikN().setPrezime(rs.getString("nastavnikN.prezime"));
+					p.getNastavnikP().setIme(rs.getString("nastavnikP.ime"));
+					p.getNastavnikP().setPrezime(rs.getString("nastavnikP.prezime"));
 					preduslovi.add(p);
 				}
 
@@ -165,14 +171,14 @@ public class nastavnik_detaljiController implements Initializable {
 
 			preduslovT.setItems(preduslovi);
 
-			imePredmetaC.setCellValueFactory(new PropertyValueFactory<>("nazivPred"));
-			pC.setCellValueFactory(new PropertyValueFactory<>("predavanja_sati"));
-			avC.setCellValueFactory(new PropertyValueFactory<>("av_sati"));
-			lvC.setCellValueFactory(new PropertyValueFactory<>("lab_sati"));
-			ectsC.setCellValueFactory(new PropertyValueFactory<>("ECTS"));
-			semestarC.setCellValueFactory(new PropertyValueFactory<>("semestar"));
-			nosiocC.setCellValueFactory(new PropertyValueFactory<>("nastavnikN.getIme()" +" " + "nastavnikN.getPrezime()"));
-			predavateljC.setCellValueFactory(new PropertyValueFactory<>("nastavnikP.getIme()" + "  " + "nastavnikP.getPrezime()"));
+			imePredmetaC.setCellValueFactory(f -> f.getValue().getPredmet().nazivPredProperty());
+			pC.setCellValueFactory(f -> f.getValue().getPredmet().predavanja_satiProperty());
+			avC.setCellValueFactory(f -> f.getValue().getPredmet().av_satiProperty());
+			lvC.setCellValueFactory(f -> f.getValue().getPredmet().lab_satiProperty());
+			ectsC.setCellValueFactory(f -> f.getValue().getPredmet().ECTSProperty());
+			semestarC.setCellValueFactory(f -> f.getValue().getPredmet().semestarProperty());
+			nosiocC.setCellValueFactory(f -> f.getValue().getNastavnikN().imeProperty());
+			predavateljC.setCellValueFactory(f -> f.getValue().getNastavnikN().imeProperty());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -190,16 +196,16 @@ public class nastavnik_detaljiController implements Initializable {
 			{
 				while (rs.next()) {
 					Student st = new Student();
-					st.setId(rs.getInt("student_id"));
+					st.setId(rs.getString("student_id"));
 					st.setIme(rs.getString("ime"));
 					st.setPrezime(rs.getString("prezime"));
 					st.setEmail(rs.getString("email"));
-					st.setGodinaStudija(rs.getString("godStudija"));
-					st.setStatus(rs.getString("statusStud"));
-					st.setSifUsmjerena(rs.getString("imeUsmjerenja"));
+					st.setGodStudija(rs.getString("godStudija"));
+					st.setStatusStud(rs.getString("statusStud"));
+					st.setSifUsmjerenja(rs.getString("imeUsmjerenja"));
 					st.setOstvareniECTS(rs.getString("ostvareniECTS"));
-					st.getSlusaPredmet().setBodovi(rs.getDouble("bodovi"));
-					st.getSlusaPredmet().setOcjena(rs.getInt("ocjena"));
+					st.slusaPred.setBodovi(rs.getString("bodovi"));
+					st.slusaPred.setOcjena(rs.getString("ocjena"));
 					students.add(st);
 				}
 
@@ -207,13 +213,13 @@ public class nastavnik_detaljiController implements Initializable {
 
 			studentiT.setItems(students);
 
-			imeSC.setCellValueFactory(new PropertyValueFactory<>("ime"));
-			prezimeSC.setCellValueFactory(new PropertyValueFactory<>("prezime"));
-			godinaC.setCellValueFactory(new PropertyValueFactory<>("godinaStudija"));
-			statusC.setCellValueFactory(new PropertyValueFactory<>("status"));
-			usmjerenjeC.setCellValueFactory(new PropertyValueFactory<>("sifUsmjerena"));
-			bodoviC.setCellValueFactory(new PropertyValueFactory<>("slusaPredmet.bodovi"));
-			ocjenaC.setCellValueFactory(new PropertyValueFactory<>("slusaPredmet.ocjena"));
+			imeSC.setCellValueFactory(f -> f.getValue().imeProperty());
+			prezimeSC.setCellValueFactory(f -> f.getValue().prezimeProperty());
+			godinaC.setCellValueFactory(f -> f.getValue().godStudijaProperty());
+			statusC.setCellValueFactory(f -> f.getValue().statusStudProperty());
+			usmjerenjeC.setCellValueFactory(f -> f.getValue().sifUsmjerenjaProperty());
+			bodoviC.setCellValueFactory(f -> f.getValue().slusaPred.bodoviProperty());
+			ocjenaC.setCellValueFactory(f -> f.getValue().slusaPred.ocjenaProperty());
 
 //			upisC.setCellValueFactory(
 //					cellData -> new ReadOnlyObjectWrapper<Button>(cellData.getValue().getActionButton()));
@@ -291,4 +297,3 @@ public class nastavnik_detaljiController implements Initializable {
 		tableStudenti();
 	}
 }
-

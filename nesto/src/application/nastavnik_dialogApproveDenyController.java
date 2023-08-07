@@ -45,9 +45,9 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 
 	public void setData(ZahtjevZaPrenosBodova z) {
 		zahtjev = z;
-		ime.setText(zahtjev.getStudent().getIme() + " " + zahtjev.getStudent().getPrezime());
-		predmet.setText(zahtjev.getPredmet().getNazivPred());
-		bodovi.setText(Double.toString(zahtjev.getBodovi()));
+		ime.setText(zahtjev.stud.getIme() + " " + zahtjev.stud.getPrezime());
+		predmet.setText(zahtjev.pred.getNazivPred());
+		bodovi.setText(zahtjev.getBrojBodova());
 	}
 
 	public void updateData() {
@@ -65,9 +65,9 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 
 	        mysql.pst.setBoolean(1, b);
 	        mysql.pst.setString(2, tf_poruka.getText());
-	        mysql.pst.setInt(3, zahtjev.getStudent().getId());
-	        mysql.pst.setInt(4, nastavnik.getSifNast());
-	        mysql.pst.setString(5, zahtjev.getPredmet().getSifraPred());
+	        mysql.pst.setString(3, zahtjev.stud.getId());
+	        mysql.pst.setString(4, nastavnik.getSifNast());
+	        mysql.pst.setString(5, zahtjev.pred.getSifraPred());
 
 	        mysql.pst.executeUpdate();
 

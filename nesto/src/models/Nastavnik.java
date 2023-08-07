@@ -1,82 +1,142 @@
 package models;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Nastavnik {
 
-	private int sifNast;
-	private String ime;
-	private String prezime;
-	private String email;
-	private String zvanje;
-	private String odsjek;
-	private boolean prodekan;
+	private StringProperty sifNast;
+	private StringProperty ime;
+	private StringProperty prezime;
+	private StringProperty email;
+	private StringProperty zvanje;
+	private StringProperty odsjek;
+	private StringProperty prodekan;
 
-	public Nastavnik() {}
+	public Nastavnik() {
+		sifNast = new SimpleStringProperty(this,"sifNast");
+		ime = new SimpleStringProperty(this,"ime");
+		prezime = new SimpleStringProperty(this,"prezime");
+		email = new SimpleStringProperty(this,"email");
+		zvanje = new SimpleStringProperty(this,"zvanje");
+		odsjek = new SimpleStringProperty(this,"odsjek");
+		prodekan = new SimpleStringProperty(this,"prodekan");
+	}
 
 	public Nastavnik(String ime, String prezime, String email, String zvanje, String odsjek) {
 		super();
-
-		this.ime = ime;
-		this.prezime = prezime;
-		this.email = email;
-		this.zvanje = zvanje;
-		this.odsjek = odsjek;
-
+		
+		this.imeProperty().set(ime);
+		this.prezimeProperty().set(prezime);
+		this.emailProperty().set(email);
+		this.zvanjeProperty().set(zvanje);
+		this.odsjekProperty().set(odsjek);
 	}
 
-	public int getSifNast() {
-		return sifNast;
+	public final StringProperty sifNastProperty() {
+		return this.sifNast;
 	}
+	
 
-	public void setSifNast(int sifNast) {
-		this.sifNast = sifNast;
+	public final String getSifNast() {
+		return this.sifNastProperty().get();
 	}
+	
 
-	public boolean isProdekan() {
-		return prodekan;
+	public final void setSifNast(final String sifNast) {
+		this.sifNastProperty().set(sifNast);
 	}
+	
 
-	public void setProdekan(boolean prodekan) {
-		this.prodekan = prodekan;
+	public final StringProperty imeProperty() {
+		return this.ime;
 	}
+	
 
-	public String getIme() {
-		return ime;
+	public final String getIme() {
+		return this.imeProperty().get();
 	}
+	
 
-	public void setIme(String ime) {
-		this.ime = ime;
+	public final void setIme(final String ime) {
+		this.imeProperty().set(ime);
 	}
+	
 
-	public String getPrezime() {
-		return prezime;
+	public final StringProperty prezimeProperty() {
+		return this.prezime;
 	}
+	
 
-	public void setPrezime(String prezime) {
-		this.prezime = prezime;
+	public final String getPrezime() {
+		return this.prezimeProperty().get();
 	}
+	
 
-	public String getEmail() {
-		return email;
+	public final void setPrezime(final String prezime) {
+		this.prezimeProperty().set(prezime);
 	}
+	
 
-	public void setEmail(String email) {
-		this.email = email;
+	public final StringProperty emailProperty() {
+		return this.email;
 	}
+	
 
-	public String getZvanje() {
-		return zvanje;
+	public final String getEmail() {
+		return this.emailProperty().get();
 	}
+	
 
-	public void setZvanje(String zvanje) {
-		this.zvanje = zvanje;
+	public final void setEmail(final String email) {
+		this.emailProperty().set(email);
 	}
+	
 
-	public String getOdsjek() {
-		return odsjek;
+	public final StringProperty zvanjeProperty() {
+		return this.zvanje;
 	}
+	
 
-	public void setOdsjek(String odsjek) {
-		this.odsjek = odsjek;
+	public final String getZvanje() {
+		return this.zvanjeProperty().get();
 	}
+	
+
+	public final void setZvanje(final String zvanje) {
+		this.zvanjeProperty().set(zvanje);
+	}
+	
+
+	public final StringProperty odsjekProperty() {
+		return this.odsjek;
+	}
+	
+
+	public final String getOdsjek() {
+		return this.odsjekProperty().get();
+	}
+	
+
+	public final void setOdsjek(final String odsjek) {
+		this.odsjekProperty().set(odsjek);
+	}
+	
+
+	public final StringProperty prodekanProperty() {
+		return this.prodekan;
+	}
+	
+
+	public final String getProdekan() {
+		return this.prodekanProperty().get();
+	}
+	
+
+	public final void setProdekan(final String prodekan) {
+		this.prodekanProperty().set(prodekan);
+	}
+	
+
 
 }

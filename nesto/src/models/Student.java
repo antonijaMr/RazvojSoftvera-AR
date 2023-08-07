@@ -1,84 +1,148 @@
 package models;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 
 public class Student {
-	private SlusaPredmet slusaPredmet;
-	private int id;
-	private String ime;
-	private String prezime;
-	private String email;
-	private String godinaStudija;
-	private String status;
-	private String sifUsmjerena; //ili ime/skracenica
-	private String ostvareniECTS;	
-	
+	public SlusaPredmet slusaPred;
+	private final StringProperty student_id;
+	private final StringProperty ime;
+	private final StringProperty prezime;
+	private final StringProperty lozinka;
+	private final StringProperty email;
+	private final StringProperty godStudija;
+	private final StringProperty statusStud;
+	private final StringProperty sifUsmjerenja;
+	private final StringProperty ostvareniECTS;
+
 	private final Button actionButton;
-	
+
 	public Student() {
-		slusaPredmet = new SlusaPredmet();
+		slusaPred = new SlusaPredmet();
+		student_id = new SimpleStringProperty(this, "student_id");
+		ime = new SimpleStringProperty(this, "ime");
+		prezime = new SimpleStringProperty(this, "prezime");
+		lozinka = new SimpleStringProperty(this, "lozinka");
+		email = new SimpleStringProperty(this, "email");
+		godStudija = new SimpleStringProperty(this, "godStudija");
+		statusStud = new SimpleStringProperty(this, "statusStud");
+		sifUsmjerenja = new SimpleStringProperty(this, "sifUsmjerenja");
+		ostvareniECTS = new SimpleStringProperty(this, "ostvareniECTS");
+
 		actionButton = new Button("Update");
 	}
-	
-	
-	public SlusaPredmet getSlusaPredmet() {
-		return slusaPredmet;
-	}
-	public void setSlusaPredmet(SlusaPredmet slusaPredmet) {
-		this.slusaPredmet = slusaPredmet;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getIme() {
-		return ime;
-	}
-	public void setIme(String ime) {
-		this.ime = ime;
-	}
-	public String getPrezime() {
-		return prezime;
-	}
-	public void setPrezime(String prezime) {
-		this.prezime = prezime;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getGodinaStudija() {
-		return godinaStudija;
-	}
-	public void setGodinaStudija(String godinaStudija) {
-		this.godinaStudija = godinaStudija;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public String getSifUsmjerena() {
-		return sifUsmjerena;
-	}
-	public void setSifUsmjerena(String sifUsmjerena) {
-		this.sifUsmjerena = sifUsmjerena;
-	}
-	public String getOstvareniECTS() {
-		return ostvareniECTS;
-	}
-	public void setOstvareniECTS(String ostvareniECTS) {
-		this.ostvareniECTS = ostvareniECTS;
-	}
-
 
 	public Button getActionButton() {
 		return actionButton;
+	}
+
+	public final StringProperty idProperty() {
+		return this.student_id;
+	}
+
+	public final String getId() {
+		return this.idProperty().get();
+	}
+
+	public final void setId(final String id) {
+		this.idProperty().set(id);
+	}
+
+	public StringProperty imeProperty() {
+		return ime;
+	}
+
+	public String getIme() {
+		return this.imeProperty().get();
+	}
+
+	public void setIme(final String ime) {
+		this.imeProperty().set(ime);
+	}
+
+	public final StringProperty prezimeProperty() {
+		return this.prezime;
+	}
+
+	public final String getPrezime() {
+		return this.prezimeProperty().get();
+	}
+
+	public final void setPrezime(final String prezime) {
+		this.prezimeProperty().set(prezime);
+	}
+
+	public final StringProperty lozinkaProperty() {
+		return this.lozinka;
+	}
+
+	public final String getLozinka() {
+		return this.lozinkaProperty().get();
+	}
+
+	public final void setLozinka(final String lozinka) {
+		this.lozinkaProperty().set(lozinka);
+	}
+
+	public final StringProperty emailProperty() {
+		return this.email;
+	}
+
+	public final String getEmail() {
+		return this.emailProperty().get();
+	}
+
+	public final void setEmail(final String email) {
+		this.emailProperty().set(email);
+	}
+
+	public final StringProperty godStudijaProperty() {
+		return this.godStudija;
+	}
+
+	public final String getGodStudija() {
+		return this.godStudijaProperty().get();
+	}
+
+	public final void setGodStudija(final String godStudija) {
+		this.godStudijaProperty().set(godStudija);
+	}
+
+	public final StringProperty statusStudProperty() {
+		return this.statusStud;
+	}
+
+	public final String getStatusStud() {
+		return this.statusStudProperty().get();
+	}
+
+	public final void setStatusStud(final String statusStud) {
+		this.statusStudProperty().set(statusStud);
+	}
+
+	public final StringProperty sifUsmjerenjaProperty() {
+		return this.sifUsmjerenja;
+	}
+
+	public final String getSifUsmjerenja() {
+		return this.sifUsmjerenjaProperty().get();
+	}
+
+	public final void setSifUsmjerenja(final String sifUsmjerenja) {
+		this.sifUsmjerenjaProperty().set(sifUsmjerenja);
+	}
+
+	public final StringProperty ostvareniECTSProperty() {
+		return this.ostvareniECTS;
+	}
+
+	public final String getOstvareniECTS() {
+		return this.ostvareniECTSProperty().get();
+	}
+
+	public final void setOstvareniECTS(final String ostvareniECTS) {
+		this.ostvareniECTSProperty().set(ostvareniECTS);
 	}
 
 }

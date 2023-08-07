@@ -1,20 +1,40 @@
 package models;
 
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class SlusaPredmet {
-	private double bodovi;
-	private int ocjena;
+	private StringProperty bodovi;
+	private StringProperty ocjena;
 
-	public double getBodovi() {
-		return bodovi;
-	}
-	public void setBodovi(double bodovi) {
-		this.bodovi = bodovi;
-	}
-	public int getOcjena() {
-		return ocjena;
-	}
-	public void setOcjena(int ocjena) {
-		this.ocjena = ocjena;
+	public SlusaPredmet() {
+		bodovi = new SimpleStringProperty(this, "bodovi");
+		ocjena = new SimpleStringProperty(this, "ocjena");
 	}
 
+	public String getBodovi() {
+		return this.bodoviProperty().get();
+	}
+
+	public void setBodovi(String bodovi) {
+		this.bodoviProperty().set(bodovi);;
+	}
+
+	public String getOcjena() {
+		return this.ocjenaProperty().get();
+	}
+
+	public void setOcjena(String ocjena) {
+		this.ocjenaProperty().set(ocjena);;
+	}
+
+	public StringProperty bodoviProperty() {
+		return this.bodovi;
+	}
+
+	public StringProperty ocjenaProperty() {
+		return this.ocjena;
+	}
 }
+

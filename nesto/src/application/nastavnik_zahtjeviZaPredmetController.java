@@ -21,7 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.layout.Pane;
 import models.Nastavnik;
 import models.Predmet;
@@ -113,21 +113,21 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 							+ "inner join usmjerenje on usmjerenje.sifUsmjerenja = student.sifUsmjerenja\n"
 							+ "inner join predmet on predmet.sifPred = zahtjevZaSlusanje.sifPred\n"
 							+ "where sifNast = ?;");
-			mysql.pst.setInt(1, currentNastavnik.getSifNast());
+			mysql.pst.setString(1, currentNastavnik.getSifNast());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
 				while (rs.next()) {
 					ZahtjevZaSlusanjePredmeta z = new ZahtjevZaSlusanjePredmeta();
-					z.getStudent().setId(rs.getInt("student_id"));
-					z.getStudent().setIme(rs.getString("ime"));
-					z.getStudent().setPrezime(rs.getString("prezime"));
-					z.getStudent().setEmail(rs.getString("email"));
-					z.getStudent().setGodinaStudija(rs.getString("godStudija"));
-					z.getStudent().setStatus(rs.getString("statusStud"));
-					z.getStudent().setSifUsmjerena(rs.getString("imeUsmjerenja"));
-					z.getStudent().setOstvareniECTS(rs.getString("ostvareniECTS"));
-					z.getPredmet().setNazivPred(rs.getString("nazivPred"));
-					z.getPredmet().setSifraPred(rs.getString("sifPred"));
+					z.getStud().setId(rs.getString("student_id"));
+					z.getStud().setIme(rs.getString("ime"));
+					z.getStud().setPrezime(rs.getString("prezime"));
+					z.getStud().setEmail(rs.getString("email"));
+					z.getStud().setGodStudija(rs.getString("godStudija"));
+					z.getStud().setStatusStud(rs.getString("statusStud"));
+					z.getStud().setSifUsmjerenja(rs.getString("imeUsmjerenja"));
+					z.getStud().setOstvareniECTS(rs.getString("ostvareniECTS"));
+					z.getPred().setNazivPred(rs.getString("nazivPred"));
+					z.getPred().setSifraPred(rs.getString("sifPred"));
 
 					zahtjevi.add(z);
 				}
@@ -136,10 +136,10 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 
 			zahtjeviTable.setItems(zahtjevi);
 
-			indexC.setCellValueFactory(new PropertyValueFactory<>("student_id"));
-			imeC.setCellValueFactory(new PropertyValueFactory<>("ime"));
-			prezimeC.setCellValueFactory(new PropertyValueFactory<>("prezime"));
-			predmetC.setCellValueFactory(new PropertyValueFactory<>("nazivPred"));
+			indexC.setCellValueFactory(f -> f.getValue().getStud().idProperty());
+			imeC.setCellValueFactory(f -> f.getValue().getStud().imeProperty());
+			prezimeC.setCellValueFactory(f -> f.getValue().getStud().prezimeProperty());
+			predmetC.setCellValueFactory(f -> f.getValue().getPred().nazivPredProperty());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -150,8 +150,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 			myRow.setOnMouseClicked(event -> {
 				if (event.getClickCount() == 1 && (!myRow.isEmpty())) {
 					int myIndex = zahtjeviTable.getSelectionModel().getSelectedIndex();
-					studIndex = String.valueOf(zahtjeviTable.getItems().get(myIndex).getStudent().getId());
-					predIndex = String.valueOf(zahtjeviTable.getItems().get(myIndex).getPredmet().getSifraPred());
+					studIndex = String.valueOf(zahtjeviTable.getItems().get(myIndex).getStud().getId());
+					predIndex = String.valueOf(zahtjeviTable.getItems().get(myIndex).getPred().getSifraPred());
 					TablePreduslovi();
 					TablePredmeti();
 				}
@@ -176,8 +176,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 				while (rs.next()) {
 					Preduslov p = new Preduslov();
 					p.getPredmet().setNazivPred((rs.getString("nazivPred")));
-					p.setOcjena(rs.getInt("ocjena"));
-					p.setObnova(rs.getBoolean("obnova"));
+					p.setOcjena(rs.getString("ocjena"));
+					p.setObnova(rs.getString("obnova"));
 
 					preduslovi.add(p);
 				}
@@ -186,9 +186,9 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 
 			predusloviTable.setItems(preduslovi);
 
-			nazivPreduslovaC.setCellValueFactory(new PropertyValueFactory<>("nazivPred"));
-			odslusanoC.setCellValueFactory(new PropertyValueFactory<>("ocjena"));
-			ocjenaC.setCellValueFactory(new PropertyValueFactory<>("obnova"));
+			nazivPreduslovaC.setCellValueFactory(f -> f.getValue().getPredmet().nazivPredProperty());
+			odslusanoC.setCellValueFactory(f -> f.getValue().obnovaProperty());
+			ocjenaC.setCellValueFactory(f -> f.getValue().ocjenaProperty());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -218,7 +218,7 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 
 			polozeniPT.setItems(predmeti);
 
-			nazivPolozenogC.setCellValueFactory(new PropertyValueFactory<>("nazivPred"));
+			nazivPolozenogC.setCellValueFactory(f -> f.getValue().nazivPredProperty());
 
 		} catch (SQLException e) {
 			e.printStackTrace();

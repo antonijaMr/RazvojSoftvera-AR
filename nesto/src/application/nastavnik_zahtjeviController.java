@@ -3,18 +3,12 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
-import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +17,6 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,12 +25,10 @@ import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import models.Nastavnik;
 import models.ZahtjevZaPrenosBodova;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class nastavnik_zahtjeviController implements Initializable {
@@ -77,22 +68,22 @@ public class nastavnik_zahtjeviController implements Initializable {
 
 	// Event Listener on Button[#btn_predmeti].onAction
 	@FXML
-	public void predmeti(ActionEvent e) throws IOException {
+	public void predmeti(ActionEvent e) {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) throws IOException {
+	public void to_zahtjevi(ActionEvent e){
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) throws IOException {
+	public void to_predZahtjevi(ActionEvent e) {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) throws IOException {
+	public void logout(ActionEvent e) {
 		s.logout(e);
 	}
 	public void TableZahtjevi() {
@@ -106,27 +97,27 @@ public class nastavnik_zahtjeviController implements Initializable {
 							+ "inner join student on student.student_id = idStud "
 							+ "inner join predmet on predmet.sifPred = zahtjevZaPrenos.sifPred "
 							+ "where odobreno is null and sifNast =? ;");
-			mysql.pst.setInt(1, currentNastavnik.getSifNast());
+			mysql.pst.setString(1, currentNastavnik.getSifNast());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
 				while (rs.next()) {
 					ZahtjevZaPrenosBodova z = new ZahtjevZaPrenosBodova();
-					z.getStudent().setId(rs.getInt("student_id"));
-					z.getStudent().setIme(rs.getString("ime"));
-					z.getStudent().setPrezime(rs.getString("prezime"));
-					z.getPredmet().setNazivPred(rs.getString("nazivPred"));
-					z.getPredmet().setSifraPred(rs.getString("sifPred"));
-					z.setBodovi(rs.getDouble("brojBodova"));
+					z.stud.setId(rs.getString("student_id"));
+					z.stud.setIme(rs.getString("ime"));
+					z.stud.setPrezime(rs.getString("prezime"));
+					z.pred.setNazivPred(rs.getString("nazivPred"));
+					z.pred.setSifraPred(rs.getString("sifPred"));
+					z.setBrojBodova(rs.getString("brojBodova"));
 					zahtjevi.add(z);
 				}
 			}
 
 			zahtjeviTable.setItems(zahtjevi);
-			indexC.setCellValueFactory(new PropertyValueFactory<>("student_id"));
-			imeC.setCellValueFactory(new PropertyValueFactory<>("ime"));
-			prezimeC.setCellValueFactory(new PropertyValueFactory<>("prezime"));
-			predmetC.setCellValueFactory(new PropertyValueFactory<>("nazivPred"));
-			bodoviC.setCellValueFactory(new PropertyValueFactory<>("brojBodova"));
+			indexC.setCellValueFactory(f -> f.getValue().stud.idProperty());
+			imeC.setCellValueFactory(f -> f.getValue().stud.imeProperty());
+			prezimeC.setCellValueFactory(f -> f.getValue().stud.prezimeProperty());
+			predmetC.setCellValueFactory(f -> f.getValue().pred.nazivPredProperty());
+			bodoviC.setCellValueFactory(f -> f.getValue().brojBodovaProperty());
 
 			actionC.setCellValueFactory(
 					cellData -> new ReadOnlyObjectWrapper<Button>(cellData.getValue().getActionButton()));
@@ -144,6 +135,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 							try {
 								openDialog(selectedZahtjev);
 							} catch (IOException e) {
+								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						});

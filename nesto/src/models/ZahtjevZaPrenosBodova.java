@@ -1,66 +1,68 @@
 package models;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 
 public class ZahtjevZaPrenosBodova {
-	private Student student;
-	private Predmet predmet;
-	
-	private double bodovi;
-	private boolean odobreno;	
-	private String poruka;
-	
+	public Student stud;
+	public Predmet pred;
+
+	private StringProperty brojBodova;
+	private StringProperty odobreno;
+	private StringProperty poruka;
 	private final Button actionButton;
-	
-	
+
 	public ZahtjevZaPrenosBodova() {
-		student = new Student();
-		predmet = new Predmet();
+		stud = new Student();
+		pred = new Predmet();
+		brojBodova = new SimpleStringProperty(this, "brojBodova");
 		actionButton = new Button("Odgovori");
-	}
-
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
-	}
-
-	public Predmet getPredmet() {
-		return predmet;
-	}
-
-	public void setPredmet(Predmet predmet) {
-		this.predmet = predmet;
-	}
-
-	public double getBodovi() {
-		return bodovi;
-	}
-
-	public void setBodovi(double bodovi) {
-		this.bodovi = bodovi;
-	}
-
-	public boolean isOdobreno() {
-		return odobreno;
-	}
-
-	public void setOdobreno(boolean odobreno) {
-		this.odobreno = odobreno;
-	}
-
-	public String getPoruka() {
-		return poruka;
-	}
-
-	public void setPoruka(String poruka) {
-		this.poruka = poruka;
 	}
 
 	public Button getActionButton() {
 		return actionButton;
 	}
 
+	public final StringProperty brojBodovaProperty() {
+		return this.brojBodova;
+	}
+
+	public final String getBrojBodova() {
+		return this.brojBodovaProperty().get();
+	}
+
+	public final void setBrojBodova(final String brojBodova) {
+		this.brojBodovaProperty().set(brojBodova);
+	}
+
+	public final StringProperty odobrenoProperty() {
+		return this.odobreno;
+	}
+	
+
+	public final String getOdobreno() {
+		return this.odobrenoProperty().get();
+	}
+	
+
+	public final void setOdobreno(final String odobreno) {
+		this.odobrenoProperty().set(odobreno);
+	}
+	
+
+	public final StringProperty porukaProperty() {
+		return this.poruka;
+	}
+	
+
+	public final String getPoruka() {
+		return this.porukaProperty().get();
+	}
+	
+
+	public final void setPoruka(final String poruka) {
+		this.porukaProperty().set(poruka);
+	}
+	
 }

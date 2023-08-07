@@ -15,7 +15,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
@@ -42,7 +41,6 @@ import javafx.stage.Stage;
 import models.Nastavnik;
 import models.Predmet;
 import models.Student;
-import models.SlusaPredmet;
 
 public class nastavnikController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
@@ -140,7 +138,7 @@ public class nastavnikController implements Initializable {
 			mysql.pst = mysql.con.prepareStatement(
 					"select predmet.sifPred,kratPred,nazivPred,uzaNaucnaOblast,satiPredavanja,satiAV,satiLV,ECTS,semestar,brojSemestara"
 							+ " from predmet inner join predaje on predaje.sifPred = predmet.sifPred where sifNastavnikNosioc =?");
-			mysql.pst.setString(1, Integer.toString(currentNastavnik.getSifNast()));
+			mysql.pst.setString(1, currentNastavnik.getSifNast());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
 				while (rs.next()) {
@@ -149,10 +147,10 @@ public class nastavnikController implements Initializable {
 					pr.setKratPred(rs.getString("kratPred"));
 					pr.setNazivPred(rs.getString("nazivPred"));
 					pr.setUzaNaucnaOblast(rs.getString("uzaNaucnaOblast"));
-					pr.setPredavanja_sati(rs.getInt("satiPredavanja"));
-					pr.setLab_sati(rs.getInt("satiAV"));
-					pr.setAv_sati(rs.getInt("satiLV"));
-					pr.setECTS(rs.getInt("ECTS"));
+					pr.setPredavanja_sati(rs.getString("satiPredavanja"));
+					pr.setAv_sati(rs.getString("satiAV"));
+					pr.setLab_sati(rs.getString("satiLV"));
+					pr.setECTS(rs.getString("ECTS"));
 					pr.setSemestar(rs.getString("semestar"));
 
 					predmeti.add(pr);
@@ -162,14 +160,13 @@ public class nastavnikController implements Initializable {
 
 			predTable.setItems(predmeti);
 
-			//this is wird hope it works
-			sifPredC.setCellValueFactory(new PropertyValueFactory<>("sifraPred"));
-			nazPredC.setCellValueFactory(new PropertyValueFactory<>("nazivPred"));
-			pC.setCellValueFactory(new PropertyValueFactory<>("predavanja_sati"));
-			avC.setCellValueFactory(new PropertyValueFactory<>("av_sati"));
-			lvC.setCellValueFactory(new PropertyValueFactory<>("lab_sati"));
-			ectsC.setCellValueFactory(new PropertyValueFactory<>("ECTS"));
-			semestarC.setCellValueFactory(new PropertyValueFactory<>("semestar"));
+			sifPredC.setCellValueFactory(f -> f.getValue().sifraPredProperty());
+			nazPredC.setCellValueFactory(f -> f.getValue().nazivPredProperty());
+			pC.setCellValueFactory(f -> f.getValue().predavanja_satiProperty());
+			avC.setCellValueFactory(f -> f.getValue().av_satiProperty());
+			lvC.setCellValueFactory(f -> f.getValue().lab_satiProperty());
+			ectsC.setCellValueFactory(f -> f.getValue().ECTSProperty());
+			semestarC.setCellValueFactory(f -> f.getValue().semestarProperty());
 
 			detaljiC.setCellValueFactory(
 					cellData -> new ReadOnlyObjectWrapper<Button>(cellData.getValue().getActionButton()));
@@ -218,23 +215,24 @@ public class nastavnikController implements Initializable {
 		ObservableList<Student> students = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id,ime,prezime,email,godStudija,statusStud,sifUsmjerenja,ostvareniECTS, bodovi, ocjena "
+					"select student_id,ime,prezime,lozinka,email,godStudija,statusStud,sifUsmjerenja,ostvareniECTS, bodovi, ocjena "
 							+ "from student inner join slusaPred on idStud = student.student_id where slusaPred.sifPred = ?;");
 			mysql.pst.setString(1, Integer.toString(predmetID));
 			ResultSet rs = mysql.pst.executeQuery();
 			{
 				while (rs.next()) {
 					Student st = new Student();
-					st.setId(rs.getInt("student_id"));
+					st.setId(rs.getString("student_id"));
 					st.setIme(rs.getString("ime"));
 					st.setPrezime(rs.getString("prezime"));
+					st.setLozinka(rs.getString("lozinka"));
 					st.setEmail(rs.getString("email"));
-					st.setGodinaStudija(rs.getString("godStudija"));
-					st.setStatus(rs.getString("statusStud"));
-					st.setSifUsmjerena(rs.getString("sifUsmjerenja"));
+					st.setGodStudija(rs.getString("godStudija"));
+					st.setStatusStud(rs.getString("statusStud"));
+					st.setSifUsmjerenja(rs.getString("sifUsmjerenja"));
 					st.setOstvareniECTS(rs.getString("ostvareniECTS"));
-					st.getSlusaPredmet().setBodovi(rs.getDouble("bodovi"));
-					st.getSlusaPredmet().setOcjena(rs.getInt("ocjena"));
+					st.slusaPred.setBodovi(rs.getString("bodovi"));
+					st.slusaPred.setOcjena(rs.getString("ocjena"));
 					students.add(st);
 				}
 
@@ -242,13 +240,13 @@ public class nastavnikController implements Initializable {
 
 			studTable.setItems(students);
 
-			ImeC.setCellValueFactory(new PropertyValueFactory<>("ime"));
-			PrezimeC.setCellValueFactory(new PropertyValueFactory<>("prezime"));
-			GodinaStudijaC.setCellValueFactory(new PropertyValueFactory<>("godStudija"));
-			statusC.setCellValueFactory(new PropertyValueFactory<>("status"));
-			usmjerenjeC.setCellValueFactory(new PropertyValueFactory<>("sifUsmjerenja"));
-			bodoviC.setCellValueFactory(new PropertyValueFactory<>("bodovi"));
-			ocjenaC.setCellValueFactory(new PropertyValueFactory<>("ocjena"));
+			ImeC.setCellValueFactory(f -> f.getValue().imeProperty());
+			PrezimeC.setCellValueFactory(f -> f.getValue().prezimeProperty());
+			GodinaStudijaC.setCellValueFactory(f -> f.getValue().godStudijaProperty());
+			statusC.setCellValueFactory(f -> f.getValue().statusStudProperty());
+			usmjerenjeC.setCellValueFactory(f -> f.getValue().sifUsmjerenjaProperty());
+			bodoviC.setCellValueFactory(f -> f.getValue().slusaPred.bodoviProperty());
+			ocjenaC.setCellValueFactory(f -> f.getValue().slusaPred.ocjenaProperty());
 
 			upisC.setCellValueFactory(
 					cellData -> new ReadOnlyObjectWrapper<Button>(cellData.getValue().getActionButton()));

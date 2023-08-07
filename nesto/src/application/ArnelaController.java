@@ -62,7 +62,7 @@ public class ArnelaController implements Initializable {
 
 		try {
 			// Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost/razvoj", "root", "2481632am*");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "");
 		}
 //	}catch(ClassNotFoundException ex) {
 //		ex.printStackTrace();
@@ -162,13 +162,13 @@ public class ArnelaController implements Initializable {
 				pst.setString(1, tf_username.getText());
 				res = pst.executeQuery();
 				if(res.next()) {
-					n.setSifNast(res.getInt("nastavnik_id"));
+					n.setSifNast(res.getString("nastavnik_id"));
 					n.setIme(res.getString("ime"));
 					n.setPrezime(res.getString("prezime"));
 					n.setEmail(res.getString("email"));
 					n.setZvanje(res.getString("zvanje"));
 					n.setOdsjek(res.getString("odsjek"));
-					n.setProdekan(res.getBoolean("prodekan"));
+					n.setProdekan(res.getString("prodekan"));
 					ds.setNastavnik(n);
 				}
 			} catch (SQLException e) {

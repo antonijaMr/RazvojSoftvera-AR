@@ -1,56 +1,74 @@
 package models;
 
-public class ZahtjevZaSlusanjePredmeta {
-	private Student student;
-	private Predmet predmet;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
-	private int sifNast;
-	private boolean odobreno;
-	private String poruka;
+public class ZahtjevZaSlusanjePredmeta {
+	private Student stud;
+	private Predmet pred;
+	private StringProperty sifNast;
+	private StringProperty odobreno;
+	private StringProperty poruka;
 
 	public ZahtjevZaSlusanjePredmeta() {
-		student = new Student();
-		predmet = new Predmet();
+		stud = new Student();
+		pred = new Predmet();
+		sifNast = new SimpleStringProperty(this, "sifNast");
+		odobreno = new SimpleStringProperty(this, "odobreno");
+		poruka = new SimpleStringProperty(this, "poruka");
 	}
 
-	public Student getStudent() {
-		return student;
+	public final StringProperty sifNastProperty() {
+		return this.sifNast;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	public final String getSifNast() {
+		return this.sifNastProperty().get();
 	}
 
-	public Predmet getPredmet() {
-		return predmet;
+	public Student getStud() {
+		return stud;
 	}
 
-	public void setPredmet(Predmet predmet) {
-		this.predmet = predmet;
+	public void setStud(Student stud) {
+		this.stud = stud;
 	}
 
-	public int getSifNast() {
-		return sifNast;
+	public Predmet getPred() {
+		return pred;
 	}
 
-	public void setSifNast(int sifNast) {
-		this.sifNast = sifNast;
+	public void setPred(Predmet pred) {
+		this.pred = pred;
 	}
 
-	public boolean isOdobreno() {
-		return odobreno;
+	public final void setSifNast(final String sifNast) {
+		this.sifNastProperty().set(sifNast);
 	}
 
-	public void setOdobreno(boolean odobreno) {
-		this.odobreno = odobreno;
+	public final StringProperty odobrenoProperty() {
+		return this.odobreno;
 	}
 
-	public String getPoruka() {
-		return poruka;
+	public final String getOdobreno() {
+		return this.odobrenoProperty().get();
 	}
 
-	public void setPoruka(String poruka) {
-		this.poruka = poruka;
+	public final void setOdobreno(final String odobreno) {
+		this.odobrenoProperty().set(odobreno);
+	}
+
+	public final StringProperty porukaProperty() {
+		return this.poruka;
+	}
+
+	public final String getPoruka() {
+		return this.porukaProperty().get();
+	}
+
+	public final void setPoruka(final String poruka) {
+		this.porukaProperty().set(poruka);
 	}
 
 }
+
