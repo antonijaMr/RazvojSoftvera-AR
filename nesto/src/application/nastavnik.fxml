@@ -142,8 +142,11 @@
 							<font>
 								<Font size="22.0" />
 							</font>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
 						</Label>
-						<TableView fx:id="predTable" prefHeight="184.0" prefWidth="646.0">
+						<TableView fx:id="predTable" prefHeight="380.0" prefWidth="646.0">
 							<columns>
 								<TableColumn fx:id="sifPredC" prefWidth="87.0" style="-fx-border-radius: 20px;" text="Sifra" />
 								<TableColumn fx:id="nazPredC" prefWidth="223.0" text="Naziv Predmeta" />
@@ -164,27 +167,6 @@
 								<Font size="28.0" />
 							</font>
 						</Label>
-						<Label text="Upisani studenti" textFill="WHITE">
-							<font>
-								<Font size="22.0" />
-							</font>
-						</Label>
-						<TableView fx:id="studTable" prefHeight="200.0" prefWidth="200.0">
-							<columns>
-								<TableColumn fx:id="ImeC" text="Ime" />
-								<TableColumn fx:id="PrezimeC" prefWidth="113.0" text="Prezime" />
-								<TableColumn fx:id="GodinaStudijaC" prefWidth="84.0" text="Godina" />
-								<TableColumn fx:id="statusC" prefWidth="82.0" text="Status" />
-								<TableColumn fx:id="usmjerenjeC" prefWidth="93.0" text="Usmjerenje" />
-								<TableColumn fx:id="bodoviC" prefWidth="61.0" text="Bodovi" />
-								<TableColumn fx:id="ocjenaC" prefWidth="70.0" text="Ocjena" />
-								<TableColumn fx:id="upisC" prefWidth="83.0">
-									<cellValueFactory>
-										<PropertyValueFactory property="upisC" />
-									</cellValueFactory>
-								</TableColumn>
-							</columns>
-						</TableView>
 					</children>
 				</VBox>
 				<TextField layoutX="514.0" layoutY="67.0" />

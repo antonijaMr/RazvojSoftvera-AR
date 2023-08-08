@@ -3,9 +3,8 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.stage.Popup;
 import models.Nastavnik;
-import models.ZahtjevZaPrenosBodova;
+import models.ZahtjevZaSlusanjePredmeta;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -13,26 +12,27 @@ import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-
 import javafx.scene.control.Label;
+import javafx.stage.Popup;
 
-public class nastavnik_dialogApproveDenyController implements Initializable {
+public class nastavnik_odgovoriPredmetController implements Initializable{
 	private MySQLConnection mysql = new MySQLConnection();
-
-	private ZahtjevZaPrenosBodova zahtjev;
+	
+	private ZahtjevZaSlusanjePredmeta zahtjev;
 	private Nastavnik nastavnik;
-	private boolean btnPressed;
 
+	@FXML
+	private TextField tf_odgovor;
 	@FXML
 	private Label ime;
 	@FXML
 	private Label predmet;
 	@FXML
-	private Label bodovi;
-	@FXML
-	private TextField tf_poruka;
+	private Label poruka;
 
 	private Popup popup;
+
+	private boolean btnPressed;
 
 	@FXML
 	public void ponisti(ActionEvent event) {
@@ -46,11 +46,11 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 		showPopUP(true);
 	}
 
-	public void setData(ZahtjevZaPrenosBodova z) {
+	public void setData(ZahtjevZaSlusanjePredmeta z) {
 		zahtjev = z;
-		ime.setText(zahtjev.stud.getIme() + " " + zahtjev.stud.getPrezime());
-		predmet.setText(zahtjev.pred.getNazivPred());
-		bodovi.setText(zahtjev.getBrojBodova());
+		ime.setText(z.getStud().getIme() + " " + z.getStud().getPrezime());
+		predmet.setText(z.getPred().getNazivPred());
+		poruka.setText(z.getPoruka());
 	}
 
 	public void updateData() {
@@ -63,14 +63,15 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 
 	public void update(boolean b) {
 		try {
-			String query = "UPDATE zahtjevZaPrenos SET odobreno=?, poruka=? WHERE idStud=? AND sifNast=? AND sifPred=?";
-			mysql.pst = mysql.con.prepareStatement(query);
+			String query ="update zahtjevZaSlusanje set odobreno = ?,odgovor=?"
+					+ "where idStud = ? and sifNast = ? and sifPred = ?;" ;
 
+			mysql.pst = mysql.con.prepareStatement(query);
 			mysql.pst.setBoolean(1, b);
-			mysql.pst.setString(2, tf_poruka.getText());
-			mysql.pst.setString(3, zahtjev.stud.getId());
+			mysql.pst.setString(2, tf_odgovor.getText());
+			mysql.pst.setString(3, zahtjev.getStud().getId());
 			mysql.pst.setString(4, nastavnik.getSifNast());
-			mysql.pst.setString(5, zahtjev.pred.getSifraPred());
+			mysql.pst.setString(5, zahtjev.getPred().getSifraPred());
 
 			mysql.pst.executeUpdate();
 
@@ -114,6 +115,5 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 		nastavnik = DataSingleton.getInstance().getNastavnik();
-
 	}
 }

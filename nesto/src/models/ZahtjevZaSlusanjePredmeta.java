@@ -2,6 +2,7 @@ package models;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Button;
 
 public class ZahtjevZaSlusanjePredmeta {
 	private Student stud;
@@ -9,6 +10,9 @@ public class ZahtjevZaSlusanjePredmeta {
 	private StringProperty sifNast;
 	private StringProperty odobreno;
 	private StringProperty poruka;
+	private StringProperty odgovor;
+	
+	private final Button actionButton;
 
 	public ZahtjevZaSlusanjePredmeta() {
 		stud = new Student();
@@ -16,6 +20,8 @@ public class ZahtjevZaSlusanjePredmeta {
 		sifNast = new SimpleStringProperty(this, "sifNast");
 		odobreno = new SimpleStringProperty(this, "odobreno");
 		poruka = new SimpleStringProperty(this, "poruka");
+		odgovor = new SimpleStringProperty(this,"odgovor");
+		actionButton = new Button("Odgovori");
 	}
 
 	public final StringProperty sifNastProperty() {
@@ -69,6 +75,25 @@ public class ZahtjevZaSlusanjePredmeta {
 	public final void setPoruka(final String poruka) {
 		this.porukaProperty().set(poruka);
 	}
+
+	public Button getActionButton() {
+		return actionButton;
+	}
+
+	public final StringProperty odgovorProperty() {
+		return this.odgovor;
+	}
+	
+
+	public final String getOdgovor() {
+		return this.odgovorProperty().get();
+	}
+	
+
+	public final void setOdgovor(final String odgovor) {
+		this.odgovorProperty().set(odgovor);
+	}
+	
 
 }
 

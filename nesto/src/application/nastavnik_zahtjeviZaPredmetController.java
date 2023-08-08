@@ -1,23 +1,28 @@
 package application;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
-
+import javafx.scene.control.TableCell;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.TableView;
@@ -62,8 +67,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 	private TableColumn<ZahtjevZaSlusanjePredmeta, String> prezimeC;
 	@FXML
 	private TableColumn<ZahtjevZaSlusanjePredmeta, String> predmetC;
-//	@FXML
-//	private TableColumn<ZahtjevZaSlusanje, String> actionC;
+	@FXML
+	private TableColumn<ZahtjevZaSlusanjePredmeta, Button> actionC;
 	@FXML
 	private TableView<Preduslov> predusloviTable;
 	@FXML
@@ -75,7 +80,7 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 	@FXML
 	private TableView<Predmet> polozeniPT;
 	@FXML
-	private TableColumn<Predmet,String> nazivPolozenogC;
+	private TableColumn<Predmet, String> nazivPolozenogC;
 
 	public void setCurrentNastavnik() {
 		currentNastavnik = DataSingleton.getInstance().getNastavnik();
@@ -108,11 +113,11 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		ObservableList<ZahtjevZaSlusanjePredmeta> zahtjevi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id,ime,prezime,email,godStudija,statusStud,imeUsmjerenja,ostvareniECTS,nazivPred,predmet.sifPred from student \n"
+					"select student_id,ime,prezime,email,godStudija,statusStud,imeUsmjerenja,ostvareniECTS,nazivPred,poruka,predmet.sifPred from student \n"
 							+ "inner join zahtjevZaSlusanje on zahtjevZaSlusanje.idStud = student.student_id\n"
 							+ "inner join usmjerenje on usmjerenje.sifUsmjerenja = student.sifUsmjerenja\n"
 							+ "inner join predmet on predmet.sifPred = zahtjevZaSlusanje.sifPred\n"
-							+ "where sifNast = ?;");
+							+ "where sifNast = ? and odobreno is null;");
 			mysql.pst.setString(1, currentNastavnik.getSifNast());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
@@ -128,6 +133,7 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 					z.getStud().setOstvareniECTS(rs.getString("ostvareniECTS"));
 					z.getPred().setNazivPred(rs.getString("nazivPred"));
 					z.getPred().setSifraPred(rs.getString("sifPred"));
+					z.setPoruka(rs.getString("poruka"));
 
 					zahtjevi.add(z);
 				}
@@ -141,6 +147,30 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 			prezimeC.setCellValueFactory(f -> f.getValue().getStud().prezimeProperty());
 			predmetC.setCellValueFactory(f -> f.getValue().getPred().nazivPredProperty());
 
+			actionC.setCellValueFactory(
+					cellData -> new ReadOnlyObjectWrapper<Button>(cellData.getValue().getActionButton()));
+			actionC.setCellFactory(param -> new TableCell<ZahtjevZaSlusanjePredmeta, Button>() {
+				@Override
+				protected void updateItem(Button item, boolean empty) {
+					super.updateItem(item, empty);
+					if (empty || item == null) {
+						setGraphic(null);
+					} else {
+						setGraphic(item);
+						item.setOnAction(event -> {
+							int rowIndex = getIndex();
+							ZahtjevZaSlusanjePredmeta selectedZahtjev = getTableView().getItems().get(rowIndex);
+							try {
+								openOdgovoriDialog(selectedZahtjev);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						});
+					}
+				}
+			});
+
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -158,6 +188,24 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 			});
 			return myRow;
 		});
+	}
+	public void openOdgovoriDialog(ZahtjevZaSlusanjePredmeta z) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("nastavnik_odgovoriPredmet.fxml"));
+		DialogPane odgovoriDialog = loader.load();
+		nastavnik_odgovoriPredmetController odgovoriC = loader.getController();
+		odgovoriC.setData(z);
+		Dialog<ButtonType> dialog = new Dialog<>();
+		dialog.setDialogPane(odgovoriDialog);
+		dialog.setTitle("Zahtjev za slusanje predmeta");
+
+		Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+		if (clickedButton.get() == ButtonType.OK) {
+			odgovoriC.updateData();
+			System.out.println("Updatated");
+			TableZahtjevi();
+		}
 	}
 
 	public void TablePreduslovi() {
@@ -198,12 +246,11 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 	public void TablePredmeti() {
 		mysql.Connect();
 
-		ObservableList<Predmet> predmeti= FXCollections.observableArrayList();
+		ObservableList<Predmet> predmeti = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select nazivPred from predmet \n"
-					+ "inner join slusaPred on predmet.sifPred = slusaPred.sifPred\n"
-					+ "where ocjena >= 6 and idStud = ?;");
+					"select nazivPred from predmet \n" + "inner join slusaPred on predmet.sifPred = slusaPred.sifPred\n"
+							+ "where ocjena >= 6 and idStud = ?;");
 			mysql.pst.setString(1, studIndex);
 			ResultSet rs = mysql.pst.executeQuery();
 			{

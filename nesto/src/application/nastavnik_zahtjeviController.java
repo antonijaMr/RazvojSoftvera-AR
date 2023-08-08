@@ -151,7 +151,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 
 	private void openDialog(ZahtjevZaPrenosBodova z) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("dialogAproveDeny.fxml"));
+		loader.setLocation(getClass().getResource("nastavnik_dialogApproveDeny.fxml"));
 		DialogPane aproveDenyDialog = loader.load();
 		nastavnik_dialogApproveDenyController adC = loader.getController();
 		adC.setData(z);

@@ -23,14 +23,16 @@ public class Nastavnik {
 		prodekan = new SimpleStringProperty(this,"prodekan");
 	}
 
-	public Nastavnik(String ime, String prezime, String email, String zvanje, String odsjek) {
+	public Nastavnik(String sifNast,String ime, String prezime, String email, String zvanje, String odsjek, String prodekan) {
 		super();
 		
+		this.sifNastProperty().set(sifNast);
 		this.imeProperty().set(ime);
 		this.prezimeProperty().set(prezime);
 		this.emailProperty().set(email);
 		this.zvanjeProperty().set(zvanje);
 		this.odsjekProperty().set(odsjek);
+		this.prezimeProperty().set(prodekan);
 	}
 
 	public final StringProperty sifNastProperty() {

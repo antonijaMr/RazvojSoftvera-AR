@@ -42,7 +42,7 @@ import models.Nastavnik;
 import models.Predmet;
 import models.Student;
 
-public class nastavnikController implements Initializable {
+public class nastavnikController2 implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
 	private Nastavnik currentNastavnik = new Nastavnik();
 	private SceneLoader s = new SceneLoader();

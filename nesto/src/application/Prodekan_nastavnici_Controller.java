@@ -105,17 +105,19 @@ public class Prodekan_nastavnici_Controller implements Initializable{
 			
 			try {
 				List.clear();
-				query="SELECT ime,prezime,email,zvanje,odsjek FROM nastavnik ";
+				query="SELECT sifNast,ime,prezime,email,zvanje,odsjek,prodekan FROM nastavnik ";
 				pst=con.prepareStatement(query);
 				res=pst.executeQuery();
 			
 				 while (res.next()) {
 			            List.add(new Nastavnik(
+			            		res.getString("sifNast"),
 			                    res.getString("ime"),
 			                    res.getString("prezime"),
 			                    res.getString("email"),
 			                    res.getString("zvanje"),
-			                    res.getString("odsjek")));
+			                    res.getString("odsjek"),
+			                    res.getString("prodekan")));
 			        }
 					nastavnik_table.setItems(List);
 					//handleSearch();
