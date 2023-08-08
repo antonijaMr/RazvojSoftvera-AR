@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonType?>
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
@@ -10,18 +9,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<DialogPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.nastavnik_studentUpdateController">
-   <content>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="274.0" prefWidth="600.0" style="-fx-background-color: #748CF1;">
+<DialogPane style="-fx-background-color: #748CF1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.nastavnik_studentUpdateController">
+   <header>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #748CF1;">
          <children>
-            <HBox layoutX="32.8" layoutY="32.8" prefHeight="76.0" prefWidth="556.0" style="-fx-background-color: #5b6ad0;" AnchorPane.bottomAnchor="176.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="22.0">
+            <HBox layoutX="200.0" prefHeight="61.0" prefWidth="600.0" style="-fx-background-color: #5b6ad0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label fx:id="studID" text="ID" textFill="WHITE">
                      <padding>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </padding>
                      <font>
-                        <Font size="19.0" />
+                        <Font size="20.0" />
                      </font>
                   </Label>
                   <Label fx:id="ime" text="Ime" textFill="WHITE">
@@ -41,40 +40,44 @@
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="21.0" layoutY="72.0" prefHeight="54.0" prefWidth="579.0" style="-fx-background-color: #5b6ad0;" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="22.199999999999818" AnchorPane.topAnchor="72.0">
+            <HBox layoutY="61.0" prefHeight="46.0" prefWidth="600.0" style="-fx-background-color: #5b6ad0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Label fx:id="sifPred" text="sifra" textFill="WHITE">
+                  <Label fx:id="sifPred" text="sifPred" textFill="WHITE">
                      <padding>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </padding>
                      <font>
-                        <Font size="19.0" />
+                        <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nazivPred" text="Predmet" textFill="WHITE">
+                  <Label fx:id="nazivPred" text="predmet" textFill="WHITE">
                      <padding>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </padding>
                   </Label>
                </children>
             </HBox>
-            <Label layoutX="54.0" layoutY="160.0" text="Bodovi" textFill="WHITE">
+            <Label layoutX="86.0" layoutY="151.0" text="Bodovi" textFill="WHITE">
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
+               <font>
+                  <Font size="15.0" />
+               </font>
             </Label>
-            <Label layoutX="54.0" layoutY="206.0" text="Ocjena" textFill="WHITE">
+            <Label layoutX="86.0" layoutY="207.0" text="Ocjena" textFill="WHITE">
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
+               <font>
+                  <Font size="15.0" />
+               </font>
             </Label>
-            <TextField fx:id="tf_bodovi" layoutX="139.0" layoutY="171.0" />
-            <TextField fx:id="tf_ocjena" layoutX="139.0" layoutY="217.0" />
-            <Button layoutX="359.0" layoutY="171.0" mnemonicParsing="false" onAction="#bodoviBTN" style="-fx-background-color: #5b6ad0;" text="Update" textFill="WHITE" />
-            <Button layoutX="359.0" layoutY="217.0" mnemonicParsing="false" onAction="#ocjenaBTN" style="-fx-background-color: #5b6ad0;" text="Update" textFill="WHITE" />
+            <TextField fx:id="tf_bodovi" layoutX="191.0" layoutY="164.0" />
+            <TextField fx:id="tf_ocjena" layoutX="191.0" layoutY="220.0" />
          </children>
       </AnchorPane>
-   </content>
+   </header>
    <buttonTypes>
       <ButtonType fx:constant="OK" />
       <ButtonType fx:constant="CANCEL" />

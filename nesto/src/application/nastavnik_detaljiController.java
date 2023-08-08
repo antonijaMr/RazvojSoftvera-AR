@@ -3,15 +3,16 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -24,7 +25,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import models.Nastavnik;
 import models.Predmet;
 import models.Preduslov;
@@ -111,7 +111,7 @@ public class nastavnik_detaljiController implements Initializable {
 	@FXML
 	private TableColumn<Student, String> ocjenaC;
 	@FXML
-	private TableColumn<Student, String> detaljiC;
+	private TableColumn<Student, Button> detaljiC;
 
 	public void setCurrentNastavnik() {
 		currentNastavnik = DataSingleton.getInstance().getNastavnik();
@@ -204,8 +204,8 @@ public class nastavnik_detaljiController implements Initializable {
 					st.setStatusStud(rs.getString("statusStud"));
 					st.setSifUsmjerenja(rs.getString("imeUsmjerenja"));
 					st.setOstvareniECTS(rs.getString("ostvareniECTS"));
-					st.slusaPred.setBodovi(rs.getString("bodovi"));
-					st.slusaPred.setOcjena(rs.getString("ocjena"));
+					st.getSlusaPred().setBodovi(rs.getString("bodovi"));
+					st.getSlusaPred().setOcjena(rs.getString("ocjena"));
 					students.add(st);
 				}
 
@@ -218,38 +218,56 @@ public class nastavnik_detaljiController implements Initializable {
 			godinaC.setCellValueFactory(f -> f.getValue().godStudijaProperty());
 			statusC.setCellValueFactory(f -> f.getValue().statusStudProperty());
 			usmjerenjeC.setCellValueFactory(f -> f.getValue().sifUsmjerenjaProperty());
-			bodoviC.setCellValueFactory(f -> f.getValue().slusaPred.bodoviProperty());
-			ocjenaC.setCellValueFactory(f -> f.getValue().slusaPred.ocjenaProperty());
+			bodoviC.setCellValueFactory(f -> f.getValue().getSlusaPred().bodoviProperty());
+			ocjenaC.setCellValueFactory(f -> f.getValue().getSlusaPred().ocjenaProperty());
 
-//			upisC.setCellValueFactory(
-//					cellData -> new ReadOnlyObjectWrapper<Button>(cellData.getValue().getActionButton()));
-//			upisC.setCellFactory(param -> new TableCell<Student, Button>() {
-//				@Override
-//				protected void updateItem(Button item, boolean empty) {
-//					super.updateItem(item, empty);
-//					if (empty || item == null) {
-//						setGraphic(null);
-//					} else {
-//						setGraphic(item);
-//						item.setOnAction(event -> {
-//							int rowIndex = getIndex();
-//							Student selectedStudent= getTableView().getItems().get(rowIndex);
-//							System.out.println(selectedStudent.getEmail());
-////							try {
-////								openDialog(selectedZahtjev);
-////							} catch (IOException e) {
-////								// TODO Auto-generated catch block
-////								e.printStackTrace();
-////							}
-//						});
-//					}
-//				}
-//			});
+			detaljiC.setCellValueFactory(
+					cellData -> new ReadOnlyObjectWrapper<Button>(cellData.getValue().getActionButton()));
+			detaljiC.setCellFactory(param -> new TableCell<Student, Button>() {
+				@Override
+				protected void updateItem(Button item, boolean empty) {
+					super.updateItem(item, empty);
+					if (empty || item == null) {
+						setGraphic(null);
+					} else {
+						setGraphic(item);
+						item.setOnAction(event -> {
+							int rowIndex = getIndex();
+							Student selectedStudent = getTableView().getItems().get(rowIndex);
+							System.out.println(selectedStudent.getEmail());
+							try {
+								openDialog(selectedStudent);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						});
+					}
+				}
+			});
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void openDialog(Student s) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("nastavnik_studentUpdate.fxml"));
+		DialogPane studentUpdate = loader.load();
+		nastavnik_studentUpdateController updateC= loader.getController();
+		updateC.setData(s);
+		Dialog<ButtonType> dialog = new Dialog<>();
+		dialog.setDialogPane(studentUpdate);
+		dialog.setTitle("Promjena bodova i ocjene");
+
+		Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+		if (clickedButton.get() == ButtonType.OK) {
+			System.out.println("OK");
+			updateC.update();
+			tableStudenti();
+		}
 	}
 
 	public void setData() {

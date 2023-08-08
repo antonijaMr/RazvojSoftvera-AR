@@ -5,7 +5,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 
 public class Student {
-	public SlusaPredmet slusaPred;
+	private SlusaPredmet slusaPred;
 	private final StringProperty student_id;
 	private final StringProperty ime;
 	private final StringProperty prezime;
@@ -19,7 +19,7 @@ public class Student {
 	private final Button actionButton;
 
 	public Student() {
-		slusaPred = new SlusaPredmet();
+		setSlusaPred(new SlusaPredmet());
 		student_id = new SimpleStringProperty(this, "student_id");
 		ime = new SimpleStringProperty(this, "ime");
 		prezime = new SimpleStringProperty(this, "prezime");
@@ -143,6 +143,14 @@ public class Student {
 
 	public final void setOstvareniECTS(final String ostvareniECTS) {
 		this.ostvareniECTSProperty().set(ostvareniECTS);
+	}
+
+	public SlusaPredmet getSlusaPred() {
+		return slusaPred;
+	}
+
+	public void setSlusaPred(SlusaPredmet slusaPred) {
+		this.slusaPred = slusaPred;
 	}
 
 }

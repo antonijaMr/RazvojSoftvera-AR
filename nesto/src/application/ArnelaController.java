@@ -62,7 +62,7 @@ public class ArnelaController implements Initializable {
 
 		try {
 			// Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost/razvoj", "root", "2481632am*");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "");
 		}
 //	}catch(ClassNotFoundException ex) {
 //		ex.printStackTrace();
