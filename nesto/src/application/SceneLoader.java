@@ -53,6 +53,97 @@ public class SceneLoader {
 
 	}
 
+	public void loadAdminStudent(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("administrator.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}
+
+	public void loadAdminStudenti(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("administrator_pogledajStudente.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}
+
+	public void loadAdminPredmet(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("administrator_dodajPredmet.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}
+
+	public void loadAdminPredmeti(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("administrator_pogledajPredmete.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}
+
+	public void loadAdminNastavnik(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("administrator_dodajNastavnika.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}
+
+	public void loadAdminNastavnici(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("administrator_pogledajNastavnike.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}
+
+	public void loadAdminProdekan(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("administrator_prodekan.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}
+
 	public void logout(ActionEvent e) {
 		// myb are u sure u want to log out
 		try {

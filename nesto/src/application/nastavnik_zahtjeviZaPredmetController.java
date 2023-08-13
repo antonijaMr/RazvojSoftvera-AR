@@ -214,11 +214,13 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		ObservableList<Preduslov> preduslovi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select nazivPred,ocjena,obnova from predmet inner join preduslov on preduslov.sifPreduslov = predmet.sifPred\n"
-							+ "inner join slusaPred on slusaPred.sifPred = preduslov.sifPreduslov\n"
-							+ "where preduslov.sifPred = ? and idStud = ?;");
-			mysql.pst.setString(1, predIndex);
-			mysql.pst.setString(2, studIndex);
+					"SELECT DISTINCT p.nazivPred, s.ocjena, s.obnova\n"
+					+ "FROM predmet p\n"
+					+ "INNER JOIN preduslov pr ON pr.sifPreduslov = p.sifPred\n"
+					+ "LEFT JOIN slusaPred s ON s.sifPred = pr.sifPreduslov AND s.idStud = ?"
+					+ "WHERE pr.sifPred = ?;");
+			mysql.pst.setString(1, studIndex);
+			mysql.pst.setString(2, predIndex);
 			ResultSet rs = mysql.pst.executeQuery();
 			{
 				while (rs.next()) {

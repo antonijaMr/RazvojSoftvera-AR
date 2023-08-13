@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.administratorController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.administrator_dodajNastavnikaController">
    <children>
       <VBox prefHeight="623.0" prefWidth="234.0">
          <children>
@@ -140,6 +140,11 @@
                      </font>
                   </Label>
                   <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
                      <children>
                         <Label text="Ime" textFill="WHITE">
                            <padding>
@@ -181,18 +186,28 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
                      <children>
-                        <Label text="Godina" textFill="WHITE">
+                        <Label text="Zvanje" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="godinaChoice" prefWidth="150.0" />
-                        <Label text="Status" textFill="WHITE">
+                        <Label textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="statusChoice" prefWidth="150.0" />
+                        <ChoiceBox fx:id="zvanje" prefHeight="24.0" prefWidth="87.0" />
+                        <Label text="        " textFill="WHITE">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Odsjek" textFill="WHITE">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <ChoiceBox fx:id="odsjek" prefHeight="24.0" prefWidth="87.0" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -200,25 +215,11 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
                      <children>
-                        <Label text="Smjer" textFill="WHITE">
+                        <Label textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="smjerChoice" prefWidth="150.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
-                     <children>
-                        <Label text="ECTS" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                        <TextField fx:id="ects_tf" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -239,8 +240,8 @@
                   </HBox>
                </children>
             </VBox>
-            <Button layoutX="212.0" layoutY="44.0" mnemonicParsing="false" onAction="#PogledajStudente" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #5b6ad0;" text="Pogledaj studente" textFill="WHITE" />
-            <Button layoutX="44.0" layoutY="44.0" mnemonicParsing="false" onAction="#dodajStudenta" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #5b6ad0;" text="Dodaj Studenta" textFill="WHITE" />
+            <Button layoutX="212.0" layoutY="44.0" mnemonicParsing="false" onAction="#pogledajNastavnike" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #5b6ad0;" text="Pogledaj nastavnike" textFill="WHITE" />
+            <Button layoutX="44.0" layoutY="44.0" mnemonicParsing="false" onAction="#dodajNastavnika" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #5b6ad0;" text="Dodaj nastavnika" textFill="WHITE" />
          </children>
       </Pane>
    </children>
