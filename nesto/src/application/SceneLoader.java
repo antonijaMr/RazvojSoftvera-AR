@@ -4,10 +4,15 @@ import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class SceneLoader {
 	private Stage stage;
@@ -156,5 +161,23 @@ public class SceneLoader {
 			e1.printStackTrace();
 		}
 
+	}
+
+	public void alert(String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Obavijest");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+		// mozda centrirati
+	}
+	
+	public void alertEror(String message) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Obavijest");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+		// mozda centrirati
 	}
 }

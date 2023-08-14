@@ -69,23 +69,29 @@ public class administrator_prodekanController implements Initializable {
 
 	@FXML
 	public void dodaj(ActionEvent event) {
-		System.out.println("dodaj");
-		updateOld();
-		addNew();
-		//alert
-		refresh();
+		if (provjeri()) {
+			updateOld();
+			addNew();
+			s.alert("Prodekan je promjenjen!");
+			refresh();
+		}else {
+			s.alert("Ispunite sva polja.");
+		}
+	}
+	
+	private boolean provjeri() {
+		return prodekanChoice.getValue() != null;
 	}
 
 	private void updateOld() {
 		try {
-			System.out.println("1");
-			String query = "update nastavnik set prodekan = false" + "where nastavnik_id = ?;";
+			String query = "update nastavnik set prodekan = false where nastavnik_id = ?;";
 
 			mysql.pst = mysql.con.prepareStatement(query);
-			mysql.pst.setString(1, Integer.toString(trenutniID));
+			mysql.pst.setInt(1, trenutniID);
 
-			if(mysql.pst.executeUpdate() == 1) {
-				System.out.println("sucesfully updated 1");
+			if (mysql.pst.executeUpdate() != 1) {
+				s.alertEror("Doslo je do greske");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -94,14 +100,13 @@ public class administrator_prodekanController implements Initializable {
 
 	private void addNew() {
 		try {
-			System.out.println(2);
-			String query = "update nastavnik set prodekan = true" + "where nastavnik_id = ?;";
+			String query = "update nastavnik set prodekan = true where nastavnik_id = ?;";
 
 			mysql.pst = mysql.con.prepareStatement(query);
-			mysql.pst.setString(1, prodekanChoice.getValue().getSifNast());
+			mysql.pst.setInt(1, Integer.parseInt(prodekanChoice.getValue().getSifNast()));
 
-			if(mysql.pst.executeUpdate() == 1) {
-				System.out.println("sucesfully updated 2");
+			if (mysql.pst.executeUpdate() != 1) {
+				s.alertEror("Doslo je do greske");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -115,6 +120,7 @@ public class administrator_prodekanController implements Initializable {
 	}
 
 	private void setData() {
+		setTrenutni();
 		mysql.Connect();
 
 		ArrayList<Nastavnik> nlist = new ArrayList<>();
@@ -136,12 +142,12 @@ public class administrator_prodekanController implements Initializable {
 
 		prodekanChoice.getItems().clear();
 		prodekanChoice.getItems().addAll(nlist);
-		setTrenutni();
 	}
 
 	private void setTrenutni() {
 		try {
-			mysql.pst = mysql.con.prepareStatement("Select ime, prezime, nastavnik_id from nastavnik where prodekan = true;");
+			mysql.pst = mysql.con
+					.prepareStatement("Select ime, prezime, nastavnik_id from nastavnik where prodekan = true;");
 			ResultSet rs = mysql.pst.executeQuery();
 			if (rs.next()) {
 				trenutni.setText(rs.getString("ime") + " " + rs.getString("prezime"));

@@ -164,57 +164,89 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="naziv_tf" prefHeight="24.0" prefWidth="261.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
-                     <children>
+                        <TextField fx:id="naziv_tf" prefHeight="24.0" prefWidth="171.0" />
                         <Label text="Naucna oblast" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="naucnaOblast_tf" prefHeight="24.0" prefWidth="274.0" />
+                        <TextField fx:id="naucnaOblast_tf" prefHeight="24.0" prefWidth="184.0" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
+                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0" spacing="10.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Label fx:id="preduslovi" text="Preduslovi:" textFill="WHITE">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="preduslovChoice" prefHeight="24.0" prefWidth="92.0" />
+                        <Button mnemonicParsing="false" onAction="#dodajPreduslov" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #748CF1;" text="+" textFill="WHITE" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0" spacing="10.0">
+                     <children>
+                        <Label text="Nosioc" textFill="WHITE">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <ChoiceBox fx:id="nosiocChoice" prefHeight="24.0" prefWidth="130.0" />
+                        <Label text="Predavac" textFill="WHITE">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <ChoiceBox fx:id="predavacChoice" prefHeight="24.0" prefWidth="130.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0" spacing="10.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
                      <children>
                         <Label text="P" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="p_tf" prefHeight="24.0" prefWidth="41.0" />
+                        <TextField fx:id="p_tf" prefHeight="24.0" prefWidth="40.0" />
                         <Label text="AV" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="av_tf" prefHeight="24.0" prefWidth="41.0" />
+                        <TextField fx:id="av_tf" prefHeight="24.0" prefWidth="40.0" />
                         <Label text="LV" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="lv_tf" prefHeight="24.0" prefWidth="41.0" />
+                        <TextField fx:id="lv_tf" prefHeight="24.0" prefWidth="40.0" />
                         <Label text="ECTS" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="ects_tf" prefHeight="24.0" prefWidth="41.0" />
+                        <TextField fx:id="ects_tf" prefHeight="24.0" prefWidth="40.0" />
                      </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
                      <children>
                         <Label text="Semestar" textFill="WHITE">
                            <padding>
@@ -223,18 +255,15 @@
                         </Label>
                         <ChoiceBox fx:id="semestarChoice" prefHeight="24.0" prefWidth="92.0" />
                      </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="646.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="646.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#dodaj" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #748CF1;" text="Dodaj" textFill="WHITE" />
+                        <Button mnemonicParsing="false" onAction="#obrisi" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #748CF1;" text="Obrisi" textFill="WHITE" />
+                        <Button mnemonicParsing="false" onAction="#dodaj" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #748CF1;" text="Dodaj" textFill="WHITE">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Button>
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

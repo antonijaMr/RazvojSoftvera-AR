@@ -111,7 +111,7 @@ public class nastavnikController implements Initializable {
 		ObservableList<Predmet> predmeti = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select predmet.sifPred,kratPred,nazivPred,uzaNaucnaOblast,satiPredavanja,satiAV,satiLV,ECTS,semestar,brojSemestara"
+					"select predmet.sifPred,kratPred,nazivPred,uzaNaucnaOblast,satiPredavanja,satiAV,satiLV,ECTS,semestar"
 							+ " from predmet inner join predaje on predaje.sifPred = predmet.sifPred where sifNastavnikNosioc =?");
 			mysql.pst.setString(1, currentNastavnik.getSifNast());
 			ResultSet rs = mysql.pst.executeQuery();

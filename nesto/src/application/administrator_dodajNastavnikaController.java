@@ -110,7 +110,7 @@ public class administrator_dodajNastavnikaController implements Initializable {
 		return 999;
 	}
 
-	public void dodajUBazu() {
+	private void dodajUBazu() {
 		try {
 			mysql.pst = mysql.con.prepareStatement(
 					"insert into nastavnik(ime,prezime,lozinka,email,zvanje,odsjek,prodekan)"
@@ -124,15 +124,20 @@ public class administrator_dodajNastavnikaController implements Initializable {
 
 			int rowsAffected = mysql.pst.executeUpdate();
 			if (rowsAffected > 0) {
-				System.out.println("Inserted successfully.");
+				s.alert("Nastavnik uspjesno dodan!");
 				refresh();
 			} else {
-				System.out.println("Failed to insert.");
+				s.alertEror("Doslo je do greske.");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private boolean empty() {
+		return ime_tf.getText().isEmpty() || prezime_tf.getText().isEmpty() ||
+				lozinka.getText().isEmpty() || zvanje.getValue() == null || odsjek.getValue() == null;
 	}
 
 	private void setData() {
@@ -160,12 +165,12 @@ public class administrator_dodajNastavnikaController implements Initializable {
 		int b = provjeri();
 		if (b != 999) {
 			if (b == 0)
-				email.setText(ime_tf.getText() + "." + prezime_tf.getText() + "@fet.ba");
+				email.setText(ime_tf.getText().toLowerCase() + "." + prezime_tf.getText().toLowerCase() + "@fet.ba");
 			else
-				email.setText(ime_tf.getText() + "." + prezime_tf.getText() + b + "@fet.ba");
+				email.setText(ime_tf.getText().toLowerCase() + "." + prezime_tf.getText().toLowerCase() + b + "@fet.ba");
 		}
-		// alert
 	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();

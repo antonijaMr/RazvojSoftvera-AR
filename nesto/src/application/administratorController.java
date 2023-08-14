@@ -34,6 +34,8 @@ public class administratorController implements Initializable {
 	private Integer[] godine = { 1, 2, 3, 4 };
 	private String[] status = { "Redovan", "Vanredan", "Apsolvent", "Imatrikulant" };
 	private String[] smjer = { "AR", "RI", "EEMS", "ESKE", "TK" };
+	private String[] predmetiZaPrvu = { "FIZ1", "MM1" };
+
 	@FXML
 	private HBox root;
 	@FXML
@@ -96,10 +98,40 @@ public class administratorController implements Initializable {
 
 	@FXML
 	public void dodaj(ActionEvent event) {
-		dodajUBazu();
+		if (!empty()) {
+			dodajUBazu();
+			if (godinaChoice.getValue() == 1) {
+				dodajPredmete();
+			}
+			refresh();
+		} else
+			s.alertEror("Ispunite sva polja.");
 	}
 
-	public int provjeri() {
+	private void dodajPredmete() {
+		try {
+			int id = 0;
+			mysql.pst = mysql.con.prepareStatement("select student_id from student where email = ?;");
+			mysql.pst.setString(1, email.getText());
+			ResultSet rs = mysql.pst.executeQuery();
+			if(rs.next()) id = rs.getInt("student_id");
+
+			for (String e : predmetiZaPrvu) {
+				mysql.pst = mysql.con.prepareStatement("insert into slusaPred(idStud,sifPred) values (?,?);");
+				mysql.pst.setInt(1, id);
+				mysql.pst.setString(2, e);
+
+				int rowsAffected = mysql.pst.executeUpdate();
+				if (rowsAffected != 1)
+					s.alertEror("Doslo je do greske");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private int provjeri() {
 		try {
 			mysql.pst = mysql.con.prepareStatement("select count(1) from student where ime = ? and prezime=?;");
 			mysql.pst.setString(1, ime_tf.getText());
@@ -114,7 +146,7 @@ public class administratorController implements Initializable {
 		return 999;
 	}
 
-	public void dodajUBazu() {
+	private void dodajUBazu() {
 		try {
 			mysql.pst = mysql.con.prepareStatement(
 					"insert into student(ime,prezime,lozinka,email,godStudija,statusStud,sifUsmjerenja,ostvareniECTS)"
@@ -126,14 +158,13 @@ public class administratorController implements Initializable {
 			mysql.pst.setInt(5, godinaChoice.getValue());
 			mysql.pst.setString(6, statusChoice.getValue());
 			mysql.pst.setString(7, smjerChoice.getValue());
-			mysql.pst.setInt(8, !ects_tf.getText().isEmpty()? Integer.parseInt(ects_tf.getText()):0);
+			mysql.pst.setInt(8, !ects_tf.getText().isEmpty() ? Integer.parseInt(ects_tf.getText()) : 0);
 
 			int rowsAffected = mysql.pst.executeUpdate();
 			if (rowsAffected > 0) {
-				System.out.println("Student inserted successfully.");
-				refresh();
+				s.alert("Student uspjesno dodan!");
 			} else {
-				System.out.println("Failed to insert student.");
+				s.alertEror("Doslo je do greske");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -145,11 +176,16 @@ public class administratorController implements Initializable {
 		int b = provjeri();
 		if (b != 999) {
 			if (b == 0)
-				email.setText(ime_tf.getText() + "." + prezime_tf.getText() + "@fet.ba");
+				email.setText(ime_tf.getText().toLowerCase() + "." + prezime_tf.getText().toLowerCase() + "@fet.ba");
 			else
-				email.setText(ime_tf.getText() + "." + prezime_tf.getText() + b + "@fet.ba");
+				email.setText(
+						ime_tf.getText().toLowerCase() + "." + prezime_tf.getText().toLowerCase() + b + "@fet.ba");
 		}
-		// alert
+	}
+
+	private boolean empty() {
+		return ime_tf.getText().isEmpty() || prezime_tf.getText().isEmpty() || lozinka.getText().isEmpty()
+				|| godinaChoice.getValue() == null || statusChoice.getValue() == null || smjerChoice.getValue() == null;
 	}
 
 	private class TextChangeListener implements ChangeListener<String> {
