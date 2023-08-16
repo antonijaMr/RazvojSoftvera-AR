@@ -2,9 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.administratorController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.administrator_pogledajStudenteController">
    <children>
       <VBox prefHeight="623.0" prefWidth="234.0">
          <children>
@@ -132,97 +132,33 @@
       </VBox>
       <Pane prefHeight="620.0" prefWidth="704.0">
          <children>
-            <VBox layoutX="30.0" layoutY="121.0" prefHeight="453.0" prefWidth="646.0" style="-fx-background-color: #5b6ad0;">
+            <VBox layoutX="30.0" layoutY="121.0" prefHeight="453.0" prefWidth="646.0">
                <children>
-                  <Label textFill="WHITE">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="67.0" prefWidth="646.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
                      <children>
-                        <Label text="Ime" textFill="WHITE">
+                        <Label text="Search" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="ime_tf" />
-                        <Label text="Prezime" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                        <TextField fx:id="prezime_tf" />
+                        <TextField fx:id="search_tf" />
                      </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
-                     <children>
-                        <Label fx:id="email" text="ime.prezime@fet.ba" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="Lozinka" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                        <PasswordField fx:id="lozinka" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
-                     <children>
-                        <Label text="Status" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                        <ChoiceBox fx:id="statusChoice" prefWidth="150.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
-                     <children>
-                        <Label text="Smjer" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                        <ChoiceBox fx:id="smjerChoice" prefWidth="150.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="646.0">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="646.0">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#dodaj" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #748CF1;" text="Dodaj" textFill="WHITE" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
+                  <TableView prefHeight="358.0" prefWidth="646.0" fx:id="studentiT">
+                    <columns>
+                      <TableColumn fx:id="indexC" prefWidth="45.0" text="Index" />
+                      <TableColumn fx:id="imeC" prefWidth="73.0" text="Ime" />
+                        <TableColumn fx:id="prezimeC" prefWidth="114.0" text="Prezime" />
+                        <TableColumn fx:id="emailC" prefWidth="125.0" text="Email" />
+                        <TableColumn fx:id="godinaC" prefWidth="68.0" text="Godina" />
+                        <TableColumn fx:id="statusC" prefWidth="81.0" text="Status" />
+                        <TableColumn fx:id="smjerC" prefWidth="74.0" text="Smjer" />
+                        <TableColumn fx:id="ectsC" prefWidth="65.0" text="ECTS" />
+                    </columns>
+                  </TableView>
                </children>
             </VBox>
             <Button layoutX="212.0" layoutY="44.0" mnemonicParsing="false" onAction="#PogledajStudente" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #5b6ad0;" text="Pogledaj studente" textFill="WHITE" />
