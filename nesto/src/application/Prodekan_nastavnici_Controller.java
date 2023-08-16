@@ -64,8 +64,11 @@ public class Prodekan_nastavnici_Controller implements Initializable{
 	@FXML 
 	private Button btn_zahtjevi;
 	@FXML
+	private Button btn_noviplan;
+	@FXML
 	private Button refreshButton;
-	
+	@FXML
+	private Button btn_prijavljeniPredmeti;
 	@FXML 
 	private TextField searchTextField;
 	@FXML 
@@ -257,6 +260,22 @@ public class Prodekan_nastavnici_Controller implements Initializable{
 	 @FXML
 	 private void to_zahtjevi(ActionEvent e) throws IOException {
 	    	root = FXMLLoader.load(getClass().getResource("prodekan_zahtjevi.fxml"));
+			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+	    }
+	 @FXML
+	 private void to_plan_realizacije(ActionEvent e) throws IOException {
+	    	root = FXMLLoader.load(getClass().getResource("prodekan_DodajUnos.fxml"));
+			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+	    }
+	 @FXML
+	 private void to_prijavljeni_predmeti(ActionEvent e) throws IOException {
+	    	root = FXMLLoader.load(getClass().getResource("ProdekanPrijavljeniPredmeti.fxml"));
 			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
 			scene=new Scene(root);
 			stage.setScene(scene);

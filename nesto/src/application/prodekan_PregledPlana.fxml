@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,11 +13,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Prodekan_nastavnici_Controller">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1088.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ProdekanPregledPlanaController">
    <children>
-      <VBox prefHeight="623.0" prefWidth="234.0">
+      <VBox prefHeight="674.0" prefWidth="266.0">
          <children>
-            <AnchorPane id="side_anchorpane" fx:id="side_anchorpane" prefHeight="679.0" prefWidth="234.0" stylesheets="@style.css">
+            <AnchorPane id="side_anchorpane" fx:id="side_anchorpane" prefHeight="686.0" prefWidth="254.0" stylesheets="@style.css">
                <children>
                   <Pane fx:id="inner_pane" layoutX="5.0" layoutY="20.0" prefHeight="61.0" prefWidth="222.0" stylesheets="@style.css">
                      <children>
@@ -131,25 +130,36 @@
                </children></AnchorPane>
          </children>
       </VBox>
-      <Pane prefHeight="620.0" prefWidth="704.0">
+      <Pane fx:id="second_pane" prefHeight="641.0" prefWidth="823.0">
          <children>
-            <VBox layoutX="30.0" layoutY="121.0" prefHeight="453.0" prefWidth="646.0">
-               <children>
-                  <TableView fx:id="nastavnik_table" prefHeight="460.0" prefWidth="646.0">
-                    <columns>
-                      <TableColumn fx:id="ImeCol" prefWidth="113.0" text="Ime" />
-                      <TableColumn fx:id="PrezimeCol" prefWidth="115.0" text="Prezime" />
-                        <TableColumn fx:id="ZvanjeCol" prefWidth="84.0" text="Zvanje" />
-                        <TableColumn fx:id="OdsjekCol" prefWidth="94.0" text="Odsjek" />
-                        <TableColumn fx:id="EmailCol" prefWidth="106.0" text="E-mail" />
-                        <TableColumn fx:id="OpcijeCol" prefWidth="133.0" text="Opcije" />
-                    </columns>
-                  </TableView>
-               </children>
-            </VBox>
-            <TextField fx:id="searchTextField" layoutX="424.0" layoutY="69.0" />
-            <Button fx:id="refreshButton" layoutX="36.0" layoutY="56.0" mnemonicParsing="false" onAction="#refreshButtonClicked" text="Refresh Table" />
-            <Button fx:id="Search" layoutX="591.0" layoutY="69.0" mnemonicParsing="false" onAction="#handleSearch" text="Search" />
+            <TableView fx:id="Plan_table" layoutX="38.0" layoutY="66.0" prefHeight="566.0" prefWidth="747.0">
+              <columns>
+                <TableColumn fx:id="NastavniPredmetCol" prefWidth="266.0" text="Nastavni predmet" />
+                <TableColumn minWidth="-Infinity" prefWidth="220.0" text="Plan">
+                     <columns>
+                        <TableColumn prefWidth="75.0" text="zimski">
+                           <columns>
+                              <TableColumn fx:id="PZimskiCol" prefWidth="28.0" text="P" />
+                              <TableColumn fx:id="AZimskiCol" prefWidth="31.0" text="A" />
+                              <TableColumn fx:id="LZimskiCol" prefWidth="34.0" text="L" />
+                           </columns>
+                        </TableColumn>
+                        <TableColumn prefWidth="75.0" text="ljetnji">
+                           <columns>
+                              <TableColumn fx:id="PLjetnjiCol" prefWidth="31.0" text="P" />
+                              <TableColumn fx:id="ALjetnjiCol" prefWidth="37.0" text="A" />
+                              <TableColumn fx:id="LLjetnjiCol" prefWidth="32.0" text="L" />
+                           </columns>
+                        </TableColumn>
+                     </columns>
+                  </TableColumn>
+                  <TableColumn fx:id="NastavnikCol" prefWidth="265.0" text="Nastavnici">
+                    
+</TableColumn>
+              </columns>
+            </TableView>
+            <Button fx:id="dodajUnosButton" layoutX="188.0" layoutY="20.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="109.0" text="Dodaj unos" />
+            <Button fx:id="PregledPlanaButton" layoutX="360.0" layoutY="20.0" mnemonicParsing="false" onAction="#to_pregled_plana" prefHeight="36.0" prefWidth="97.0" text="Pregled plana" />
          </children>
       </Pane>
    </children>

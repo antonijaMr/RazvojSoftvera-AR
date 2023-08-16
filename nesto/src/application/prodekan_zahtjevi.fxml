@@ -65,7 +65,7 @@
                               <Insets left="50.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btn_zahtjevi" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Zahtjevi" textFill="WHITE">
+                        <Button fx:id="btn_zahtjevi" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_zahtjevi" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Zahtjevi" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -80,7 +80,7 @@
                               <Insets left="50.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btn_noviplan" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Novi Plan" textFill="WHITE">
+                        <Button fx:id="btn_noviplan" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_plan_realizacije" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Novi Plan" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -95,7 +95,7 @@
                               <Insets left="50.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btn_noviplan1" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Prijavljeni predmeti" textFill="WHITE">
+                        <Button fx:id="btn_prijavljeniPredmeti" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_prijavljeni_predmeti" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Prijavljeni predmeti" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -134,15 +134,15 @@
          <children>
             <VBox layoutX="33.0" layoutY="75.0" prefHeight="493.0" prefWidth="668.0">
                <children>
-                  <TableView prefHeight="494.0" prefWidth="668.0">
+                  <TableView fx:id="zahtjeviTable" prefHeight="494.0" prefWidth="668.0">
                     <columns>
-                      <TableColumn prefWidth="85.0" text="Ime Studenta" />
-                      <TableColumn prefWidth="109.0" text="Prezime Studenta" />
-                        <TableColumn prefWidth="93.0" text="Br indeksa" />
-                        <TableColumn prefWidth="82.0" text="Predmet1" />
-                        <TableColumn prefWidth="85.0" text="Predmet2" />
-                        <TableColumn prefWidth="97.0" text="Obrazlozenje" />
-                        <TableColumn prefWidth="116.0" text="Opcije" />
+                      <TableColumn fx:id="ImeCol" prefWidth="85.0" text="Ime Studenta" />
+                      <TableColumn fx:id="PrezimeCol" prefWidth="109.0" text="Prezime Studenta" />
+                        <TableColumn fx:id="BrIndeksaCol" prefWidth="93.0" text="Br indeksa" />
+                        <TableColumn fx:id="Predmet1Col" prefWidth="82.0" text="Predmet1" />
+                        <TableColumn fx:id="Predmet2Col" prefWidth="85.0" text="Predmet2" />
+                        <TableColumn fx:id="ObrazlozenjeCol" prefWidth="97.0" text="Obrazlozenje" />
+                        <TableColumn fx:id="OpcijeCol" prefWidth="116.0" text="Opcije" />
                     </columns>
                   </TableView>
                </children>

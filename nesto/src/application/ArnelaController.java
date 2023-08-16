@@ -50,18 +50,14 @@ public class ArnelaController implements Initializable {
 	  
 Connection con;
 PreparedStatement pst;
-int myIndex;
-int id;
 ResultSet res=null;
 public  void Connect() {
 	
 	try {
-		//Class.forName("com.mysql.jdbc.Driver");
+		
 		con=DriverManager.getConnection("jdbc:mysql://localhost/projekat","root","");
 	}
-//	}catch(ClassNotFoundException ex) {
-//		ex.printStackTrace();
-//	}
+
 	catch(SQLException exe) {
 		exe.printStackTrace();
 	}
