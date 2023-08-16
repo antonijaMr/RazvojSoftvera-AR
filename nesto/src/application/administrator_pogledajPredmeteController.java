@@ -15,11 +15,14 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.Pane;
+import models.Nastavnik;
 import models.Predmet;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -134,11 +137,34 @@ public class administrator_pogledajPredmeteController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+	
+	private void setupSearch() {
+		FilteredList<Predmet> filteredData = new FilteredList<>(predmetiT.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(predmet-> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+				if (predmet.getSifraPred().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (predmet.getNazivPred().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false;
+			});
+		});
+
+		SortedList<Predmet> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(predmetiT.comparatorProperty());
+		predmetiT.setItems(sortedData);
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 		tablePred();
-
+		setupSearch();
 	}
 }

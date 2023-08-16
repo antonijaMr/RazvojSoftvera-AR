@@ -3,7 +3,6 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.stage.Popup;
 import models.Nastavnik;
 import models.ZahtjevZaPrenosBodova;
 
@@ -11,13 +10,13 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 
 public class nastavnik_dialogApproveDenyController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
+	private SceneLoader s = new SceneLoader();
 
 	private ZahtjevZaPrenosBodova zahtjev;
 	private Nastavnik nastavnik;
@@ -32,18 +31,17 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 	@FXML
 	private TextField tf_poruka;
 
-	private Popup popup;
 
 	@FXML
 	public void ponisti(ActionEvent event) {
 		btnPressed = false;
-		showPopUP(false);
+		s.alert("Zahtjev odbijen.");
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
 		btnPressed = true;
-		showPopUP(true);
+		s.alert("Zahtjev odobren");
 	}
 
 	public void setData(ZahtjevZaPrenosBodova z) {
@@ -77,37 +75,6 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void showPopUP(boolean approved) {
-		Platform.runLater(() -> {
-			popup = new Popup();
-			Label popupLabel = new Label();
-			if (approved) {
-				popupLabel.setText("Odobreno");
-			} else {
-				popupLabel.setText("Odbijeno");
-			}
-			popupLabel.setStyle("-fx-background-color: white; -fx-padding: 10px;");
-			popup.getContent().add(popupLabel);
-			popup.setAutoHide(true);
-			popup.show(ime.getScene().getWindow(), ime.getScene().getWindow().getX() + ime.getLayoutX() + 50,
-					ime.getScene().getWindow().getY() + ime.getLayoutY() + 220);
-
-			// Hide the popup after a delay
-			new Thread(() -> {
-				try {
-					Thread.sleep(2000); // Adjust the delay as needed
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Platform.runLater(() -> {
-					if (popup.isShowing()) {
-						popup.hide();
-					}
-				});
-			}).start();
-		});
 	}
 
 	@Override

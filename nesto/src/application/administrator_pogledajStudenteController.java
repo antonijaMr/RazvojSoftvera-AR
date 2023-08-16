@@ -15,11 +15,14 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.Pane;
+import models.Nastavnik;
 import models.Student;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -131,10 +134,36 @@ public class administrator_pogledajStudenteController implements Initializable {
 		}
 
 	}
+	
+	private void setupSearch() {
+		FilteredList<Student> filteredData = new FilteredList<>(studentiT.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(student-> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+
+				if (student.getIme().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (student.getPrezime().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false;
+			});
+		});
+
+		SortedList<Student> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(studentiT.comparatorProperty());
+
+		studentiT.setItems(sortedData);
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 		tableStud();
+		setupSearch();
 	}
 }

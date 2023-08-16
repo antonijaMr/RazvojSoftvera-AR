@@ -17,6 +17,7 @@ import javafx.stage.Popup;
 
 public class nastavnik_odgovoriPredmetController implements Initializable{
 	private MySQLConnection mysql = new MySQLConnection();
+	private SceneLoader s = new SceneLoader();
 	
 	private ZahtjevZaSlusanjePredmeta zahtjev;
 	private Nastavnik nastavnik;
@@ -37,13 +38,13 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 	@FXML
 	public void ponisti(ActionEvent event) {
 		btnPressed = false;
-		showPopUP(false);
+		s.alert("Zahtjev odbijen.");
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
 		btnPressed = true;
-		showPopUP(true);
+		s.alert("Zahtjev odobren.");
 	}
 
 	public void setData(ZahtjevZaSlusanjePredmeta z) {
@@ -78,37 +79,6 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void showPopUP(boolean approved) {
-		Platform.runLater(() -> {
-			popup = new Popup();
-			Label popupLabel = new Label();
-			if (approved) {
-				popupLabel.setText("Odobreno");
-			} else {
-				popupLabel.setText("Odbijeno");
-			}
-			popupLabel.setStyle("-fx-background-color: white; -fx-padding: 10px;");
-			popup.getContent().add(popupLabel);
-			popup.setAutoHide(true);
-			popup.show(ime.getScene().getWindow(), ime.getScene().getWindow().getX() + ime.getLayoutX() + 50,
-					ime.getScene().getWindow().getY() + ime.getLayoutY() + 220);
-
-			// Hide the popup after a delay
-			new Thread(() -> {
-				try {
-					Thread.sleep(2000); // Adjust the delay as needed
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Platform.runLater(() -> {
-					if (popup.isShowing()) {
-						popup.hide();
-					}
-				});
-			}).start();
-		});
 	}
 
 	@Override

@@ -32,10 +32,7 @@ public class administrator_dodajPredmetController implements Initializable {
 	private String[] semestar = { "Ljetni", "Zimski" };
 	private List<String> predmeti = new ArrayList<String>();
 	private List<String> listaPreduslova = new ArrayList<String>();
-	private List<Nastavnik> nastavnici = new ArrayList<Nastavnik>();
-	
-	private Nastavnik nosioc = new Nastavnik();
-	private Nastavnik predavac = new Nastavnik();
+
 	private String sifPred = new String();
 
 	@FXML
@@ -66,10 +63,6 @@ public class administrator_dodajPredmetController implements Initializable {
 	private Label preduslovi;
 	@FXML
 	private ChoiceBox<String> semestarChoice;
-	@FXML
-	private ChoiceBox<Nastavnik> nosiocChoice;
-	@FXML
-	private ChoiceBox<Nastavnik> predavacChoice;
 	@FXML
 	private ChoiceBox<String> preduslovChoice;
 
@@ -110,13 +103,10 @@ public class administrator_dodajPredmetController implements Initializable {
 
 	@FXML
 	public void dodaj(ActionEvent event) {
-		nosioc = nosiocChoice.getValue();
-		predavac = predavacChoice.getValue();
 		sifPred = sifraPred_tf.getText();
 		if (provjeri()) {
 			dodajUBazu();
 			dodajPredusloveUBazu();
-			dodajNastavnike();
 			refresh();
 		} else {
 			System.out.println("greska");
@@ -143,8 +133,7 @@ public class administrator_dodajPredmetController implements Initializable {
 	private boolean empty() {
 		if (sifraPred_tf.getText().isEmpty() || kratica_tf.getText().isEmpty() || naziv_tf.getText().isEmpty()
 				|| naucnaOblast_tf.getText().isEmpty() || p_tf.getText().isEmpty() || av_tf.getText().isEmpty()
-				|| lv_tf.getText().isEmpty() || semestarChoice.getValue() == null || nosiocChoice.getValue() == null
-				|| predavacChoice.getValue() == null) {
+				|| lv_tf.getText().isEmpty() || semestarChoice.getValue() == null) {
 			return true;
 		}
 		return false;
@@ -158,7 +147,6 @@ public class administrator_dodajPredmetController implements Initializable {
 				mysql.pst.setString(2, e);
 
 				int rowsAffected = mysql.pst.executeUpdate();
-				System.out.println("inserted:"+ e + "sifpred" + sifPred);
 				if (rowsAffected != 1) {
 					s.alertEror("Doslo je do greske");
 				}
@@ -167,24 +155,6 @@ public class administrator_dodajPredmetController implements Initializable {
 			e.printStackTrace();
 		}
 		listaPreduslova.clear();
-	}
-
-	private void dodajNastavnike() {
-		try {
-			System.out.println("prije" + sifPred);
-				mysql.pst = mysql.con.prepareStatement(
-						"insert into predaje (sifPred,sifNastavnikNosioc,sifNastavnikPredaje)  values (?,?,?);");
-				mysql.pst.setString(1, sifPred);
-				mysql.pst.setString(2, nosioc.getSifNast());
-				mysql.pst.setString(3, predavac.getSifNast());
-
-				int rowsAffected = mysql.pst.executeUpdate();
-				if (rowsAffected != 1) {
-					s.alertEror("Doslo je do greske");
-				}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private boolean provjeri() {
@@ -237,32 +207,9 @@ public class administrator_dodajPredmetController implements Initializable {
 
 	private void setData() {
 		dohvatiPredmete();
-		dohvatiNastavnike();
 
-		nosiocChoice.getItems().addAll(nastavnici);
-		predavacChoice.getItems().addAll(nastavnici);
 		semestarChoice.getItems().addAll(semestar);
 		preduslovChoice.getItems().addAll(predmeti);
-	}
-
-	private void dohvatiNastavnike() {
-		mysql.Connect();
-		try {
-			mysql.pst = mysql.con.prepareStatement("Select ime, prezime,nastavnik_id from nastavnik;");
-			ResultSet rs = mysql.pst.executeQuery();
-
-			while (rs.next()) {
-				Nastavnik n = new Nastavnik();
-				n.setIme(rs.getString("ime"));
-				n.setPrezime(rs.getString("prezime"));
-				n.setSifNast(rs.getString("nastavnik_id"));
-				nastavnici.add(n);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private void dohvatiPredmete() {
@@ -293,10 +240,9 @@ public class administrator_dodajPredmetController implements Initializable {
 
 		semestarChoice.getSelectionModel().clearSelection();
 		preduslovChoice.getSelectionModel().clearSelection();
-		nosiocChoice.getSelectionModel().clearSelection();
-		predavacChoice.getSelectionModel().clearSelection();
-		
+
 		listaPreduslova.clear();
+		preduslovi.setText("Preduslovi:");
 	}
 
 	@Override

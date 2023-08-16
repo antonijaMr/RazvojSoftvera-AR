@@ -161,6 +161,25 @@
 						</TableView>
 						<HBox alignment="BOTTOM_LEFT" prefHeight="54.0" prefWidth="646.0">
 							<children>
+								<Label text="Polozeni Predmeti" textFill="WHITE">
+									<font>
+										<Font size="22.0" />
+									</font>
+									<padding>
+										<Insets bottom="10.0" top="10.0" />
+									</padding>
+								</Label>
+                        <Label text="         " textFill="WHITE">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Label>
 								<Label text="Preduslovi" textFill="WHITE">
 									<font>
 										<Font size="22.0" />
@@ -172,25 +191,6 @@
 										<Insets />
 									</opaqueInsets>
 								</Label>
-                        <Label text="                     " textFill="WHITE">
-                           <font>
-                              <Font size="22.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="10.0" top="10.0" />
-                           </padding>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Label>
-								<Label text="Polozeni Predmeti" textFill="WHITE">
-									<font>
-										<Font size="22.0" />
-									</font>
-									<padding>
-										<Insets bottom="10.0" top="10.0" />
-									</padding>
-								</Label>
 							</children>
 						</HBox>
 						<HBox prefHeight="188.0" prefWidth="646.0">
@@ -200,7 +200,7 @@
 										<TableColumn fx:id="nazivPolozenogC" prefWidth="152.0" style="-fx-border-radius: 20px;" text="Predmet" />
 									</columns>
 								</TableView>
-								<Label text="                             " />
+								<Label text="                          " />
 								<TableView fx:id="predusloviTable" prefHeight="188.0" prefWidth="394.0">
 									<columns>
 										<TableColumn fx:id="nazivPreduslovaC" prefWidth="216.0" style="-fx-border-radius: 20px;" text="Predmet" />
@@ -212,8 +212,8 @@
 						</HBox>
 					</children>
 				</VBox>
-				<TextField layoutX="514.0" layoutY="67.0" />
-				<Label layoutX="459.0" layoutY="68.0" prefHeight="24.0" prefWidth="55.0" text="SEARCH" textFill="WHITE" />
+				<TextField fx:id="search_tf" layoutX="505.0" layoutY="73.0" />
+				<Label layoutX="440.0" layoutY="73.0" prefHeight="24.0" prefWidth="55.0" text="SEARCH" textFill="WHITE" />
 			</children>
 		</Pane>
 	</children>

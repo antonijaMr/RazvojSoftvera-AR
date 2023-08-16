@@ -120,7 +120,7 @@ public class ArnelaController implements Initializable {
 				query = "SELECT lozinka FROM student WHERE email=? ";
 			else if (selectedItem.equals("prodekan"))
 				query = "SELECT lozinka FROM nastavnik WHERE email=? AND prodekan=1";
-			else if(selectedItem.equals("administrator"))
+			else if (selectedItem.equals("administrator"))
 				query = "SELECT lozinka FROM administrator WHERE email=?";
 
 			pst = con.prepareStatement(query);
@@ -136,7 +136,6 @@ public class ArnelaController implements Initializable {
 						stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 						scene = new Scene(root);
 						stage.setScene(scene);
-						System.out.println("set scene");
 
 					} else {
 						Alert a = new Alert(AlertType.ERROR);
@@ -164,7 +163,7 @@ public class ArnelaController implements Initializable {
 				pst = con.prepareStatement(query);
 				pst.setString(1, tf_username.getText());
 				res = pst.executeQuery();
-				if(res.next()) {
+				if (res.next()) {
 					n.setSifNast(res.getString("nastavnik_id"));
 					n.setIme(res.getString("ime"));
 					n.setPrezime(res.getString("prezime"));

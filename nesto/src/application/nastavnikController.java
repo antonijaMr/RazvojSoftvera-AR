@@ -15,6 +15,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
@@ -32,6 +33,8 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.layout.AnchorPane;
@@ -60,7 +63,8 @@ public class nastavnikController implements Initializable {
 	private Button btn_zahtjevi;
 	@FXML
 	private Button btn_logout;
-
+	@FXML
+	private TextField search_tf;
 	@FXML
 	private TableView<Predmet> predTable;
 	@FXML
@@ -98,6 +102,16 @@ public class nastavnikController implements Initializable {
 	@FXML
 	public void logout(ActionEvent e) throws IOException {
 		s.logout(e);
+	}
+	
+	@FXML
+	public void tekucaGodina(ActionEvent e) throws IOException {
+		s.loadPredmeti(e);
+	}
+	
+	@FXML
+	public void novaGodina(ActionEvent e) throws IOException {
+		s.loadNastavnikIducaGodina(e);
 	}
 
 	public void setCurrentNastavnik() {
@@ -185,10 +199,36 @@ public class nastavnikController implements Initializable {
 		currentStage.show();
 	}
 
+	private void setupSearch() {
+		FilteredList<Predmet> filteredData = new FilteredList<>(predTable.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(predmet -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+
+				if (predmet.getNazivPred().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (predmet.getSifraPred().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false;
+			});
+		});
+
+		SortedList<Predmet> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(predTable.comparatorProperty());
+
+		predTable.setItems(sortedData);
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setCurrentNastavnik();
 		mysql.Connect();
 		TablePred();
+		setupSearch();
 	}
 }

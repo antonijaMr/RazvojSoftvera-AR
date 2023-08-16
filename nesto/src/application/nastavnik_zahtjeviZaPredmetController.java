@@ -19,6 +19,8 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
@@ -26,11 +28,12 @@ import javafx.scene.control.TableCell;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.TableView;
-
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import models.Nastavnik;
 import models.Predmet;
 import models.Preduslov;
+import models.ZahtjevZaPrenosBodova;
 import models.ZahtjevZaSlusanjePredmeta;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -57,6 +60,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 	private Button btn_zahtjevi;
 	@FXML
 	private Button btn_logout;
+	@FXML
+	private TextField search_tf;
 	@FXML
 	private TableView<ZahtjevZaSlusanjePredmeta> zahtjeviTable;
 	@FXML
@@ -113,9 +118,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		ObservableList<ZahtjevZaSlusanjePredmeta> zahtjevi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id,ime,prezime,email,godStudija,statusStud,imeUsmjerenja,ostvareniECTS,nazivPred,poruka,predmet.sifPred from student \n"
+					"select student_id,ime,prezime,email,godStudija,statusStud,sifUsmjerenja,ostvareniECTS,nazivPred,zahtjevZaSlusanje.poruka,predmet.sifPred from student \n"
 							+ "inner join zahtjevZaSlusanje on zahtjevZaSlusanje.idStud = student.student_id\n"
-							+ "inner join usmjerenje on usmjerenje.sifUsmjerenja = student.sifUsmjerenja\n"
 							+ "inner join predmet on predmet.sifPred = zahtjevZaSlusanje.sifPred\n"
 							+ "where sifNast = ? and odobreno is null;");
 			mysql.pst.setString(1, currentNastavnik.getSifNast());
@@ -129,7 +133,7 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 					z.getStud().setEmail(rs.getString("email"));
 					z.getStud().setGodStudija(rs.getString("godStudija"));
 					z.getStud().setStatusStud(rs.getString("statusStud"));
-					z.getStud().setSifUsmjerenja(rs.getString("imeUsmjerenja"));
+					z.getStud().setSifUsmjerenja(rs.getString("sifUsmjerenja"));
 					z.getStud().setOstvareniECTS(rs.getString("ostvareniECTS"));
 					z.getPred().setNazivPred(rs.getString("nazivPred"));
 					z.getPred().setSifraPred(rs.getString("sifPred"));
@@ -274,11 +278,40 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		}
 
 	}
+	
+	private void setupSearch() {
+		FilteredList<ZahtjevZaSlusanjePredmeta> filteredData = new FilteredList<>(zahtjeviTable.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(zahtjev -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+
+				if (zahtjev.getPred().getNazivPred().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (zahtjev.getStud().getIme().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (zahtjev.getStud().getPrezime().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+
+				return false;
+			});
+		});
+
+		SortedList<ZahtjevZaSlusanjePredmeta> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(zahtjeviTable.comparatorProperty());
+
+		zahtjeviTable.setItems(sortedData);
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setCurrentNastavnik();
 		mysql.Connect();
 		TableZahtjevi();
+		setupSearch();
 	}
 }

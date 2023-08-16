@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.nastavnik_detaljiController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.nastavnik_detalji_iducaGodinaController">
    <children>
       <VBox prefHeight="623.0" prefWidth="234.0">
          <children>
@@ -140,7 +140,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="tekucaGodina" layoutX="628.0" layoutY="36.0" text="2023" textFill="WHITE">
+                  <Label fx:id="novaGodina" layoutX="6.0" layoutY="56.0" text="2024" textFill="WHITE">
                      <padding>
                         <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                      </padding>
@@ -161,7 +161,7 @@
                               <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="nosiocEmail" text="email" textFill="WHITE">
+                        <Label fx:id="nosiocEmail" text="email:" textFill="WHITE">
                            <padding>
                               <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                            </padding>
@@ -226,13 +226,13 @@
                   </HBox>
                   <TableView fx:id="preduslovT" prefHeight="111.0" prefWidth="701.0">
                     <columns>
-                        <TableColumn fx:id="imePredmetaC" prefWidth="271.0" text="Ime Predmeta" />
-                        <TableColumn fx:id="pC" minWidth="8.0" prefWidth="56.0" text="P" />
-                        <TableColumn fx:id="avC" prefWidth="42.0" text="AV" />
-                        <TableColumn fx:id="lvC" prefWidth="47.0" text="LV" />
-                        <TableColumn fx:id="ectsC" minWidth="0.0" prefWidth="56.0" text="ECTS" />
-                        <TableColumn fx:id="nosiocC" prefWidth="113.0" text="Nosioc" />
-                        <TableColumn fx:id="semestarC" prefWidth="112.0" text="Semestar" />
+                        <TableColumn fx:id="imePredmetaC" prefWidth="213.0" text="Ime Predmeta" />
+                        <TableColumn fx:id="pC" minWidth="8.0" prefWidth="44.0" text="P" />
+                        <TableColumn fx:id="avC" prefWidth="53.0" text="AV" />
+                        <TableColumn fx:id="lvC" prefWidth="57.0" text="LV" />
+                        <TableColumn fx:id="ectsC" minWidth="0.0" prefWidth="69.0" text="ECTS" />
+                        <TableColumn fx:id="nosiocC" prefWidth="134.0" text="Nosioc" />
+                        <TableColumn fx:id="semestarC" prefWidth="127.0" text="Semestar" />
                     </columns>
                   </TableView>
                   <HBox alignment="CENTER" prefHeight="38.0" prefWidth="701.0" spacing="10.0">
@@ -260,14 +260,12 @@
                   </HBox>
                   <TableView fx:id="studentiT" prefHeight="240.0" prefWidth="701.0">
                      <columns>
-                        <TableColumn fx:id="imeSC" prefWidth="111.0" text="Ime" />
-                        <TableColumn fx:id="prezimeSC" prefWidth="114.0" text="Prezime" />
-                        <TableColumn fx:id="godinaC" prefWidth="84.0" text="Godina" />
-                        <TableColumn fx:id="statusC" text="Status" />
-                        <TableColumn fx:id="usmjerenjeC" prefWidth="100.0" text="Usmjerenje" />
-                        <TableColumn fx:id="bodoviC" prefWidth="69.0" text="Bodovi" />
-                        <TableColumn fx:id="ocjenaC" prefWidth="66.0" text="Ocjena" />
-                        <TableColumn fx:id="detaljiC" prefWidth="76.0" text="Detalji" />
+                        <TableColumn fx:id="imeSC" prefWidth="109.0" text="Ime" />
+                        <TableColumn fx:id="prezimeSC" prefWidth="143.0" text="Prezime" />
+                        <TableColumn fx:id="godinaC" minWidth="0.0" prefWidth="111.0" text="Godina" />
+                        <TableColumn fx:id="statusC" prefWidth="126.0" text="Status" />
+                        <TableColumn fx:id="obnovaC" prefWidth="113.0" text="Obnova" />
+                        <TableColumn fx:id="smjerC" prefWidth="96.0" text="Smjer" />
                      </columns>
                   </TableView>
                </children>

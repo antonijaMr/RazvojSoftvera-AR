@@ -20,25 +20,31 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.Pane;
 import models.Nastavnik;
+import models.Student;
 import models.ZahtjevZaPrenosBodova;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class nastavnik_zahtjeviController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
 
 	private Nastavnik currentNastavnik;
-	private SceneLoader s= new SceneLoader();
+	private SceneLoader s = new SceneLoader();
 
 	@FXML
 	private Label nastIme;
+	@FXML
+	private TextField search_tf;
 
 	@FXML
 	private AnchorPane side_anchorpane;
@@ -66,14 +72,13 @@ public class nastavnik_zahtjeviController implements Initializable {
 	@FXML
 	private TableColumn<ZahtjevZaPrenosBodova, Button> actionC;
 
-	// Event Listener on Button[#btn_predmeti].onAction
 	@FXML
 	public void predmeti(ActionEvent e) {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e){
+	public void to_zahtjevi(ActionEvent e) {
 		s.loadZahtjevi(e);
 	}
 
@@ -86,7 +91,20 @@ public class nastavnik_zahtjeviController implements Initializable {
 	public void logout(ActionEvent e) {
 		s.logout(e);
 	}
-	public void TableZahtjevi() {
+	
+	@FXML
+	public void tekucaGodina(ActionEvent e) {
+		s.loadPredmeti(e);
+	}
+	
+	@FXML
+	public void novaGodina(ActionEvent e) {
+		s.loadNastavnikIducaGodina(e);
+	}
+
+
+
+	private void TableZahtjevi() {
 		mysql.Connect();
 
 		ObservableList<ZahtjevZaPrenosBodova> zahtjevi = FXCollections.observableArrayList();
@@ -135,7 +153,6 @@ public class nastavnik_zahtjeviController implements Initializable {
 							try {
 								openDialog(selectedZahtjev);
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						});
@@ -164,12 +181,40 @@ public class nastavnik_zahtjeviController implements Initializable {
 		if (clickedButton.get() == ButtonType.OK) {
 			adC.updateData();
 			TableZahtjevi();
-		} 
+		}
 	}
 
-	public void setCurrentNastavnik() {
+	private void setCurrentNastavnik() {
 		currentNastavnik = DataSingleton.getInstance().getNastavnik();
 		nastIme.setText(currentNastavnik.getIme() + " " + currentNastavnik.getPrezime());
+	}
+
+	private void setupSearch() {
+		FilteredList<ZahtjevZaPrenosBodova> filteredData = new FilteredList<>(zahtjeviTable.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(zahtjev -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+
+				if (zahtjev.pred.getNazivPred().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (zahtjev.stud.getIme().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (zahtjev.stud.getPrezime().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+
+				return false;
+			});
+		});
+
+		SortedList<ZahtjevZaPrenosBodova> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(zahtjeviTable.comparatorProperty());
+
+		zahtjeviTable.setItems(sortedData);
 	}
 
 	@Override
@@ -192,7 +237,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 			}
 		});
 		TableZahtjevi();
-
+		setupSearch();
 	}
 
 }

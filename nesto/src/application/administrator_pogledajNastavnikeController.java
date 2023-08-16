@@ -15,6 +15,8 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +25,7 @@ import javafx.scene.control.TableView;
 
 import javafx.scene.layout.Pane;
 import models.Nastavnik;
+import models.Predmet;
 import javafx.scene.control.TableColumn;
 
 public class administrator_pogledajNastavnikeController implements Initializable {
@@ -125,11 +128,37 @@ public class administrator_pogledajNastavnikeController implements Initializable
 		}
 
 	}
+	
+	private void setupSearch() {
+		FilteredList<Nastavnik> filteredData = new FilteredList<>(nastavniciT.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(nastavnik-> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+
+				if (nastavnik.getIme().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (nastavnik.getPrezime().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false;
+			});
+		});
+
+		SortedList<Nastavnik> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(nastavniciT.comparatorProperty());
+
+		nastavniciT.setItems(sortedData);
+	}
+	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 		tableNast();
-
+		setupSearch();
 	}
 }

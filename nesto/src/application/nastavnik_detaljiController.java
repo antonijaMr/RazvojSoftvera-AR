@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
@@ -31,6 +33,7 @@ import models.Preduslov;
 import models.Student;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 
 public class nastavnik_detaljiController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
@@ -74,6 +77,8 @@ public class nastavnik_detaljiController implements Initializable {
 	private Label lv;
 	@FXML
 	private Label ects;
+	@FXML
+	private TextField search_tf;
 
 	@FXML
 	private TableView<Preduslov> preduslovT;
@@ -143,7 +148,7 @@ public class nastavnik_detaljiController implements Initializable {
 		ObservableList<Preduslov> preduslovi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select nazivPred,satiPredavanja,satiAV,satiLV,ECTS,nastavnikN.ime,nastavnikN.prezime,nastavnikP.ime,nastavnikP.prezime,semestar from preduslov\n"
+					"select nazivPred, satiPredavanja, satiAV, satiLV, ECTS, nastavnikN.ime AS imeN, nastavnikN.prezime AS prezimeN, nastavnikP.ime AS imeP, nastavnikP.prezime AS prezimeP, semestar from preduslov\n"
 							+ "inner join predmet on predmet.sifPred = preduslov.sifPreduslov\n"
 							+ "left outer join predaje on predaje.sifPred = predmet.sifPred\n"
 							+ "left outer join nastavnik nastavnikN on predaje.sifNastavnikNosioc = nastavnikN.nastavnik_id\n"
@@ -160,10 +165,11 @@ public class nastavnik_detaljiController implements Initializable {
 					p.getPredmet().setLab_sati(rs.getString("satiLV"));
 					p.getPredmet().setECTS(rs.getString("ECTS"));
 					p.getPredmet().setSemestar(rs.getString("semestar"));
-					p.getNastavnikN().setIme(rs.getString("nastavnikN.ime"));
-					p.getNastavnikN().setPrezime(rs.getString("nastavnikN.prezime"));
-					p.getNastavnikP().setIme(rs.getString("nastavnikP.ime"));
-					p.getNastavnikP().setPrezime(rs.getString("nastavnikP.prezime"));
+					p.getNastavnikN().setIme(rs.getString("imeN"));
+					p.getNastavnikN().setPrezime(rs.getString("prezimeN"));
+					p.getNastavnikP().setIme(rs.getString("imeP"));
+					p.getNastavnikP().setPrezime(rs.getString("prezimeP"));
+					System.out.println(p.getNastavnikN().getIme());
 					preduslovi.add(p);
 				}
 
@@ -178,7 +184,8 @@ public class nastavnik_detaljiController implements Initializable {
 			ectsC.setCellValueFactory(f -> f.getValue().getPredmet().ECTSProperty());
 			semestarC.setCellValueFactory(f -> f.getValue().getPredmet().semestarProperty());
 			nosiocC.setCellValueFactory(f -> f.getValue().getNastavnikN().imeProperty());
-			predavateljC.setCellValueFactory(f -> f.getValue().getNastavnikN().imeProperty());
+			predavateljC.setCellValueFactory(f -> f.getValue().getNastavnikP().imeProperty());
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -189,8 +196,7 @@ public class nastavnik_detaljiController implements Initializable {
 		ObservableList<Student> students = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id, ime, prezime,email,godStudija,statusStud,ostvareniECTS,imeUsmjerenja,bodovi,ocjena from student inner join slusaPred on student.student_id = slusaPred.idStud\n"
-							+ "inner join usmjerenje on student.sifUsmjerenja = usmjerenje.sifUsmjerenja where sifPred = ?;");
+					"select student_id, ime, prezime,email,godStudija,statusStud,ostvareniECTS,sifUsmjerenja,bodovi,ocjena from student inner join slusaPred on student.student_id = slusaPred.idStud where sifPred = ?;");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
@@ -202,7 +208,7 @@ public class nastavnik_detaljiController implements Initializable {
 					st.setEmail(rs.getString("email"));
 					st.setGodStudija(rs.getString("godStudija"));
 					st.setStatusStud(rs.getString("statusStud"));
-					st.setSifUsmjerenja(rs.getString("imeUsmjerenja"));
+					st.setSifUsmjerenja(rs.getString("sifUsmjerenja"));
 					st.setOstvareniECTS(rs.getString("ostvareniECTS"));
 					st.getSlusaPred().setBodovi(rs.getString("bodovi"));
 					st.getSlusaPred().setOcjena(rs.getString("ocjena"));
@@ -234,7 +240,6 @@ public class nastavnik_detaljiController implements Initializable {
 						item.setOnAction(event -> {
 							int rowIndex = getIndex();
 							Student selectedStudent = getTableView().getItems().get(rowIndex);
-							System.out.println(selectedStudent.getEmail());
 							try {
 								openDialog(selectedStudent);
 							} catch (IOException e) {
@@ -251,12 +256,12 @@ public class nastavnik_detaljiController implements Initializable {
 
 	}
 
-	public void openDialog(Student s) throws IOException {
+	public void openDialog(Student st) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("nastavnik_studentUpdate.fxml"));
 		DialogPane studentUpdate = loader.load();
-		nastavnik_studentUpdateController updateC= loader.getController();
-		updateC.setData(s);
+		nastavnik_studentUpdateController updateC = loader.getController();
+		updateC.setData(st);
 		Dialog<ButtonType> dialog = new Dialog<>();
 		dialog.setDialogPane(studentUpdate);
 		dialog.setTitle("Promjena bodova i ocjene");
@@ -264,9 +269,9 @@ public class nastavnik_detaljiController implements Initializable {
 		Optional<ButtonType> clickedButton = dialog.showAndWait();
 
 		if (clickedButton.get() == ButtonType.OK) {
-			System.out.println("OK");
 			updateC.update();
 			tableStudenti();
+			s.alert("Bodovi i ocjena promijenjeni.");
 		}
 	}
 
@@ -306,6 +311,31 @@ public class nastavnik_detaljiController implements Initializable {
 
 	}
 
+	private void setupSearch() {
+		FilteredList<Student> filteredData = new FilteredList<>(studentiT.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(student -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+
+				if (student.getIme().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (student.getPrezime().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false;
+			});
+		});
+
+		SortedList<Student> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(studentiT.comparatorProperty());
+
+		studentiT.setItems(sortedData);
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setCurrentNastavnik();
@@ -313,5 +343,6 @@ public class nastavnik_detaljiController implements Initializable {
 		setData();
 		tablePreduslovi();
 		tableStudenti();
+		setupSearch();
 	}
 }

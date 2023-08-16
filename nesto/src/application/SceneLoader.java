@@ -162,6 +162,34 @@ public class SceneLoader {
 		}
 
 	}
+	
+	public void loadNastavnikDetaljiIducaGodina(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("nastavnik_detalji_iducaGodina.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}	
+	
+	public void loadNastavnikIducaGodina(ActionEvent e) {
+		try {
+			root = FXMLLoader.load(getClass().getResource("nastavnik_iducaGodina.fxml"));
+			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+	}	
+	
+		
 
 	public void alert(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
