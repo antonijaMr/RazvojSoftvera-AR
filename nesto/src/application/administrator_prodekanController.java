@@ -85,12 +85,13 @@ public class administrator_prodekanController implements Initializable {
 
 	private void updateOld() {
 		try {
-			String query = "update nastavnik set prodekan = false where nastavnik_id = ?;";
+			String query = "update nastavnik set prodekan = false where sifNast = ?;";
 
 			mysql.pst = mysql.con.prepareStatement(query);
 			mysql.pst.setInt(1, trenutniID);
 
 			if (mysql.pst.executeUpdate() != 1) {
+				System.out.println("vise of jednog");
 				s.alertEror("Doslo je do greske");
 			}
 		} catch (SQLException e) {
@@ -100,12 +101,13 @@ public class administrator_prodekanController implements Initializable {
 
 	private void addNew() {
 		try {
-			String query = "update nastavnik set prodekan = true where nastavnik_id = ?;";
+			String query = "update nastavnik set prodekan = true where sifNast = ?;";
 
 			mysql.pst = mysql.con.prepareStatement(query);
 			mysql.pst.setInt(1, Integer.parseInt(prodekanChoice.getValue().getSifNast()));
 
 			if (mysql.pst.executeUpdate() != 1) {
+				System.out.println("add new");
 				s.alertEror("Doslo je do greske");
 			}
 		} catch (SQLException e) {
@@ -129,7 +131,7 @@ public class administrator_prodekanController implements Initializable {
 			ResultSet rs = mysql.pst.executeQuery();
 			while (rs.next()) {
 				Nastavnik n = new Nastavnik();
-				n.setSifNast(rs.getString("nastavnik_id"));
+				n.setSifNast(rs.getString("sifNast"));
 				n.setPrezime(rs.getString("prezime"));
 				n.setIme(rs.getString("ime"));
 
@@ -147,11 +149,10 @@ public class administrator_prodekanController implements Initializable {
 	private void setTrenutni() {
 		try {
 			mysql.pst = mysql.con
-					.prepareStatement("Select ime, prezime, nastavnik_id from nastavnik where prodekan = true;");
+					.prepareStatement("Select ime, prezime, sifNast from nastavnik where prodekan = true;");
 			ResultSet rs = mysql.pst.executeQuery();
 			if (rs.next()) {
 				trenutni.setText(rs.getString("ime") + " " + rs.getString("prezime"));
-				trenutniID = rs.getInt("nastavnik_id");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

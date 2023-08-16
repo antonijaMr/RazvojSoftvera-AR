@@ -7,8 +7,6 @@ public class DataSingleton{
 
 	private static final DataSingleton instance = new DataSingleton();
 
-	//trenutni nastavnik
-	//trenutni predmet
 	private Nastavnik nastavnik;
 	private Predmet predmet;
 

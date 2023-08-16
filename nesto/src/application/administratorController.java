@@ -104,14 +104,14 @@ public class administratorController implements Initializable {
 	private void dodajPredmete() {
 		try {
 			int id = 0;
-			mysql.pst = mysql.con.prepareStatement("select student_id from student where email = ?;");
+			mysql.pst = mysql.con.prepareStatement("select brojIndeksa from student where email = ?;");
 			mysql.pst.setString(1, email.getText());
 			ResultSet rs = mysql.pst.executeQuery();
 			if (rs.next())
-				id = rs.getInt("student_id");
+				id = rs.getInt("brojIndeksa");
 
 			for (String e : predmetiZaPrvu) {
-				mysql.pst = mysql.con.prepareStatement("insert into slusaPred(idStud,sifPred) values (?,?);");
+				mysql.pst = mysql.con.prepareStatement("INSERT INTO slusaPred (idStud, sifPred, godina,obnova) VALUES (?, ?, YEAR(CURDATE()),false);");
 				mysql.pst.setInt(1, id);
 				mysql.pst.setString(2, e);
 

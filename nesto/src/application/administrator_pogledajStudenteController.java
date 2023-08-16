@@ -105,7 +105,7 @@ public class administrator_pogledajStudenteController implements Initializable {
 			{
 				while (rs.next()) {
 					Student s = new Student();
-					s.setId(rs.getString("student_id"));
+					s.setId(rs.getString("brojIndeksa"));
 					s.setPrezime(rs.getString("prezime"));
 					s.setIme(rs.getString("ime"));
 					s.setEmail(rs.getString("email"));

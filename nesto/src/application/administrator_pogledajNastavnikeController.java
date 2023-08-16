@@ -102,7 +102,7 @@ public class administrator_pogledajNastavnikeController implements Initializable
 			{
 				while (rs.next()) {
 					Nastavnik n = new Nastavnik();
-					n.setSifNast(rs.getString("nastavnik_id"));
+					n.setSifNast(rs.getString("sifNast"));
 					n.setPrezime(rs.getString("prezime"));
 					n.setIme(rs.getString("ime"));
 					n.setEmail(rs.getString("email"));

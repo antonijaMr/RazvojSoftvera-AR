@@ -32,7 +32,7 @@ public class administrator_dodajNastavnikaController implements Initializable {
 	private SceneLoader s = new SceneLoader();
 
 	private String[] zvanja = { "vanredni profesor", "redovni profesor", "docent" };
-	private String[] smjer = { "AR", "RI", "EEMS", "ESKE", "TK" };
+	private String[] smjer = { "AR", "RI", "EEMS", "ESKE", "TK", "Ostalo" };
 
 	@FXML
 	private HBox root;
@@ -96,24 +96,26 @@ public class administrator_dodajNastavnikaController implements Initializable {
 	}
 
 	public int provjeri() {
-		try {
-			mysql.pst = mysql.con.prepareStatement("select count(1) from nastavnik where ime = ? and prezime=?;");
-			mysql.pst.setString(1, ime_tf.getText());
-			mysql.pst.setString(2, prezime_tf.getText());
-			ResultSet rs = mysql.pst.executeQuery();
-			if (rs.next()) {
-				return rs.getInt(1);
+		if (!empty()) {
+			try {
+				mysql.pst = mysql.con.prepareStatement("select count(1) from nastavnik where ime = ? and prezime=?;");
+				mysql.pst.setString(1, ime_tf.getText());
+				mysql.pst.setString(2, prezime_tf.getText());
+				ResultSet rs = mysql.pst.executeQuery();
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 		return 999;
 	}
 
 	private void dodajUBazu() {
 		try {
-			mysql.pst = mysql.con.prepareStatement(
-					"insert into nastavnik(ime,prezime,lozinka,email,zvanje,odsjek,prodekan)"
+			mysql.pst = mysql.con
+					.prepareStatement("insert into nastavnik(ime,prezime,lozinka,email,zvanje,odsjek,prodekan)"
 							+ " values (?,?,?,?,?,?,false);");
 			mysql.pst.setString(1, ime_tf.getText());
 			mysql.pst.setString(2, prezime_tf.getText());
@@ -134,10 +136,10 @@ public class administrator_dodajNastavnikaController implements Initializable {
 		}
 
 	}
-	
+
 	private boolean empty() {
-		return ime_tf.getText().isEmpty() || prezime_tf.getText().isEmpty() ||
-				lozinka.getText().isEmpty() || zvanje.getValue() == null || odsjek.getValue() == null;
+		return ime_tf.getText().isEmpty() || prezime_tf.getText().isEmpty() || lozinka.getText().isEmpty()
+				|| zvanje.getValue() == null || odsjek.getValue() == null;
 	}
 
 	private void setData() {
@@ -167,7 +169,8 @@ public class administrator_dodajNastavnikaController implements Initializable {
 			if (b == 0)
 				email.setText(ime_tf.getText().toLowerCase() + "." + prezime_tf.getText().toLowerCase() + "@fet.ba");
 			else
-				email.setText(ime_tf.getText().toLowerCase() + "." + prezime_tf.getText().toLowerCase() + b + "@fet.ba");
+				email.setText(
+						ime_tf.getText().toLowerCase() + "." + prezime_tf.getText().toLowerCase() + b + "@fet.ba");
 		}
 	}
 
