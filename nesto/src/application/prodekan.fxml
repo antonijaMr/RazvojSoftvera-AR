@@ -81,7 +81,7 @@
                               <Insets left="50.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btn_noviplan" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Novi Plan" textFill="WHITE">
+                        <Button fx:id="btn_noviplan" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_plan_realizacije" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Novi Plan" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -96,7 +96,7 @@
                               <Insets left="50.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btn_noviplan1" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Prijavljeni predmeti" textFill="WHITE">
+                        <Button fx:id="btn_prijavljeniPredmeti" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_prijavljeni_predmeti" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Prijavljeni predmeti" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>

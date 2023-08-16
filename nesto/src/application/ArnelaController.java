@@ -41,6 +41,7 @@ public class ArnelaController implements Initializable {
 	@FXML
 	private ChoiceBox<String> MyChoiceBox;
 
+
 	private String selectedItem;
 
 	@FXML
@@ -61,12 +62,9 @@ public class ArnelaController implements Initializable {
 	public void Connect() {
 
 		try {
-			// Class.forName("com.mysql.jdbc.Driver");
+	
 			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "2481632am*");
 		}
-//	}catch(ClassNotFoundException ex) {
-//		ex.printStackTrace();
-//	}
 		catch (SQLException exe) {
 			exe.printStackTrace();
 		}
