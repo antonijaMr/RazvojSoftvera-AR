@@ -3,68 +3,58 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+
 import javafx.scene.layout.HBox;
+
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.layout.AnchorPane;
+
+import javafx.scene.control.TableView;
 
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import models.Nastavnik;
 import models.Predmet;
-import models.Student;
+import javafx.scene.control.TableColumn;
 
-public class nastavnikController implements Initializable {
+public class nastavnik_iducaGodinaController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
 	private Nastavnik currentNastavnik = new Nastavnik();
 	private SceneLoader s = new SceneLoader();
 
 	@FXML
-	private Label nastIme;
-
+	private HBox root;
 	@FXML
 	private AnchorPane side_anchorpane;
 	@FXML
 	private Pane inner_pane;
+	@FXML
+	private Label nastIme;
 	@FXML
 	private Button btn_predmeti;
 	@FXML
 	private Button btn_zahtjevi;
 	@FXML
 	private Button btn_logout;
-	@FXML
-	private TextField search_tf;
 	@FXML
 	private TableView<Predmet> predTable;
 	@FXML
@@ -83,6 +73,8 @@ public class nastavnikController implements Initializable {
 	private TableColumn<Predmet, String> semestarC;
 	@FXML
 	private TableColumn<Predmet, Button> detaljiC;
+	@FXML
+	private TextField search_tf;
 
 	@FXML
 	public void predmeti(ActionEvent e) throws IOException {
@@ -128,7 +120,7 @@ public class nastavnikController implements Initializable {
 		try {
 			mysql.pst = mysql.con.prepareStatement(
 					"select predmet.sifPred,kratPred,nazivPred,uzaNaucnaOblast,satiPredavanja,satiAV,satiLV,ECTS,semestar\n"
-							+ "from predmet inner join predaje on predaje.sifPred = predmet.sifPred where sifNastavnik =? and predaje.godina = 2023;");
+							+ "from predmet inner join predaje on predaje.sifPred = predmet.sifPred where sifNastavnik =? and predaje.godina = 2024;");
 			mysql.pst.setString(1, currentNastavnik.getSifNast());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
@@ -191,7 +183,7 @@ public class nastavnikController implements Initializable {
 	public void openDialog(Predmet p) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		DataSingleton.getInstance().setPredmet(p);
-		loader.setLocation(getClass().getResource("nastavnik_detalji.fxml"));
+		loader.setLocation(getClass().getResource("nastavnik_detalji_iducaGodina.fxml"));
 		Parent root = loader.load();
 
 		Stage currentStage = (Stage) side_anchorpane.getScene().getWindow();
