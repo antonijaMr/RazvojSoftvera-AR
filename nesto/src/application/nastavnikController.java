@@ -54,16 +54,6 @@ public class nastavnikController implements Initializable {
 	private Label nastIme;
 
 	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
-	private Button btn_predmeti;
-	@FXML
-	private Button btn_zahtjevi;
-	@FXML
-	private Button btn_logout;
-	@FXML
 	private TextField search_tf;
 	@FXML
 	private TableView<Predmet> predTable;
@@ -85,22 +75,22 @@ public class nastavnikController implements Initializable {
 	private TableColumn<Predmet, Button> detaljiC;
 
 	@FXML
-	public void predmeti(ActionEvent e) throws IOException {
+	public void predmeti(MouseEvent e) throws IOException {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) throws IOException {
+	public void to_zahtjevi(MouseEvent e) throws IOException {
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) throws IOException {
+	public void to_predZahtjevi(MouseEvent e) throws IOException {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) throws IOException {
+	public void logout(MouseEvent e) throws IOException {
 		s.logout(e);
 	}
 
@@ -172,11 +162,7 @@ public class nastavnikController implements Initializable {
 						item.setOnAction(event -> {
 							int rowIndex = getIndex();
 							Predmet selectedPredmet = getTableView().getItems().get(rowIndex);
-							try {
-								openDialog(selectedPredmet);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+							openDialog(selectedPredmet, event);
 						});
 					}
 				}
@@ -188,17 +174,9 @@ public class nastavnikController implements Initializable {
 
 	}
 
-	public void openDialog(Predmet p) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
+	public void openDialog(Predmet p, ActionEvent e) {
 		DataSingleton.getInstance().setPredmet(p);
-		loader.setLocation(getClass().getResource("nastavnik_detalji.fxml"));
-		Parent root = loader.load();
-
-		Stage currentStage = (Stage) side_anchorpane.getScene().getWindow();
-		Scene scene = new Scene(root);
-
-		currentStage.setScene(scene);
-		currentStage.show();
+		s.loadNastDetalji(e);
 	}
 
 	private void setupSearch() {

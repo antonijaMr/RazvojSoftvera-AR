@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
-
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.ChoiceBox;
@@ -30,40 +30,32 @@ public class administrator_prodekanController implements Initializable {
 	private int trenutniID;
 
 	@FXML
-	private HBox root;
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
-	private Button btn_logout;
-	@FXML
 	private Label trenutni;
 	@FXML
 	private ChoiceBox<Nastavnik> prodekanChoice;
 
 	@FXML
-	public void studenti(ActionEvent event) {
+	public void studenti(MouseEvent event) {
 		s.loadAdminStudent(event);
 	}
 
 	@FXML
-	public void nastavnici(ActionEvent event) {
+	public void nastavnici(MouseEvent event) {
 		s.loadAdminNastavnik(event);
 	}
 
 	@FXML
-	public void predmeti(ActionEvent event) {
+	public void predmeti(MouseEvent event) {
 		s.loadAdminPredmet(event);
 	}
 
 	@FXML
-	public void prodekan(ActionEvent event) {
+	public void prodekan(MouseEvent event) {
 		s.loadAdminProdekan(event);
 	}
 
 	@FXML
-	public void logout(ActionEvent event) {
+	public void logout(MouseEvent event) {
 		s.logout(event);
 	}
 

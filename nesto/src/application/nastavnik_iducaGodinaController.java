@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -77,22 +78,22 @@ public class nastavnik_iducaGodinaController implements Initializable {
 	private TextField search_tf;
 
 	@FXML
-	public void predmeti(ActionEvent e) throws IOException {
+	public void predmeti(MouseEvent e) throws IOException {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) throws IOException {
+	public void to_zahtjevi(MouseEvent e) throws IOException {
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) throws IOException {
+	public void to_predZahtjevi(MouseEvent e) throws IOException {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) throws IOException {
+	public void logout(MouseEvent e) throws IOException {
 		s.logout(e);
 	}
 
@@ -165,7 +166,7 @@ public class nastavnik_iducaGodinaController implements Initializable {
 							int rowIndex = getIndex();
 							Predmet selectedPredmet = getTableView().getItems().get(rowIndex);
 							try {
-								openDialog(selectedPredmet);
+								openDialog(selectedPredmet,event);
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
@@ -180,17 +181,9 @@ public class nastavnik_iducaGodinaController implements Initializable {
 
 	}
 
-	public void openDialog(Predmet p) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
+	public void openDialog(Predmet p,ActionEvent e) throws IOException {
 		DataSingleton.getInstance().setPredmet(p);
-		loader.setLocation(getClass().getResource("nastavnik_detalji_iducaGodina.fxml"));
-		Parent root = loader.load();
-
-		Stage currentStage = (Stage) side_anchorpane.getScene().getWindow();
-		Scene scene = new Scene(root);
-
-		currentStage.setScene(scene);
-		currentStage.show();
+		s.loadNastavnikDetaljiIducaGodina(e);
 	}
 
 	private void setupSearch() {

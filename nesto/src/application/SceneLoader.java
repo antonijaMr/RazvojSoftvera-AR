@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -19,177 +20,111 @@ public class SceneLoader {
 	private Scene scene;
 	private Parent root;
 
+	private void loadScene(String fxmlPath, String cssPath, MouseEvent eventSource) {
+		try {
+			root = FXMLLoader.load(getClass().getResource(fxmlPath));
+			stage = (Stage) ((Node) eventSource.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+
+			String css = this.getClass().getResource(cssPath).toExternalForm();
+			scene.getStylesheets().add(css);
+
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadScene(String fxmlPath, String cssPath, ActionEvent eventSource) {
+		try {
+			root = FXMLLoader.load(getClass().getResource(fxmlPath));
+			stage = (Stage) ((Node) eventSource.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+
+			String css = this.getClass().getResource(cssPath).toExternalForm();
+			scene.getStylesheets().add(css);
+
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void loadPredmeti(MouseEvent e) {
+		loadScene("nastavnik.fxml", "applicationNastavnik.css", e);
+	}
+
 	public void loadPredmeti(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("nastavnik.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+		loadScene("nastavnik.fxml", "applicationNastavnik.css", e);
 	}
 
-	public void loadZahtjevi(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("nastavnik_zahtjevi.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+	public void loadZahtjevi(MouseEvent e) {
+		loadScene("nastavnik_zahtjevi.fxml", "applicationNastavnik.css", e);
 	}
 
-	public void loadPredZahtjevi(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("nastavnik_zahtjeviZaPredmet.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+	public void loadPredZahtjevi(MouseEvent e) {
+		loadScene("nastavnik_zahtjeviZaPredmet.fxml", "applicationNastavnik.css", e);
+	}
 
+	public void loadNastDetalji(ActionEvent e) {
+		loadScene("nastavnik_detalji.fxml", "applicationNastavnik.css", e);
+	}
+
+	public void loadAdminStudent(MouseEvent e) {
+		System.out.println("mouse");
+		loadScene("administrator.fxml", "applicationAdmin.css", e);
 	}
 
 	public void loadAdminStudent(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("administrator.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+		System.out.println("action");
+		loadScene("administrator.fxml", "applicationAdmin.css", e);
 	}
 
 	public void loadAdminStudenti(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("administrator_pogledajStudente.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		loadScene("administrator_pogledajStudente.fxml", "applicationAdmin.css", e);
+	}
 
+	public void loadAdminPredmet(MouseEvent e) {
+		loadScene("administrator_dodajPredmet.fxml", "applicationAdmin.css", e);
 	}
 
 	public void loadAdminPredmet(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("administrator_dodajPredmet.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+		loadScene("administrator_dodajPredmet.fxml", "applicationAdmin.css", e);
 	}
 
 	public void loadAdminPredmeti(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("administrator_pogledajPredmete.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		loadScene("administrator_pogledajPredmete.fxml", "applicationAdmin.css", e);
+	}
 
+	public void loadAdminNastavnik(MouseEvent e) {
+		loadScene("administrator_dodajNastavnika.fxml", "applicationAdmin.css", e);
 	}
 
 	public void loadAdminNastavnik(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("administrator_dodajNastavnika.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+		loadScene("administrator_dodajNastavnika.fxml", "applicationAdmin.css", e);
 	}
 
 	public void loadAdminNastavnici(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("administrator_pogledajNastavnike.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+		loadScene("administrator_pogledajNastavnike.fxml", "applicationAdmin.css", e);
 	}
 
-	public void loadAdminProdekan(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("administrator_prodekan.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+	public void loadAdminProdekan(MouseEvent e) {
+		loadScene("administrator_prodekan.fxml", "applicationAdmin.css", e);
 	}
 
-	public void logout(ActionEvent e) {
-		// myb are u sure u want to log out
-		try {
-			root = FXMLLoader.load(getClass().getResource("Arnela.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+	public void logout(MouseEvent e) {
+		loadScene("Arnela.fxml", "application.css", e);
 	}
-	
+
 	public void loadNastavnikDetaljiIducaGodina(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("nastavnik_detalji_iducaGodina.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		loadScene("nastavnik_detalji_iducaGodina.fxml", "applicationNastavnik.css", e);
+	}
 
-	}	
-	
 	public void loadNastavnikIducaGodina(ActionEvent e) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("nastavnik_iducaGodina.fxml"));
-			stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-	}	
-	
-		
+		loadScene("nastavnik_iducaGodina.fxml", "applicationNastavnik.css", e);
+	}
 
 	public void alert(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -199,7 +134,7 @@ public class SceneLoader {
 		alert.showAndWait();
 		// mozda centrirati
 	}
-	
+
 	public void alertEror(String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setTitle("Obavijest");

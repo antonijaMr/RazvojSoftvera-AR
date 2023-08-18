@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -17,7 +18,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -38,19 +38,7 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 	private SceneLoader s = new SceneLoader();
 
 	@FXML
-	private HBox root;
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
 	private Label nastIme;
-	@FXML
-	private Button btn_predmeti;
-	@FXML
-	private Button btn_zahtjevi;
-	@FXML
-	private Button btn_logout;
 	@FXML
 	private Label imePred;
 	@FXML
@@ -60,13 +48,9 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 	@FXML
 	private Label nosioc;
 	@FXML
-	private Label nosiocEmail;
-	@FXML
 	private Label sifPred;
 	@FXML
 	private Label kratPred;
-	@FXML
-	private Label uzaNaucnaOblast;
 	@FXML
 	private Label p;
 	@FXML
@@ -115,22 +99,22 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 	}
 
 	@FXML
-	public void predmeti(ActionEvent e) {
+	public void predmeti(MouseEvent e) {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) {
+	public void to_zahtjevi(MouseEvent e) {
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) {
+	public void to_predZahtjevi(MouseEvent e) {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) {
+	public void logout(MouseEvent e) {
 		s.logout(e);
 	}
 
@@ -223,7 +207,6 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 		imePred.setText(predmet.getNazivPred());
 		sifPred.setText(predmet.getSifraPred());
 		kratPred.setText(predmet.getKratPred());
-		uzaNaucnaOblast.setText(predmet.getUzaNaucnaOblast());
 		p.setText("P: " + predmet.getPredavanja_sati());
 		av.setText("AV: " + predmet.getAv_sati());
 		lv.setText("LV: " + predmet.getLab_sati());
@@ -246,7 +229,6 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 			ResultSet rs = mysql.pst.executeQuery();
 			if (rs.next()) {
 				nosioc.setText("Nosioc: " + rs.getString("ime") + " " + rs.getString("prezime"));
-				nosiocEmail.setText("Email: " + rs.getString("email"));
 			}
 
 		} catch (SQLException e) {

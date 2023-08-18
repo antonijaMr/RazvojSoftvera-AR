@@ -21,7 +21,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -29,11 +28,11 @@ import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import models.Nastavnik;
 import models.Predmet;
 import models.Preduslov;
-import models.ZahtjevZaPrenosBodova;
 import models.ZahtjevZaSlusanjePredmeta;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -93,22 +92,22 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 	}
 
 	@FXML
-	public void predmeti(ActionEvent e) {
+	public void predmeti(MouseEvent e) {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) {
+	public void to_zahtjevi(MouseEvent e) {
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) {
+	public void to_predZahtjevi(MouseEvent e) {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) {
+	public void logout(MouseEvent e) {
 		s.logout(e);
 	}
 
@@ -178,7 +177,6 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-//		 ON ClICKED
 		zahtjeviTable.setRowFactory(tv -> {
 			TableRow<ZahtjevZaSlusanjePredmeta> myRow = new TableRow<>();
 			myRow.setOnMouseClicked(event -> {

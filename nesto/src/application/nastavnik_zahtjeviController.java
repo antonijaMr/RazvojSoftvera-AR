@@ -34,6 +34,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class nastavnik_zahtjeviController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
@@ -46,18 +47,6 @@ public class nastavnik_zahtjeviController implements Initializable {
 	@FXML
 	private TextField search_tf;
 
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
-	private Button btn_predmeti;
-	@FXML
-	private Button btn_zahtjevi;
-	@FXML
-	private Button btn_logout;
-
-	@FXML
 	private TableView<ZahtjevZaPrenosBodova> zahtjeviTable;
 	@FXML
 	private TableColumn<ZahtjevZaPrenosBodova, String> indexC;
@@ -73,22 +62,22 @@ public class nastavnik_zahtjeviController implements Initializable {
 	private TableColumn<ZahtjevZaPrenosBodova, Button> actionC;
 
 	@FXML
-	public void predmeti(ActionEvent e) {
+	public void predmeti(MouseEvent e) {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) {
+	public void to_zahtjevi(MouseEvent e) {
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) {
+	public void to_predZahtjevi(MouseEvent e) {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) {
+	public void logout(MouseEvent e) {
 		s.logout(e);
 	}
 	

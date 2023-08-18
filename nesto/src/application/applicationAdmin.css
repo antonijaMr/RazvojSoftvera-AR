@@ -1,0 +1,188 @@
+/* Stilizacija naslova TitledPane-a */
+.titled-pane .title {
+    -fx-background-color: #FF9800; /* Još svjetlija zelena */
+    -fx-text-fill: white;
+    -fx-font-size: 12px; /* Manji font */
+    -fx-font-weight: bold;
+    -fx-padding: 6px; /* Malo manji padding */
+}
+
+/* Stilizacija naslova TitledPane-a kada je kursor iznad njega (hover efekt) */
+.titled-pane .title:hover {
+    -fx-background-color: #F59A3F; /* Tamnija nijansa svijetlo zelene */
+}
+
+/* Stilizacija naslova TitledPane-a kada je aktivan (otvoren) */
+.titled-pane:expanded .title {
+    -fx-background-color: #F59A3F; /* Tamnija nijansa svijetlo zelene */
+}
+
+/* Stilizacija sadržaja TitledPane-a */
+.titled-pane .content {
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 10px;
+    -fx-border-width: 0px;
+}
+
+/* Stilizacija TitledPane-a u sklopljenom stanju */
+.titled-pane .title .arrow-button {
+    -fx-background-color: #FF9800; /* Još svjetlija zelena */
+    -fx-shape: " ";
+    -fx-background-insets: 0;
+    -fx-padding: 3px 4px;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+}
+
+/* Stilizacija TitledPane-a u raširenom stanju */
+.titled-pane:expanded .title .arrow-button {
+    -fx-background-color: #FF9800; /* Još svjetlija zelena */
+    -fx-shape: " ";
+    -fx-background-insets: 0;
+    -fx-padding: 4px 7px;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+}
+
+/* Stilizacija naslova TitledPane-a kada je kursor iznad njega u raširenom stanju (hover efekt) */
+.titled-pane:expanded .title:hover {
+    -fx-background-color: #F57C00; /* Tamnija nijansa svijetlo zelene */
+}
+/*///////////////////////////////////////////////////////////////////////////////// */
+/*///////////////////////////////////////////////////////////////////////////////////////////// */
+/*///////////////////////////////////////////////////////////////////////////////////////////// */
+
+
+.combo-box {
+    -fx-background-color: #f0f0f0; /* Svijetlo siva pozadina */
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Stilizacija ComboBox-a kada je kursor iznad njega (hover efekt) */
+.combo-box:hover {
+    -fx-background-color: #e5e5e5; /* Malo tamnija siva pozadina */
+}
+
+/* Stilizacija strelice ComboBox-a */
+.combo-box .arrow-button {
+    -fx-background-color: #FF9800; /* Još svjetlija zelena */
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+}
+
+/* Stilizacija strelice ComboBox-a kada je kursor iznad nje (hover efekt) */
+.combo-box:hover .arrow-button {
+    -fx-background-color: #F57C00; /* Tamnija nijansa svijetlo zelene */
+}
+.border-pane{
+	-fx-background-color: #E7A84A;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////// */
+/*///////////////////////////////////////////////////////////////////////////////////////////// */
+/*///////////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Stilizacija VBox-a koji sadrži sliku i gumbe */
+.pane {
+    -fx-background-color: #f0f0f0; /* Siva pozadina */
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+}
+
+/* Stilizacija ImageView-a */
+
+
+
+/* Stilizacija gumba (Button) */
+.button {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px;
+    -fx-background-color: #E7A84A; /* Zelena pozadina */
+    -fx-text-fill: white; /* Bijeli tekst */
+}
+
+/* Stilizacija gumba kada je kursor iznad njega (hover efekt) */
+.button:hover {
+    -fx-background-color: #F57C00; /* Tamnija nijansa zelene */
+}
+.button:pressed {
+    -fx-background-color: #F57C00; /* Tamnija nijansa svijetlo zelene */
+}
+.left-bar-background{
+	-fx-background-color: #fff;
+}
+.label{
+	-fx-font-size:13px;
+    -fx-padding: 8px;
+    -fx-text-fill: #A4A4A4;
+    -fx-font-weight: bold;
+}
+.UserImage {
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+}
+.UserName{
+	-fx-font-size:14px;
+    -fx-padding: 4px;
+    -fx-text-fill: #F59A3F;
+    -fx-font-weight: bold;
+}
+.UserData{
+	-fx-font-size:12px;
+    -fx-padding: 2px;
+    -fx-text-fill: #A4A4A4;
+    -fx-font-weight: bold;
+}
+.UserPane{
+	-fx-background-color: #F59A3F;
+}
+
+.label:hover{
+ -fx-text-fill: #F57C00;
+}
+
+/* Stilizacija naslova Alert-a */
+.dialog-pane .alert-header {
+    -fx-background-color: #FF9800; /* Još svjetlija zelena */
+    -fx-text-fill: white;
+    -fx-font-size: 12px; /* Manji font */
+    -fx-font-weight: bold;
+    -fx-padding: 6px; /* Malo manji padding */
+}
+
+/* Stilizacija naslova Alert-a kada je kursor iznad njega (hover efekt) */
+.dialog-pane .alert-header:hover {
+    -fx-background-color: #F59A3F; /* Tamnija nijansa svijetlo zelene */
+}
+
+/* Stilizacija sadržaja Alert-a */
+.dialog-pane .alert-content {
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 10px;
+    -fx-border-width: 0px;
+}
+
+/* Stilizacija gumba Alert-a (Button) */
+.dialog-pane .button {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px;
+    -fx-background-color: #E7A84A; /* Zelena pozadina */
+    -fx-text-fill: white; /* Bijeli tekst */
+}
+
+/* Stilizacija gumba Alert-a kada je kursor iznad njega (hover efekt) */
+.dialog-pane .button:hover {
+    -fx-background-color: #F57C00; /* Tamnija nijansa zelene */
+}
+
+/* Stilizacija gumba Alert-a kada je pritisnut */
+.dialog-pane .button:pressed {
+    -fx-background-color: #F59A3F; /* Tamnija nijansa svijetlo zelene */
+}
+
+
