@@ -14,9 +14,10 @@ import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 
-public class nastavnik_studentUpdateController implements Initializable{
+public class nastavnik_studentUpdateController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
-	
+	private SceneLoader s = new SceneLoader();
+
 	private Predmet predmet;
 
 	@FXML
@@ -28,13 +29,11 @@ public class nastavnik_studentUpdateController implements Initializable{
 	@FXML
 	private Label smjer;
 	@FXML
-	private Label sifPred;
+	private Label ocjena;
 	@FXML
 	private Label nazivPred;
 	@FXML
 	private TextField tf_bodovi;
-	@FXML
-	private TextField tf_ocjena;
 
 	public void setData(Student s) {
 		studID.setText(s.getId());
@@ -42,33 +41,37 @@ public class nastavnik_studentUpdateController implements Initializable{
 		prezime.setText(s.getPrezime());
 		smjer.setText(s.getSifUsmjerenja());
 		tf_bodovi.setText(s.getSlusaPred().getBodovi());
-		tf_ocjena.setText(s.getSlusaPred().getOcjena());
-		sifPred.setText(predmet.getSifraPred());
+		ocjena.setText(s.getSlusaPred().getOcjena().equals("NP") ? "NP" : s.getSlusaPred().getOcjena());
+		System.out.println("sifra: " + predmet.getSifraPred());
 		nazivPred.setText(predmet.getNazivPred());
 	}
-	
+
 	public void update() {
 		try {
-			String query = "update slusaPred set bodovi = ?,ocjena=? "
-					+ "where idStud = ? and sifPred =?;";
+			System.out.println("sifra2: " + predmet.getSifraPred());
+			String query = "update slusaPred set bodovi = ? where idStud = ? and sifPred =?;";
 			mysql.pst = mysql.con.prepareStatement(query);
 			mysql.pst.setString(1, tf_bodovi.getText());
-			mysql.pst.setString(2, tf_ocjena.getText());
-			mysql.pst.setString(3, studID.getText());
-			mysql.pst.setString(4, predmet.getSifraPred());
+			mysql.pst.setString(2, studID.getText());
+			mysql.pst.setString(3, predmet.getSifraPred());
 			mysql.pst.executeUpdate();
-			
 
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	@FXML
+	public void dodaj(ActionEvent e) {
+		update();
+		s.alert("Bodovi promijenjeni");
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 		predmet = DataSingleton.getInstance().getPredmet();
-		
+
 	}
 }

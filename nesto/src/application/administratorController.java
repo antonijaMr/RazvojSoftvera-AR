@@ -2,11 +2,9 @@ package application;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-
-import javafx.scene.layout.HBox;
 
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -19,13 +17,10 @@ import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 
-import javafx.scene.layout.AnchorPane;
-
 import javafx.scene.control.PasswordField;
 
 import javafx.scene.control.ChoiceBox;
 
-import javafx.scene.layout.Pane;
 
 public class administratorController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
@@ -33,16 +28,7 @@ public class administratorController implements Initializable {
 
 	private String[] status = { "Redovan", "Vanredan", "Apsolvent", "Imatrikulant" };
 	private String[] smjer = { "AR", "RI", "EEMS", "ESKE", "TK" };
-	private String[] predmetiZaPrvu = { "FIZ1", "MM1" };
 
-	@FXML
-	private HBox root;
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
-	private Button btn_logout;
 	@FXML
 	private TextField ime_tf;
 	@FXML
@@ -57,27 +43,27 @@ public class administratorController implements Initializable {
 	private ChoiceBox<String> smjerChoice;
 
 	@FXML
-	public void studenti(ActionEvent event) {
+	public void studenti(MouseEvent event) {
 		s.loadAdminStudent(event);
 	}
 
 	@FXML
-	public void nastavnici(ActionEvent event) {
+	public void nastavnici(MouseEvent event) {
 		s.loadAdminNastavnik(event);
 	}
 
 	@FXML
-	public void predmeti(ActionEvent event) {
+	public void predmeti(MouseEvent event) {
 		s.loadAdminPredmet(event);
 	}
 
 	@FXML
-	public void prodekan(ActionEvent event) {
+	public void prodekan(MouseEvent event) {
 		s.loadAdminProdekan(event);
 	}
 
 	@FXML
-	public void logout(ActionEvent event) {
+	public void logout(MouseEvent event) {
 		s.logout(event);
 	}
 
@@ -95,34 +81,9 @@ public class administratorController implements Initializable {
 	public void dodaj(ActionEvent event) {
 		if (!empty()) {
 			dodajUBazu();
-			dodajPredmete();
 			refresh();
 		} else
 			s.alertEror("Ispunite sva polja.");
-	}
-
-	private void dodajPredmete() {
-		try {
-			int id = 0;
-			mysql.pst = mysql.con.prepareStatement("select brojIndeksa from student where email = ?;");
-			mysql.pst.setString(1, email.getText());
-			ResultSet rs = mysql.pst.executeQuery();
-			if (rs.next())
-				id = rs.getInt("brojIndeksa");
-
-			for (String e : predmetiZaPrvu) {
-				mysql.pst = mysql.con.prepareStatement("INSERT INTO slusaPred (idStud, sifPred, godina,obnova) VALUES (?, ?, YEAR(CURDATE()),false);");
-				mysql.pst.setInt(1, id);
-				mysql.pst.setString(2, e);
-
-				int rowsAffected = mysql.pst.executeUpdate();
-				if (rowsAffected != 1)
-					s.alertEror("Doslo je do greske");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private int provjeri() {

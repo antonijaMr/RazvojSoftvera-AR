@@ -21,7 +21,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -29,11 +28,11 @@ import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import models.Nastavnik;
 import models.Predmet;
 import models.Preduslov;
-import models.ZahtjevZaPrenosBodova;
 import models.ZahtjevZaSlusanjePredmeta;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -93,22 +92,22 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 	}
 
 	@FXML
-	public void predmeti(ActionEvent e) {
+	public void predmeti(MouseEvent e) {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) {
+	public void to_zahtjevi(MouseEvent e) {
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) {
+	public void to_predZahtjevi(MouseEvent e) {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) {
+	public void logout(MouseEvent e) {
 		s.logout(e);
 	}
 
@@ -118,8 +117,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		ObservableList<ZahtjevZaSlusanjePredmeta> zahtjevi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id,ime,prezime,email,godStudija,statusStud,sifUsmjerenja,ostvareniECTS,nazivPred,zahtjevZaSlusanje.poruka,predmet.sifPred from student \n"
-							+ "inner join zahtjevZaSlusanje on zahtjevZaSlusanje.idStud = student.student_id\n"
+					"select brojIndeksa,ime,prezime,email,godStudija,statusStud,sifUsmjerenja,ostvareniECTS,nazivPred,poruka,predmet.sifPred from student \n"
+							+ "inner join zahtjevZaSlusanje on zahtjevZaSlusanje.idStud = student.brojIndeksa\n"
 							+ "inner join predmet on predmet.sifPred = zahtjevZaSlusanje.sifPred\n"
 							+ "where sifNast = ? and odobreno is null;");
 			mysql.pst.setString(1, currentNastavnik.getSifNast());
@@ -127,7 +126,7 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 			{
 				while (rs.next()) {
 					ZahtjevZaSlusanjePredmeta z = new ZahtjevZaSlusanjePredmeta();
-					z.getStud().setId(rs.getString("student_id"));
+					z.getStud().setId(rs.getString("brojIndeksa"));
 					z.getStud().setIme(rs.getString("ime"));
 					z.getStud().setPrezime(rs.getString("prezime"));
 					z.getStud().setEmail(rs.getString("email"));
@@ -178,7 +177,6 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-//		 ON ClICKED
 		zahtjeviTable.setRowFactory(tv -> {
 			TableRow<ZahtjevZaSlusanjePredmeta> myRow = new TableRow<>();
 			myRow.setOnMouseClicked(event -> {
@@ -207,7 +205,6 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 
 		if (clickedButton.get() == ButtonType.OK) {
 			odgovoriC.updateData();
-			System.out.println("Updatated");
 			TableZahtjevi();
 		}
 	}

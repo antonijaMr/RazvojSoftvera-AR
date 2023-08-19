@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -35,14 +36,6 @@ public class administrator_dodajNastavnikaController implements Initializable {
 	private String[] smjer = { "AR", "RI", "EEMS", "ESKE", "TK", "Ostalo" };
 
 	@FXML
-	private HBox root;
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
-	private Button btn_logout;
-	@FXML
 	private TextField ime_tf;
 	@FXML
 	private TextField prezime_tf;
@@ -56,27 +49,27 @@ public class administrator_dodajNastavnikaController implements Initializable {
 	private ChoiceBox<String> odsjek;
 
 	@FXML
-	public void studenti(ActionEvent event) {
+	public void studenti(MouseEvent event) {
 		s.loadAdminStudent(event);
 	}
 
 	@FXML
-	public void nastavnici(ActionEvent event) {
+	public void nastavnici(MouseEvent event) {
 		s.loadAdminNastavnik(event);
 	}
 
 	@FXML
-	public void predmeti(ActionEvent event) {
+	public void predmeti(MouseEvent event) {
 		s.loadAdminPredmet(event);
 	}
 
 	@FXML
-	public void prodekan(ActionEvent event) {
+	public void prodekan(MouseEvent event) {
 		s.loadAdminProdekan(event);
 	}
 
 	@FXML
-	public void logout(ActionEvent event) {
+	public void logout(MouseEvent event) {
 		s.logout(event);
 	}
 
@@ -92,22 +85,22 @@ public class administrator_dodajNastavnikaController implements Initializable {
 
 	@FXML
 	public void dodaj(ActionEvent event) {
-		dodajUBazu();
+		if (!empty()) {
+			dodajUBazu();
+		}
 	}
 
 	public int provjeri() {
-		if (!empty()) {
-			try {
-				mysql.pst = mysql.con.prepareStatement("select count(1) from nastavnik where ime = ? and prezime=?;");
-				mysql.pst.setString(1, ime_tf.getText());
-				mysql.pst.setString(2, prezime_tf.getText());
-				ResultSet rs = mysql.pst.executeQuery();
-				if (rs.next()) {
-					return rs.getInt(1);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+		try {
+			mysql.pst = mysql.con.prepareStatement("select count(1) from nastavnik where ime = ? and prezime=?;");
+			mysql.pst.setString(1, ime_tf.getText());
+			mysql.pst.setString(2, prezime_tf.getText());
+			ResultSet rs = mysql.pst.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return 999;
 	}
@@ -138,6 +131,7 @@ public class administrator_dodajNastavnikaController implements Initializable {
 	}
 
 	private boolean empty() {
+		System.out.println(ime_tf.getText() + " " + prezime_tf.getText() + lozinka.getText());
 		return ime_tf.getText().isEmpty() || prezime_tf.getText().isEmpty() || lozinka.getText().isEmpty()
 				|| zvanje.getValue() == null || odsjek.getValue() == null;
 	}

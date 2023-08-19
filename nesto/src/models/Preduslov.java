@@ -9,12 +9,10 @@ public class Preduslov {
 	private StringProperty ocjena;
 	private StringProperty obnova;
 	private Nastavnik nastavnikN;
-	private Nastavnik nastavnikP;
 	
 	public Preduslov() {
 		predmet = new Predmet();
 		nastavnikN = new Nastavnik();
-		nastavnikP = new Nastavnik();
 		ocjena= new SimpleStringProperty(this,"ocjena");
 		obnova= new SimpleStringProperty(this,"obnova");
 	}
@@ -33,14 +31,6 @@ public class Preduslov {
 
 	public void setNastavnikN(Nastavnik nastavnikN) {
 		this.nastavnikN = nastavnikN;
-	}
-
-	public Nastavnik getNastavnikP() {
-		return nastavnikP;
-	}
-
-	public void setNastavnikP(Nastavnik nastavnikP) {
-		this.nastavnikP = nastavnikP;
 	}
 
 	public final StringProperty ocjenaProperty() {

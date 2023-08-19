@@ -12,21 +12,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
-import javafx.scene.layout.AnchorPane;
 
-import javafx.scene.layout.Pane;
 import models.Nastavnik;
 import models.Predmet;
 import models.Preduslov;
@@ -34,41 +32,28 @@ import models.Student;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 public class nastavnik_detaljiController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
 	private Nastavnik currentNastavnik;
 	private Predmet predmet;
-	private SceneLoader s = new SceneLoader();;
+	private SceneLoader s = new SceneLoader();
 
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
 	@FXML
 	private Label nastIme;
 	@FXML
-	private Button btn_predmeti;
-	@FXML
-	private Button btn_zahtjevi;
-	@FXML
-	private Button btn_logout;
+	private Label tekucaGodina;
 	@FXML
 	private Label imePred;
 	@FXML
 	private Label predavac;
 	@FXML
-	private Label predavacEmail;
-	@FXML
 	private Label nosioc;
-	@FXML
-	private Label nosiocEmail;
 	@FXML
 	private Label sifPred;
 	@FXML
 	private Label kratPred;
-	@FXML
-	private Label uzaNaucnaOblast;
 	@FXML
 	private Label p;
 	@FXML
@@ -94,8 +79,6 @@ public class nastavnik_detaljiController implements Initializable {
 	private TableColumn<Preduslov, String> ectsC;
 	@FXML
 	private TableColumn<Preduslov, String> nosiocC;
-	@FXML
-	private TableColumn<Preduslov, String> predavateljC;
 	@FXML
 	private TableColumn<Preduslov, String> semestarC;
 
@@ -125,22 +108,22 @@ public class nastavnik_detaljiController implements Initializable {
 	}
 
 	@FXML
-	public void predmeti(ActionEvent e) {
+	public void predmeti(MouseEvent e) {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) {
+	public void to_zahtjevi(MouseEvent e) {
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) {
+	public void to_predZahtjevi(MouseEvent e) {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) {
+	public void logout(MouseEvent e) {
 		s.logout(e);
 	}
 
@@ -148,12 +131,11 @@ public class nastavnik_detaljiController implements Initializable {
 		ObservableList<Preduslov> preduslovi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select nazivPred, satiPredavanja, satiAV, satiLV, ECTS, nastavnikN.ime AS imeN, nastavnikN.prezime AS prezimeN, nastavnikP.ime AS imeP, nastavnikP.prezime AS prezimeP, semestar from preduslov\n"
-							+ "inner join predmet on predmet.sifPred = preduslov.sifPreduslov\n"
-							+ "left outer join predaje on predaje.sifPred = predmet.sifPred\n"
-							+ "left outer join nastavnik nastavnikN on predaje.sifNastavnikNosioc = nastavnikN.nastavnik_id\n"
-							+ "left outer join nastavnik nastavnikP on predaje.sifNastavnikPredaje = nastavnikP.nastavnik_id\n"
-							+ "where preduslov.sifPred = ?;");
+					"select distinct nazivPred, satiPredavanja, satiAV, satiLV, ECTS, ime, prezime, semestar from preduslov\n"
+							+ "	inner join predmet on predmet.sifPred = preduslov.sifPreduslov\n"
+							+ " left outer join predaje on predaje.sifPred = predmet.sifPred\n"
+							+ " left outer join nastavnik nastavnikN on predaje.sifNastavnik = nastavnikN.sifNast and predaje.nosioc=true\n"
+							+ "	where preduslov.sifPred = ? and predaje.godina = 2023;\n");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
@@ -165,11 +147,8 @@ public class nastavnik_detaljiController implements Initializable {
 					p.getPredmet().setLab_sati(rs.getString("satiLV"));
 					p.getPredmet().setECTS(rs.getString("ECTS"));
 					p.getPredmet().setSemestar(rs.getString("semestar"));
-					p.getNastavnikN().setIme(rs.getString("imeN"));
-					p.getNastavnikN().setPrezime(rs.getString("prezimeN"));
-					p.getNastavnikP().setIme(rs.getString("imeP"));
-					p.getNastavnikP().setPrezime(rs.getString("prezimeP"));
-					System.out.println(p.getNastavnikN().getIme());
+					p.getNastavnikN().setIme(rs.getString("ime"));
+					p.getNastavnikN().setPrezime(rs.getString("prezime"));
 					preduslovi.add(p);
 				}
 
@@ -183,8 +162,11 @@ public class nastavnik_detaljiController implements Initializable {
 			lvC.setCellValueFactory(f -> f.getValue().getPredmet().lab_satiProperty());
 			ectsC.setCellValueFactory(f -> f.getValue().getPredmet().ECTSProperty());
 			semestarC.setCellValueFactory(f -> f.getValue().getPredmet().semestarProperty());
-			nosiocC.setCellValueFactory(f -> f.getValue().getNastavnikN().imeProperty());
-			predavateljC.setCellValueFactory(f -> f.getValue().getNastavnikP().imeProperty());
+			nosiocC.setCellValueFactory(cellData -> {
+				Nastavnik nastavnik = cellData.getValue().getNastavnikN();
+				String fullName = nastavnik.getIme() + " " + nastavnik.getPrezime();
+				return new SimpleStringProperty(fullName);
+			});
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -196,13 +178,14 @@ public class nastavnik_detaljiController implements Initializable {
 		ObservableList<Student> students = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id, ime, prezime,email,godStudija,statusStud,ostvareniECTS,sifUsmjerenja,bodovi,ocjena from student inner join slusaPred on student.student_id = slusaPred.idStud where sifPred = ?;");
+					"select brojIndeksa, ime, prezime,email,godStudija,statusStud,ostvareniECTS,sifUsmjerenja,bodovi,ocjena from student \n"
+							+ "inner join slusaPred on student.brojIndeksa = slusaPred.idStud where sifPred = ? and godina = 2023;");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
 				while (rs.next()) {
 					Student st = new Student();
-					st.setId(rs.getString("student_id"));
+					st.setId(rs.getString("brojIndeksa"));
 					st.setIme(rs.getString("ime"));
 					st.setPrezime(rs.getString("prezime"));
 					st.setEmail(rs.getString("email"));
@@ -211,7 +194,8 @@ public class nastavnik_detaljiController implements Initializable {
 					st.setSifUsmjerenja(rs.getString("sifUsmjerenja"));
 					st.setOstvareniECTS(rs.getString("ostvareniECTS"));
 					st.getSlusaPred().setBodovi(rs.getString("bodovi"));
-					st.getSlusaPred().setOcjena(rs.getString("ocjena"));
+					int ocjena = Integer.parseInt(rs.getString("ocjena"));
+					st.getSlusaPred().setOcjena(ocjena >5? Integer.toString(ocjena):"NP");
 					students.add(st);
 				}
 
@@ -240,11 +224,8 @@ public class nastavnik_detaljiController implements Initializable {
 						item.setOnAction(event -> {
 							int rowIndex = getIndex();
 							Student selectedStudent = getTableView().getItems().get(rowIndex);
-							try {
-								openDialog(selectedStudent);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+							openDialog(selectedStudent);
+							tableStudenti();
 						});
 					}
 				}
@@ -256,22 +237,20 @@ public class nastavnik_detaljiController implements Initializable {
 
 	}
 
-	public void openDialog(Student st) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("nastavnik_studentUpdate.fxml"));
-		DialogPane studentUpdate = loader.load();
-		nastavnik_studentUpdateController updateC = loader.getController();
-		updateC.setData(st);
-		Dialog<ButtonType> dialog = new Dialog<>();
-		dialog.setDialogPane(studentUpdate);
-		dialog.setTitle("Promjena bodova i ocjene");
+	public void openDialog(Student st) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("nastavnik_studentUpdate.fxml"));
+			DialogPane studentUpdate = loader.load();
+			nastavnik_studentUpdateController updateC = loader.getController();
+			updateC.setData(st);
+			Dialog<ButtonType> dialog = new Dialog<>();
+			dialog.setDialogPane(studentUpdate);
+			dialog.setTitle("Promjena bodova i ocjene");
 
-		Optional<ButtonType> clickedButton = dialog.showAndWait();
-
-		if (clickedButton.get() == ButtonType.OK) {
-			updateC.update();
-			tableStudenti();
-			s.alert("Bodovi i ocjena promijenjeni.");
+			dialog.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -279,7 +258,6 @@ public class nastavnik_detaljiController implements Initializable {
 		imePred.setText(predmet.getNazivPred());
 		sifPred.setText(predmet.getSifraPred());
 		kratPred.setText(predmet.getKratPred());
-		uzaNaucnaOblast.setText(predmet.getUzaNaucnaOblast());
 		p.setText("P: " + predmet.getPredavanja_sati());
 		av.setText("AV: " + predmet.getAv_sati());
 		lv.setText("LV: " + predmet.getLab_sati());
@@ -288,27 +266,52 @@ public class nastavnik_detaljiController implements Initializable {
 	}
 
 	public void setProfesors() {
+		setNosioc();
+		setPredavaci();
+	}
+
+	public void setNosioc() {
 		mysql.Connect();
 		try {
-			mysql.pst = mysql.con.prepareStatement(
-					"select nastavnikN.ime, nastavnikN.prezime, nastavnikN.email, nastavnikP.ime,nastavnikP.prezime, nastavnikP.email from predaje\n"
-							+ "inner join nastavnik nastavnikN on nastavnikN.nastavnik_id = predaje.sifNastavnikNosioc \n"
-							+ "inner join nastavnik nastavnikP on nastavnikP.nastavnik_id = predaje.sifNastavnikPredaje\n"
-							+ "where sifPred = ?;");
+			mysql.pst = mysql.con.prepareStatement("select ime, prezime from predaje\n"
+					+ "inner join nastavnik on nastavnik.sifNast = predaje.sifNastavnik \n"
+					+ "where sifPred = ? and nosioc = true and godina = 2023;");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
 			if (rs.next()) {
-				predavac.setText(
-						"Predavac: " + rs.getString("nastavnikP.ime") + " " + rs.getString("nastavnikP.prezime"));
-				predavacEmail.setText("Email: " + rs.getString("nastavnikP.email"));
-				nosioc.setText("Nosioc: " + rs.getString("nastavnikN.ime") + " " + rs.getString("nastavnikN.prezime"));
-				nosiocEmail.setText("Email: " + rs.getString("nastavnikN.email"));
+				nosioc.setText("Nosioc: " + rs.getString("ime") + " " + rs.getString("prezime"));
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void setPredavaci() {
+		predavac.setText("");
+
+		ArrayList<String> predavaci = new ArrayList<>();
+		mysql.Connect();
+		try {
+			mysql.pst = mysql.con.prepareStatement("select ime, prezime from predaje\n"
+					+ "inner join nastavnik on nastavnik.sifNast = predaje.sifNastavnik \n"
+					+ "where sifPred = ? and nosioc = false and godina = 2023;");
+			mysql.pst.setString(1, predmet.getSifraPred());
+			ResultSet rs = mysql.pst.executeQuery();
+			while (rs.next()) {
+				String s = rs.getString("ime") + " " + rs.getString("prezime");
+				predavaci.add(s);
+			}
+
+			String predavaciText = String.join(" ", predavaci);
+			if (!predavaci.isEmpty()) {
+				predavac.setText("Predavaci: " + predavaciText);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setupSearch() {

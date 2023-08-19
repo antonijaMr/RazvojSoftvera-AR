@@ -34,6 +34,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class nastavnik_zahtjeviController implements Initializable {
 	MySQLConnection mysql = new MySQLConnection();
@@ -45,17 +46,6 @@ public class nastavnik_zahtjeviController implements Initializable {
 	private Label nastIme;
 	@FXML
 	private TextField search_tf;
-
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
-	private Button btn_predmeti;
-	@FXML
-	private Button btn_zahtjevi;
-	@FXML
-	private Button btn_logout;
 
 	@FXML
 	private TableView<ZahtjevZaPrenosBodova> zahtjeviTable;
@@ -73,22 +63,22 @@ public class nastavnik_zahtjeviController implements Initializable {
 	private TableColumn<ZahtjevZaPrenosBodova, Button> actionC;
 
 	@FXML
-	public void predmeti(ActionEvent e) {
+	public void predmeti(MouseEvent e) {
 		s.loadPredmeti(e);
 	}
 
 	@FXML
-	public void to_zahtjevi(ActionEvent e) {
+	public void to_zahtjevi(MouseEvent e) {
 		s.loadZahtjevi(e);
 	}
 
 	@FXML
-	public void to_predZahtjevi(ActionEvent e) {
+	public void to_predZahtjevi(MouseEvent e) {
 		s.loadPredZahtjevi(e);
 	}
 
 	@FXML
-	public void logout(ActionEvent e) {
+	public void logout(MouseEvent e) {
 		s.logout(e);
 	}
 	
@@ -111,8 +101,8 @@ public class nastavnik_zahtjeviController implements Initializable {
 		try {
 
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id,student.ime,student.prezime,predmet.nazivPred,brojBodova,predmet.sifPred from zahtjevZaPrenos "
-							+ "inner join student on student.student_id = idStud "
+					"select brojIndeksa,student.ime,student.prezime,predmet.nazivPred,brojBodova,predmet.sifPred from zahtjevZaPrenos "
+							+ "inner join student on student.brojIndeksa= idStud "
 							+ "inner join predmet on predmet.sifPred = zahtjevZaPrenos.sifPred "
 							+ "where odobreno is null and sifNast =? ;");
 			mysql.pst.setString(1, currentNastavnik.getSifNast());
@@ -120,7 +110,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 			{
 				while (rs.next()) {
 					ZahtjevZaPrenosBodova z = new ZahtjevZaPrenosBodova();
-					z.stud.setId(rs.getString("student_id"));
+					z.stud.setId(rs.getString("brojIndeksa"));
 					z.stud.setIme(rs.getString("ime"));
 					z.stud.setPrezime(rs.getString("prezime"));
 					z.pred.setNazivPred(rs.getString("nazivPred"));

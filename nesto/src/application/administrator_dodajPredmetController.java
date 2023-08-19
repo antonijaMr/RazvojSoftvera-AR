@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -35,14 +36,7 @@ public class administrator_dodajPredmetController implements Initializable {
 
 	private String sifPred = new String();
 
-	@FXML
-	private HBox root;
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
-	private Button btn_logout;
+
 	@FXML
 	private TextField sifraPred_tf;
 	@FXML
@@ -67,27 +61,27 @@ public class administrator_dodajPredmetController implements Initializable {
 	private ChoiceBox<String> preduslovChoice;
 
 	@FXML
-	public void studenti(ActionEvent event) {
+	public void studenti(MouseEvent event) {
 		s.loadAdminStudent(event);
 	}
 
 	@FXML
-	public void nastavnici(ActionEvent event) {
+	public void nastavnici(MouseEvent event) {
 		s.loadAdminNastavnik(event);
 	}
 
 	@FXML
-	public void predmeti(ActionEvent event) {
+	public void predmeti(MouseEvent event) {
 		s.loadAdminPredmet(event);
 	}
 
 	@FXML
-	public void prodekan(ActionEvent event) {
+	public void prodekan(MouseEvent event) {
 		s.loadAdminProdekan(event);
 	}
 
 	@FXML
-	public void logout(ActionEvent event) {
+	public void logout(MouseEvent event) {
 		s.logout(event);
 	}
 

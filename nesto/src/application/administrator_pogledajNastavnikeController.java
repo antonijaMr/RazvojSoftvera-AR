@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -33,19 +34,9 @@ public class administrator_pogledajNastavnikeController implements Initializable
 	private SceneLoader s = new SceneLoader();
 
 	@FXML
-	private HBox root;
-	@FXML
-	private AnchorPane side_anchorpane;
-	@FXML
-	private Pane inner_pane;
-	@FXML
-	private Button btn_logout;
-	@FXML
 	private TextField search_tf;
 	@FXML
 	private TableView<Nastavnik> nastavniciT;
-	@FXML
-	private TableColumn<Nastavnik, String> idC;
 	@FXML
 	private TableColumn<Nastavnik, String> imeC;
 	@FXML
@@ -58,27 +49,27 @@ public class administrator_pogledajNastavnikeController implements Initializable
 	private TableColumn<Nastavnik, String> odsjekC;
 
 	@FXML
-	public void studenti(ActionEvent event) {
+	public void studenti(MouseEvent event) {
 		s.loadAdminStudent(event);
 	}
 
 	@FXML
-	public void nastavnici(ActionEvent event) {
+	public void nastavnici(MouseEvent event) {
 		s.loadAdminNastavnik(event);
 	}
 
 	@FXML
-	public void predmeti(ActionEvent event) {
+	public void predmeti(MouseEvent event) {
 		s.loadAdminPredmet(event);
 	}
 
 	@FXML
-	public void prodekan(ActionEvent event) {
+	public void prodekan(MouseEvent event) {
 		s.loadAdminProdekan(event);
 	}
 
 	@FXML
-	public void logout(ActionEvent event) {
+	public void logout(MouseEvent event) {
 		s.logout(event);
 	}
 
@@ -115,8 +106,6 @@ public class administrator_pogledajNastavnikeController implements Initializable
 			}
 
 			nastavniciT.setItems(nast);
-
-			idC.setCellValueFactory(f -> f.getValue().sifNastProperty());
 			imeC.setCellValueFactory(f -> f.getValue().imeProperty());
 			prezimeC.setCellValueFactory(f -> f.getValue().prezimeProperty());
 			emailC.setCellValueFactory(f -> f.getValue().emailProperty());

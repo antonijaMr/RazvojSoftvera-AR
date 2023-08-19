@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="286.0" prefWidth="439.0" stylesheets="@applicationNastavnik.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.nastavnik_studentUpdateController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="36.0" prefWidth="439.0">
+               <children>
+                  <Label fx:id="ime" styleClass="UserName" text="ime" />
+                  <Label fx:id="prezime" styleClass="UserName" text="Prezime" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="439.0">
+               <children>
+                  <Label fx:id="studID" text="id" />
+                  <Label fx:id="smjer" text="smjer" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="56.0" prefWidth="439.0">
+               <children>
+                  <Label styleClass="UserName" text="predmet" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="56.0" prefWidth="439.0">
+               <children>
+                  <Label text="ocjena:" />
+                  <Label fx:id="ocjena" styleClass="UserName" text="NP" />
+                  <Label text="   Bodovi" />
+                  <TextField fx:id="tf_bodovi" prefHeight="24.0" prefWidth="72.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="36.0" prefWidth="439.0" />
+            <HBox alignment="CENTER" prefHeight="56.0" prefWidth="439.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#dodaj" prefHeight="31.0" prefWidth="74.0" text="OK" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
