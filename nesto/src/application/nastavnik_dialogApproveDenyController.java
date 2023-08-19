@@ -25,6 +25,12 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 	@FXML
 	private Label ime;
 	@FXML
+	private Label prezime;
+	@FXML
+	private Label studID;
+	@FXML
+	private Label smjer;
+	@FXML
 	private Label predmet;
 	@FXML
 	private Label bodovi;
@@ -34,29 +40,26 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 
 	@FXML
 	public void ponisti(ActionEvent event) {
-		btnPressed = false;
+		update(false);
+//		btnPressed = false;
 		s.alert("Zahtjev odbijen.");
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
-		btnPressed = true;
+		update(true);
+//		btnPressed = true;
 		s.alert("Zahtjev odobren");
 	}
 
 	public void setData(ZahtjevZaPrenosBodova z) {
 		zahtjev = z;
-		ime.setText(zahtjev.stud.getIme() + " " + zahtjev.stud.getPrezime());
+		ime.setText(zahtjev.stud.getIme());
+		prezime.setText(zahtjev.stud.getPrezime());
+		studID.setText(zahtjev.stud.getId());
+		smjer.setText(zahtjev.stud.getSifUsmjerenja());
 		predmet.setText(zahtjev.pred.getNazivPred());
 		bodovi.setText(zahtjev.getBrojBodova());
-	}
-
-	public void updateData() {
-		if (btnPressed) {
-			update(true);
-		} else {
-			update(false);
-		}
 	}
 
 	public void update(boolean b) {

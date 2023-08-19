@@ -24,11 +24,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
-import javafx.scene.layout.AnchorPane;
-
-import javafx.scene.layout.Pane;
 import models.Nastavnik;
-import models.Student;
 import models.ZahtjevZaPrenosBodova;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -101,7 +97,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 		try {
 
 			mysql.pst = mysql.con.prepareStatement(
-					"select brojIndeksa,student.ime,student.prezime,predmet.nazivPred,brojBodova,predmet.sifPred from zahtjevZaPrenos "
+					"select brojIndeksa,student.ime,student.prezime,predmet.nazivPred,brojBodova,predmet.sifPred, sifUsmjerenja from zahtjevZaPrenos "
 							+ "inner join student on student.brojIndeksa= idStud "
 							+ "inner join predmet on predmet.sifPred = zahtjevZaPrenos.sifPred "
 							+ "where odobreno is null and sifNast =? ;");
@@ -113,6 +109,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 					z.stud.setId(rs.getString("brojIndeksa"));
 					z.stud.setIme(rs.getString("ime"));
 					z.stud.setPrezime(rs.getString("prezime"));
+					z.stud.setSifUsmjerenja(rs.getString("sifUsmjerenja"));
 					z.pred.setNazivPred(rs.getString("nazivPred"));
 					z.pred.setSifraPred(rs.getString("sifPred"));
 					z.setBrojBodova(rs.getString("brojBodova"));
@@ -166,12 +163,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 		dialog.setDialogPane(aproveDenyDialog);
 		dialog.setTitle("Zahtjev za prenos bodova");
 
-		Optional<ButtonType> clickedButton = dialog.showAndWait();
-
-		if (clickedButton.get() == ButtonType.OK) {
-			adC.updateData();
-			TableZahtjevi();
-		}
+		dialog.showAndWait();
 	}
 
 	private void setCurrentNastavnik() {

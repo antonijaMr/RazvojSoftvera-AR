@@ -63,7 +63,7 @@ public class ArnelaController implements Initializable {
 
 		try {
 	
-			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "2481632am*");
 		}
 		catch (SQLException exe) {
 			exe.printStackTrace();

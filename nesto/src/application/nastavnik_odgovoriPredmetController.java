@@ -27,6 +27,12 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 	@FXML
 	private Label ime;
 	@FXML
+	private Label prezime;
+	@FXML
+	private Label studID;
+	@FXML
+	private Label smjer;
+	@FXML
 	private Label predmet;
 	@FXML
 	private Label poruka;
