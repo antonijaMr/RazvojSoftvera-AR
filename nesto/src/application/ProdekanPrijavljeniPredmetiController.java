@@ -28,29 +28,27 @@ import models.Nastavnik;
 import models.Predmet;
 import models.Student_predmet;
 
-public class ProdekanPrijavljeniPredmetiController implements Initializable{
-
-	
+public class ProdekanPrijavljeniPredmetiController implements Initializable {
+	private MySQLConnection mysql = new MySQLConnection();
+	private SceneLoader s = new SceneLoader();
 	@FXML
 	private TableView<Student_predmet> PrijavljeniStudentiTable;
-	
+
 	@FXML
-	private TableColumn<Student_predmet,String> StudentCol;
+	private TableColumn<Student_predmet, String> StudentCol;
 	@FXML
-	private TableColumn<Student_predmet,String> PredmetCol;
-	
-	
-	
+	private TableColumn<Student_predmet, String> PredmetCol;
+
 	private Stage stage;
 	private Scene scene;
 	private Parent root;
-	@FXML 
+	@FXML
 	private Button logout;
-	@FXML 
+	@FXML
 	private Button btn_nastavnici;
-	@FXML 
+	@FXML
 	private Button btn_predmeti;
-	@FXML 
+	@FXML
 	private Button btn_zahtjevi;
 	@FXML
 	private Button btn_noviplan;
@@ -60,157 +58,106 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable{
 	private Button refreshButton;
 	@FXML
 	private Button btn_bitniDatumi;
-	@FXML 
+	@FXML
 	private TextField search_tf;
-	@FXML 
+	@FXML
 	private Button search_btn;
-	
-	
-	String query=null;
-	Connection con=null;
-	PreparedStatement pst=null;
-	ResultSet res=null;
-	Predmet predmet=null;
-	
-	
-	ObservableList<Student_predmet>List=FXCollections.observableArrayList();
-	private ObservableList<Student_predmet> filteredList = FXCollections.observableArrayList();
-	public  void Connect() {
-		
-		try {
-		
-			con=DriverManager.getConnection("jdbc:mysql://localhost/projekat","root","");
-		}
 
-		catch(SQLException exe) {
-			exe.printStackTrace();
-		}
-		
+	String query = null;
+	ResultSet res = null;
+	Predmet predmet = null;
+
+	ObservableList<Student_predmet> List = FXCollections.observableArrayList();
+	private ObservableList<Student_predmet> filteredList = FXCollections.observableArrayList();
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		mysql.Connect();
+		load();
 	}
 
-		
-		
-		@Override
-		public void initialize(URL arg0, ResourceBundle arg1) {	
-			Connect();	  
-			load();
-		}
-	
-		private void refreshTable() {
-			
-			try {
-				List.clear();
-			query="SELECT student.brojIndeksa,predmeti.sifPred,nazivPred,CONCAT(ime,' ',prezime) AS StudIme FROM student INNER JOIN slusaPred ON student.brojIndeksa=slusaPred.brojIndeksa"
+	private void refreshTable() {
+
+		try {
+			List.clear();
+			query = "SELECT student.brojIndeksa,predmeti.sifPred,nazivPred,CONCAT(ime,' ',prezime) AS StudIme FROM student INNER JOIN slusaPred ON student.brojIndeksa=slusaPred.brojIndeksa"
 					+ " INNER JOIN predmeti ON predmeti.sifPred=slusaPred.sifPred ORDER BY prezime DESC";
-						
-			
-				pst=con.prepareStatement(query);
-				res=pst.executeQuery();
-			
-				 while (res.next()) {
-			            List.add(new Student_predmet(
-			                    res.getInt("student.brojIndeksa"),
-			                    res.getString("StudIme"),
-			                    res.getString("sifPred"),
-			                    res.getString("nazivPred")
-			                    ));
-			        }
-					PrijavljeniStudentiTable.setItems(List);
 
-					
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			mysql.pst = mysql.con.prepareStatement(query);
+			res = mysql.pst.executeQuery();
+
+			while (res.next()) {
+				List.add(new Student_predmet(res.getInt("student.brojIndeksa"), res.getString("StudIme"),
+						res.getString("sifPred"), res.getString("nazivPred")));
 			}
-		
-		}
-        @FXML
-		private void handleSearch() {
-		    String searchText = search_tf.getText().toLowerCase();
+			PrijavljeniStudentiTable.setItems(List);
 
-		    filteredList.clear();
-
-		    for (Student_predmet nastavnik : List) {
-		        if (nastavnik.getImePrezimeStud().toLowerCase().contains(searchText)
-		                ||Integer.toString(nastavnik.getStudent_id()).toLowerCase().contains(searchText)
-		                || nastavnik.getSifraPred().toLowerCase().contains(searchText)
-		                || nastavnik.getNazivPred().toLowerCase().contains(searchText)
-		                ) {
-		            filteredList.add(nastavnik);
-		        }
-		    }
-
-		    // Update your TableView with the filtered data
-		    PrijavljeniStudentiTable.setItems(filteredList);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		 void load() {
-			refreshTable();
-			
-			StudentCol.setCellValueFactory(new PropertyValueFactory<>("ImePrezimeStud"));
-			PredmetCol.setCellValueFactory(new PropertyValueFactory<>("NazivPred"));
-		
-			
-		 }
-	
-	
+	}
 
-	 @FXML
-	    private void logout(ActionEvent e) throws IOException {
-	    	root = FXMLLoader.load(getClass().getResource("Arnela.fxml"));
-			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-			scene=new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-	    }
-	 @FXML
-	    private void nastavnici(ActionEvent e) throws IOException {
-	    	root = FXMLLoader.load(getClass().getResource("prodekan_nastavnici.fxml"));
-			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-			scene=new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-	    }
+	@FXML
+	private void handleSearch() {
+		String searchText = search_tf.getText().toLowerCase();
 
-	 
-	 @FXML
-	    private void predmeti(ActionEvent e) throws IOException {
-	    	root = FXMLLoader.load(getClass().getResource("prodekan.fxml"));
-			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-			scene=new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-	    }
-	 @FXML
-	 private void to_zahtjevi(ActionEvent e) throws IOException {
-	    	root = FXMLLoader.load(getClass().getResource("prodekan_zahtjevi.fxml"));
-			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-			scene=new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-	    }
-	 @FXML
-	 private void to_plan_realizacije(ActionEvent e) throws IOException {
-	    	root = FXMLLoader.load(getClass().getResource("prodekan_DodajUnos.fxml"));
-			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-			scene=new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-	    }
-	 @FXML
-	 private void to_prijavljeni_predmeti(ActionEvent e) throws IOException {
-	    	root = FXMLLoader.load(getClass().getResource("ProdekanPrijavljeniPredmeti.fxml"));
-			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-			scene=new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-	    }
-	 @FXML
-	 private void to_bitni_datumi(ActionEvent e) throws IOException {
-	    	root = FXMLLoader.load(getClass().getResource("ProdekanBitniDatumi.fxml"));
-			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-			scene=new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-	    }
+		filteredList.clear();
+
+		for (Student_predmet nastavnik : List) {
+			if (nastavnik.getImePrezimeStud().toLowerCase().contains(searchText)
+					|| Integer.toString(nastavnik.getStudent_id()).toLowerCase().contains(searchText)
+					|| nastavnik.getSifraPred().toLowerCase().contains(searchText)
+					|| nastavnik.getNazivPred().toLowerCase().contains(searchText)) {
+				filteredList.add(nastavnik);
+			}
+		}
+
+		// Update your TableView with the filtered data
+		PrijavljeniStudentiTable.setItems(filteredList);
+	}
+
+	void load() {
+		refreshTable();
+
+		StudentCol.setCellValueFactory(new PropertyValueFactory<>("ImePrezimeStud"));
+		PredmetCol.setCellValueFactory(new PropertyValueFactory<>("NazivPred"));
+
+	}
+
+	@FXML
+	private void logout(ActionEvent e) {
+		s.logout(e);
+	}
+
+	@FXML
+	private void nastavnici(ActionEvent e) {
+		s.loadProdekan_nastavnici(e);
+	}
+
+	@FXML
+	private void predmeti(ActionEvent e) {
+		s.loadProdekan_to_predmeti(e);
+	}
+
+	@FXML
+	private void to_zahtjevi(ActionEvent e) {
+		s.loadProdekan_to_zahtjevi(e);
+	}
+
+	@FXML
+	private void to_plan_realizacije(ActionEvent e) {
+		s.loadProdekan_to_plan_realizacije(e);
+	}
+
+	@FXML
+	private void to_prijavljeni_predmeti(ActionEvent e) {
+		s.loadProdekan_to_prijavljeni_predmeti(e);
+	}
+
+	@FXML
+	private void to_bitni_datumi(ActionEvent e) {
+		s.loadProdekan_to_bitni_datumi(e);
+	}
 }

@@ -117,6 +117,10 @@ public class SceneLoader {
 	public void logout(MouseEvent e) {
 		loadScene("Arnela.fxml", "application.css", e);
 	}
+	
+	public void logout(ActionEvent e) {
+		loadScene("Arnela.fxml", "application.css", e);
+	}
 
 	public void loadNastavnikDetaljiIducaGodina(ActionEvent e) {
 		loadScene("nastavnik_detalji_iducaGodina.fxml", "applicationNastavnik.css", e);
@@ -129,7 +133,56 @@ public class SceneLoader {
 	public void loadNastavnikStudentUpdate(ActionEvent e) {
 		loadScene("nastavnik_studentUpdate.fxml", "applicationNastavnik.css", e);
 	}
-
+	
+	public void loadProdekan_to_bitni_datumi(ActionEvent e) {
+		loadScene("ProdekanBitniDatumi.fxml","applicationP.css",e);
+	}
+	public void loadProdekan_to_prijavljeni_predmeti(ActionEvent e) {
+		loadScene("ProdekanPrijavljeniPredmeti.fxml","applicationP.css",e);
+	}
+	
+	public void loadProdekan_to_plan_realizacije(ActionEvent e) {
+		loadScene("prodekan_DodajUnos.fxml","applicationP.css",e);
+	}
+	public void loadProdekan_to_zahtjevi(ActionEvent e) {
+		loadScene("prodekan_zahtjevi.fxml","applicationP.css",e);
+	}
+	public void loadProdekan_to_predmeti(ActionEvent e) {
+		loadScene("prodekan.fxml","applicationP.css",e);
+	}
+	public void loadProdekan_nastavnici(ActionEvent e) {
+		loadScene("prodekan_nastavnici.fxml","applicationP.css",e);
+	}
+				
+	public void loadProdekan_to_pregled_plana(ActionEvent e) {
+		loadScene("prodekan_PregledPlana.fxml","applicationP.css",e);
+	}	
+	
+	public void loadProdekan_to_bitni_datumi(MouseEvent e) {
+		loadScene("ProdekanBitniDatumi.fxml","applicationP.css",e);
+	}
+	public void loadProdekan_to_prijavljeni_predmeti(MouseEvent e) {
+		loadScene("ProdekanPrijavljeniPredmeti.fxml","applicationP.css",e);
+	}
+	
+	public void loadProdekan_to_plan_realizacije(MouseEvent e) {
+		loadScene("prodekan_DodajUnos.fxml","applicationP.css",e);
+	}
+	public void loadProdekan_to_zahtjevi(MouseEvent e) {
+		loadScene("prodekan_zahtjevi.fxml","applicationP.css",e);
+	}
+	public void loadProdekan_to_predmeti(MouseEvent e) {
+		loadScene("prodekan.fxml","applicationP.css",e);
+	}
+	public void loadProdekan_nastavnici(MouseEvent e) {
+		loadScene("prodekan_nastavnici.fxml","applicationP.css",e);
+	}
+				
+	public void loadProdekan_to_pregled_plana(MouseEvent e) {
+		loadScene("prodekan_PregledPlana.fxml","applicationP.css",e);
+	}	
+	
+	
 	public void alert(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Obavijest");

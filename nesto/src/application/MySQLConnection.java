@@ -3,6 +3,7 @@ package application;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MySQLConnection {
@@ -13,7 +14,7 @@ public class MySQLConnection {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "2481632am*");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

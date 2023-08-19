@@ -17,73 +17,58 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+
 public class preduslovController implements Initializable {
-	String query=null;
-	Connection con=null;
-	PreparedStatement pst=null;
-	ResultSet res=null;
-	
+	private MySQLConnection mysql = new MySQLConnection();
+
+	String query = null;
+	ResultSet res = null;
+
 	@FXML
 	private TextField preduslov_tf;
 	@FXML
 	private Button potvrdi_preduslov;
-	
-	    private Stage stage;
-	    private String sifraPredmet;
 
-	    public void setSifraPredmet(String sifraPred) {
-	    	sifraPredmet=sifraPred;
-	    }
-	    
-	    public void setStage(Stage s) {
-	    	stage=s;
-	    }
-	    public  void Connect() {
-			
-			try {
-			
-				con=DriverManager.getConnection("jdbc:mysql://localhost/projekat","root","");
-			}
+	private Stage stage;
+	private String sifraPredmet;
 
-			catch(SQLException exe) {
-				exe.printStackTrace();
-			}
-			
-		}
+	public void setSifraPredmet(String sifraPred) {
+		sifraPredmet = sifraPred;
+	}
 
-			
-			
-			@Override
-			public void initialize(URL arg0, ResourceBundle arg1) {	
-				Connect();	  
-				
-			}
-	
+	public void setStage(Stage s) {
+		stage = s;
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		mysql.Connect();
+
+	}
+
 	@FXML
-	private void potvrdi(ActionEvent e){
-		
-		  query = "INSERT INTO preduslov (sifPred, sifPreduslov) VALUES ( ?, ?)";
-         
-        
-         try {
-             pst = con.prepareStatement(query);
-        	 pst.setString(1, sifraPredmet);
-			pst.setString(2, preduslov_tf.getText());
-            int rowsAffected = pst.executeUpdate();
+	private void potvrdi(ActionEvent e) {
 
-            if (rowsAffected > 0) {
-                System.out.println("Row inserted successfully.");
-            } else {
-                System.out.println("Failed to insert row.");
-            }
+		query = "INSERT INTO preduslov (sifPred, sifPreduslov) VALUES ( ?, ?)";
+
+		try {
+			mysql.pst = mysql.con.prepareStatement(query);
+			mysql.pst.setString(1, sifraPredmet);
+			mysql.pst.setString(2, preduslov_tf.getText());
+			int rowsAffected = mysql.pst.executeUpdate();
+
+			if (rowsAffected > 0) {
+				System.out.println("Row inserted successfully.");
+			} else {
+				System.out.println("Failed to insert row.");
+			}
 
 		} catch (SQLException e1) {
-			
+
 			e1.printStackTrace();
 		}
-         stage.close();
-       
+		stage.close();
+
 	}
-         
 
 }

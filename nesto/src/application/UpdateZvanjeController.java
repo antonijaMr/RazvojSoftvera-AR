@@ -19,6 +19,8 @@ import javafx.scene.control.Button;
 import models.Predmet;
 
 public class UpdateZvanjeController implements Initializable{
+	private MySQLConnection mysql = new MySQLConnection();
+
     @FXML 
     private TextField sadasnje_zvanje;
     @FXML ChoiceBox<String> zvanja;
@@ -27,39 +29,25 @@ public class UpdateZvanjeController implements Initializable{
     
     private String nastavnik_email; 
 	String query=null;
-	Connection con=null;
-	PreparedStatement pst=null;
 	ResultSet res=null;
 	Predmet predmet=null;
 	
     public void setNastavnikIdentifier(String identifier) throws SQLException {
         nastavnik_email = identifier;
        query="SELECT zvanje FROM nastavnik WHERE email=?";
-       pst=con.prepareStatement(query);
-       pst.setString(1, nastavnik_email);
-       res=pst.executeQuery();
+       mysql.pst=mysql.con.prepareStatement(query);
+       mysql.pst.setString(1, nastavnik_email);
+       res=mysql.pst.executeQuery();
        if(res.next())
         sadasnje_zvanje.setText(res.getString("zvanje"));
     }
-	public  void Connect() {
-		
-		try {
-		
-			con=DriverManager.getConnection("jdbc:mysql://localhost/projekat","root","");
-		}
-
-		catch(SQLException exe) {
-			exe.printStackTrace();
-		}
-		
-	}
 
 	private String[] zv= {"vanredni profesor","redovni profesor","docent"};
 		
 		@Override
 		public void initialize(URL arg0, ResourceBundle arg1) {	
 			zvanja.getItems().addAll(zv);
-			Connect();	  
+		mysql.Connect();
 		
 		}
 
@@ -95,13 +83,13 @@ public class UpdateZvanjeController implements Initializable{
         try {
      
              query = "UPDATE nastavnik SET zvanje = ? WHERE email = ?"; // Assuming email is the identifier
-            PreparedStatement preparedStatement = con.prepareStatement(query);
+            PreparedStatement preparedStatement = mysql.con.prepareStatement(query);
             preparedStatement.setString(1, newZvanje);
             preparedStatement.setString(2, identifier);
 
             int rowsAffected = preparedStatement.executeUpdate();
 
-            con.close();
+            mysql.con.close();
 
             return rowsAffected > 0;
         } catch (SQLException e) {

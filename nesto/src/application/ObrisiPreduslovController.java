@@ -21,104 +21,85 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
-public class ObrisiPreduslovController implements Initializable{
-	@FXML ChoiceBox<String> ChoiceBox;
-	private ObservableList<String> prerequisitesList = FXCollections.observableArrayList();
-   
-    
-    String sifraPr;
-    Stage stage;
-    public void setSifraPr(String p) {
-    	sifraPr=p;
-    	loadPreduslovi();
-    }
-    
-    public void setStage(Stage s) {
-    	stage=s;
-    }
-    
-    Connection con;
-    
-public  void Connect() {
-		
-		try {
-		
-			con=DriverManager.getConnection("jdbc:mysql://localhost/projekat","root","");
-		}
+public class ObrisiPreduslovController implements Initializable {
+	private MySQLConnection mysql = new MySQLConnection();
 
-		catch(SQLException exe) {
-			exe.printStackTrace();
-		}
-}
-    
-    
+	@FXML
+	ChoiceBox<String> ChoiceBox;
+	private ObservableList<String> prerequisitesList = FXCollections.observableArrayList();
+
+	String sifraPr;
+	Stage stage;
+
+	public void setSifraPr(String p) {
+		sifraPr = p;
+		loadPreduslovi();
+	}
+
+	public void setStage(Stage s) {
+		stage = s;
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-	Connect();
-		
+		mysql.Connect();
+
 	}
-    
-	
+
 	private void loadPreduslovi() {
-		
-		
+
 		System.out.println(sifraPr);
 		try {
-		String query = "SELECT sifPreduslov FROM preduslov WHERE sifPred = ?";
-        PreparedStatement preparedStatement = con.prepareStatement(query);
-        preparedStatement.setString(1,sifraPr);
+			String query = "SELECT sifPreduslov FROM preduslov WHERE sifPred = ?";
+			PreparedStatement preparedStatement = mysql.con.prepareStatement(query);
+			preparedStatement.setString(1, sifraPr);
 
-        ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = preparedStatement.executeQuery();
 
-        
-        while (resultSet.next()) {
-            String sifraPreduslov = resultSet.getString("sifPreduslov");
-            prerequisitesList.add(sifraPreduslov);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
+			while (resultSet.next()) {
+				String sifraPreduslov = resultSet.getString("sifPreduslov");
+				prerequisitesList.add(sifraPreduslov);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-   ChoiceBox.getItems().addAll(prerequisitesList);
+		ChoiceBox.getItems().addAll(prerequisitesList);
 
-   
-
-    
-		
 	}
 
-@FXML
-	 private void deletePrerequisite() {
-	        String selectedPrerequisite = ChoiceBox.getValue();
+	@FXML
+	private void deletePrerequisite() {
+		String selectedPrerequisite = ChoiceBox.getValue();
 
-	        try {
-	            
-	            String query = "DELETE FROM preduslov WHERE sifPred = ? AND sifPreduslov = ?";
-	            PreparedStatement preparedStatement = con.prepareStatement(query);
-	            preparedStatement.setString(1, sifraPr);
-	            preparedStatement.setString(2, selectedPrerequisite);
+		try {
 
-	            int rowsAffected = preparedStatement.executeUpdate();
+			String query = "DELETE FROM preduslov WHERE sifPred = ? AND sifPreduslov = ?";
+			PreparedStatement preparedStatement = mysql.con.prepareStatement(query);
+			preparedStatement.setString(1, sifraPr);
+			preparedStatement.setString(2, selectedPrerequisite);
 
-	            if (rowsAffected > 0) {
-	                showAlert("Prerequisite deleted successfully.");
-	            } else {
-	                showAlert("Failed to delete prerequisite.");
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        stage.close();
-	        
-	    }
-    
-private void showAlert(String message) {
-    Alert alert = new Alert(AlertType.INFORMATION);
-    alert.setTitle("Information");
-    alert.setHeaderText(null);
-    alert.setContentText(message);
-    alert.showAndWait();
-}
+			int rowsAffected = preparedStatement.executeUpdate();
+
+			if (rowsAffected > 0) {
+				showAlert("Prerequisite deleted successfully.");
+			} else {
+				showAlert("Failed to delete prerequisite.");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		stage.close();
+
+	}
+
+	private void showAlert(String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
 
 }
