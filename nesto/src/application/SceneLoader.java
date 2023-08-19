@@ -125,6 +125,10 @@ public class SceneLoader {
 	public void loadNastavnikIducaGodina(ActionEvent e) {
 		loadScene("nastavnik_iducaGodina.fxml", "applicationNastavnik.css", e);
 	}
+	
+	public void loadNastavnikStudentUpdate(ActionEvent e) {
+		loadScene("nastavnik_studentUpdate.fxml", "applicationNastavnik.css", e);
+	}
 
 	public void alert(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);

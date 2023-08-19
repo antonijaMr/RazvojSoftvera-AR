@@ -61,14 +61,13 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 
 	public void update(boolean b) {
 		try {
-			String query = "UPDATE zahtjevZaPrenos SET odobreno=?, poruka=? WHERE idStud=? AND sifNast=? AND sifPred=?";
+			String query = "UPDATE zahtjevZaPrenos SET odobreno=? WHERE idStud=? AND sifNast=? AND sifPred=?";
 			mysql.pst = mysql.con.prepareStatement(query);
 
 			mysql.pst.setBoolean(1, b);
-			mysql.pst.setString(2, tf_poruka.getText());
-			mysql.pst.setString(3, zahtjev.stud.getId());
-			mysql.pst.setString(4, nastavnik.getSifNast());
-			mysql.pst.setString(5, zahtjev.pred.getSifraPred());
+			mysql.pst.setString(2, zahtjev.stud.getId());
+			mysql.pst.setString(3, nastavnik.getSifNast());
+			mysql.pst.setString(4, zahtjev.pred.getSifraPred());
 
 			mysql.pst.executeUpdate();
 

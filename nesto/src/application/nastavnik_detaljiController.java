@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -131,7 +131,7 @@ public class nastavnik_detaljiController implements Initializable {
 		ObservableList<Preduslov> preduslovi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select nazivPred, satiPredavanja, satiAV, satiLV, ECTS, ime, prezime, semestar from preduslov\n"
+					"select distinct nazivPred, satiPredavanja, satiAV, satiLV, ECTS, ime, prezime, semestar from preduslov\n"
 							+ "	inner join predmet on predmet.sifPred = preduslov.sifPreduslov\n"
 							+ " left outer join predaje on predaje.sifPred = predmet.sifPred\n"
 							+ " left outer join nastavnik nastavnikN on predaje.sifNastavnik = nastavnikN.sifNast and predaje.nosioc=true\n"
@@ -163,9 +163,9 @@ public class nastavnik_detaljiController implements Initializable {
 			ectsC.setCellValueFactory(f -> f.getValue().getPredmet().ECTSProperty());
 			semestarC.setCellValueFactory(f -> f.getValue().getPredmet().semestarProperty());
 			nosiocC.setCellValueFactory(cellData -> {
-			    Nastavnik nastavnik = cellData.getValue().getNastavnikN();
-			    String fullName = nastavnik.getIme() + " " + nastavnik.getPrezime();
-			    return new SimpleStringProperty(fullName);
+				Nastavnik nastavnik = cellData.getValue().getNastavnikN();
+				String fullName = nastavnik.getIme() + " " + nastavnik.getPrezime();
+				return new SimpleStringProperty(fullName);
 			});
 
 		} catch (SQLException e) {
@@ -194,7 +194,8 @@ public class nastavnik_detaljiController implements Initializable {
 					st.setSifUsmjerenja(rs.getString("sifUsmjerenja"));
 					st.setOstvareniECTS(rs.getString("ostvareniECTS"));
 					st.getSlusaPred().setBodovi(rs.getString("bodovi"));
-					st.getSlusaPred().setOcjena(rs.getString("ocjena"));
+					int ocjena = Integer.parseInt(rs.getString("ocjena"));
+					st.getSlusaPred().setOcjena(ocjena >5? Integer.toString(ocjena):"NP");
 					students.add(st);
 				}
 
@@ -223,11 +224,8 @@ public class nastavnik_detaljiController implements Initializable {
 						item.setOnAction(event -> {
 							int rowIndex = getIndex();
 							Student selectedStudent = getTableView().getItems().get(rowIndex);
-							try {
-								openDialog(selectedStudent);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+							openDialog(selectedStudent);
+							tableStudenti();
 						});
 					}
 				}
@@ -239,22 +237,20 @@ public class nastavnik_detaljiController implements Initializable {
 
 	}
 
-	public void openDialog(Student st) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("nastavnik_studentUpdate.fxml"));
-		DialogPane studentUpdate = loader.load();
-		nastavnik_studentUpdateController updateC = loader.getController();
-		updateC.setData(st);
-		Dialog<ButtonType> dialog = new Dialog<>();
-		dialog.setDialogPane(studentUpdate);
-		dialog.setTitle("Promjena bodova i ocjene");
+	public void openDialog(Student st) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("nastavnik_studentUpdate.fxml"));
+			DialogPane studentUpdate = loader.load();
+			nastavnik_studentUpdateController updateC = loader.getController();
+			updateC.setData(st);
+			Dialog<ButtonType> dialog = new Dialog<>();
+			dialog.setDialogPane(studentUpdate);
+			dialog.setTitle("Promjena bodova i ocjene");
 
-		Optional<ButtonType> clickedButton = dialog.showAndWait();
-
-		if (clickedButton.get() == ButtonType.OK) {
-			updateC.update();
-			tableStudenti();
-			s.alert("Bodovi i ocjena promijenjeni.");
+			dialog.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -294,21 +290,28 @@ public class nastavnik_detaljiController implements Initializable {
 
 	public void setPredavaci() {
 		predavac.setText("");
+
+		ArrayList<String> predavaci = new ArrayList<>();
 		mysql.Connect();
 		try {
-			mysql.pst = mysql.con.prepareStatement("select ime, prezime, email from predaje\n"
+			mysql.pst = mysql.con.prepareStatement("select ime, prezime from predaje\n"
 					+ "inner join nastavnik on nastavnik.sifNast = predaje.sifNastavnik \n"
 					+ "where sifPred = ? and nosioc = false and godina = 2023;");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
-			if (rs.next()) {
-				predavac.setText("Predavaci: " + rs.getString("ime") + " " + rs.getString("prezime"));
+			while (rs.next()) {
+				String s = rs.getString("ime") + " " + rs.getString("prezime");
+				predavaci.add(s);
+			}
+
+			String predavaciText = String.join(" ", predavaci);
+			if (!predavaci.isEmpty()) {
+				predavac.setText("Predavaci: " + predavaciText);
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void setupSearch() {

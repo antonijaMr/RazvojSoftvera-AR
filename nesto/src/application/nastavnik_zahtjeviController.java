@@ -47,6 +47,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 	@FXML
 	private TextField search_tf;
 
+	@FXML
 	private TableView<ZahtjevZaPrenosBodova> zahtjeviTable;
 	@FXML
 	private TableColumn<ZahtjevZaPrenosBodova, String> indexC;
@@ -100,8 +101,8 @@ public class nastavnik_zahtjeviController implements Initializable {
 		try {
 
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id,student.ime,student.prezime,predmet.nazivPred,brojBodova,predmet.sifPred from zahtjevZaPrenos "
-							+ "inner join student on student.student_id = idStud "
+					"select brojIndeksa,student.ime,student.prezime,predmet.nazivPred,brojBodova,predmet.sifPred from zahtjevZaPrenos "
+							+ "inner join student on student.brojIndeksa= idStud "
 							+ "inner join predmet on predmet.sifPred = zahtjevZaPrenos.sifPred "
 							+ "where odobreno is null and sifNast =? ;");
 			mysql.pst.setString(1, currentNastavnik.getSifNast());
@@ -109,7 +110,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 			{
 				while (rs.next()) {
 					ZahtjevZaPrenosBodova z = new ZahtjevZaPrenosBodova();
-					z.stud.setId(rs.getString("student_id"));
+					z.stud.setId(rs.getString("brojIndeksa"));
 					z.stud.setIme(rs.getString("ime"));
 					z.stud.setPrezime(rs.getString("prezime"));
 					z.pred.setNazivPred(rs.getString("nazivPred"));

@@ -77,7 +77,7 @@ public class administrator_prodekanController implements Initializable {
 
 	private void updateOld() {
 		try {
-			String query = "update nastavnik set prodekan = false where sifNast = ?;";
+			String query = "update nastavnik set prodekan = 0 where sifNast = ?;";
 
 			mysql.pst = mysql.con.prepareStatement(query);
 			mysql.pst.setInt(1, trenutniID);
@@ -93,7 +93,7 @@ public class administrator_prodekanController implements Initializable {
 
 	private void addNew() {
 		try {
-			String query = "update nastavnik set prodekan = true where sifNast = ?;";
+			String query = "update nastavnik set prodekan = 1 where sifNast = ?;";
 
 			mysql.pst = mysql.con.prepareStatement(query);
 			mysql.pst.setInt(1, Integer.parseInt(prodekanChoice.getValue().getSifNast()));
@@ -119,7 +119,7 @@ public class administrator_prodekanController implements Initializable {
 
 		ArrayList<Nastavnik> nlist = new ArrayList<>();
 		try {
-			mysql.pst = mysql.con.prepareStatement("Select * from nastavnik where prodekan = false;");
+			mysql.pst = mysql.con.prepareStatement("Select * from nastavnik where prodekan = 0;");
 			ResultSet rs = mysql.pst.executeQuery();
 			while (rs.next()) {
 				Nastavnik n = new Nastavnik();
@@ -141,10 +141,11 @@ public class administrator_prodekanController implements Initializable {
 	private void setTrenutni() {
 		try {
 			mysql.pst = mysql.con
-					.prepareStatement("Select ime, prezime, sifNast from nastavnik where prodekan = true;");
+					.prepareStatement("Select ime, prezime, sifNast from nastavnik where prodekan = 1;");
 			ResultSet rs = mysql.pst.executeQuery();
 			if (rs.next()) {
 				trenutni.setText(rs.getString("ime") + " " + rs.getString("prezime"));
+				trenutniID = rs.getInt("sifNast");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

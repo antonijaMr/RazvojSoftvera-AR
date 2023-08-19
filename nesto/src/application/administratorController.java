@@ -28,7 +28,6 @@ public class administratorController implements Initializable {
 
 	private String[] status = { "Redovan", "Vanredan", "Apsolvent", "Imatrikulant" };
 	private String[] smjer = { "AR", "RI", "EEMS", "ESKE", "TK" };
-	private String[] predmetiZaPrvu = { "FIZ1", "MM1" };
 
 	@FXML
 	private TextField ime_tf;
@@ -82,34 +81,9 @@ public class administratorController implements Initializable {
 	public void dodaj(ActionEvent event) {
 		if (!empty()) {
 			dodajUBazu();
-			dodajPredmete();
 			refresh();
 		} else
 			s.alertEror("Ispunite sva polja.");
-	}
-
-	private void dodajPredmete() {
-		try {
-			int id = 0;
-			mysql.pst = mysql.con.prepareStatement("select brojIndeksa from student where email = ?;");
-			mysql.pst.setString(1, email.getText());
-			ResultSet rs = mysql.pst.executeQuery();
-			if (rs.next())
-				id = rs.getInt("brojIndeksa");
-
-			for (String e : predmetiZaPrvu) {
-				mysql.pst = mysql.con.prepareStatement("INSERT INTO slusaPred (idStud, sifPred, godina,obnova) VALUES (?, ?, YEAR(CURDATE()),false);");
-				mysql.pst.setInt(1, id);
-				mysql.pst.setString(2, e);
-
-				int rowsAffected = mysql.pst.executeUpdate();
-				if (rowsAffected != 1)
-					s.alertEror("Doslo je do greske");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private int provjeri() {

@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -60,37 +61,37 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 	@FXML
 	private Label ects;
 	@FXML
-	private TableView<Preduslov>preduslovT;
+	private TableView<Preduslov> preduslovT;
 	@FXML
-	private TableColumn<Preduslov,String> imePredmetaC;
+	private TableColumn<Preduslov, String> imePredmetaC;
 	@FXML
-	private TableColumn<Preduslov,String> pC;
+	private TableColumn<Preduslov, String> pC;
 	@FXML
-	private TableColumn<Preduslov,String> avC;
+	private TableColumn<Preduslov, String> avC;
 	@FXML
-	private TableColumn<Preduslov,String> lvC;
+	private TableColumn<Preduslov, String> lvC;
 	@FXML
-	private TableColumn<Preduslov,String> ectsC;
+	private TableColumn<Preduslov, String> ectsC;
 	@FXML
-	private TableColumn<Preduslov,String> nosiocC;
+	private TableColumn<Preduslov, String> nosiocC;
 	@FXML
-	private TableColumn<Preduslov,String> semestarC;
+	private TableColumn<Preduslov, String> semestarC;
 	@FXML
 	private TextField search_tf;
 	@FXML
 	private TableView<Student> studentiT;
 	@FXML
-	private TableColumn<Student,String> imeSC;
+	private TableColumn<Student, String> imeSC;
 	@FXML
-	private TableColumn<Student,String> prezimeSC;
+	private TableColumn<Student, String> prezimeSC;
 	@FXML
-	private TableColumn<Student,String> godinaC;
+	private TableColumn<Student, String> godinaC;
 	@FXML
-	private TableColumn<Student,String> statusC;
+	private TableColumn<Student, String> statusC;
 	@FXML
-	private TableColumn<Student,String> obnovaC;
+	private TableColumn<Student, String> obnovaC;
 	@FXML
-	private TableColumn<Student,String> smjerC; 
+	private TableColumn<Student, String> smjerC;
 
 	public void setCurrentNastavnik() {
 		currentNastavnik = DataSingleton.getInstance().getNastavnik();
@@ -122,7 +123,7 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 		ObservableList<Preduslov> preduslovi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select nazivPred, satiPredavanja, satiAV, satiLV, ECTS, ime, prezime, semestar from preduslov\n"
+					"select distinct nazivPred, satiPredavanja, satiAV, satiLV, ECTS, ime, prezime, semestar from preduslov\n"
 							+ "	inner join predmet on predmet.sifPred = preduslov.sifPreduslov\n"
 							+ " left outer join predaje on predaje.sifPred = predmet.sifPred\n"
 							+ " left outer join nastavnik nastavnikN on predaje.sifNastavnik = nastavnikN.sifNast and predaje.nosioc=true\n"
@@ -154,9 +155,9 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 			ectsC.setCellValueFactory(f -> f.getValue().getPredmet().ECTSProperty());
 			semestarC.setCellValueFactory(f -> f.getValue().getPredmet().semestarProperty());
 			nosiocC.setCellValueFactory(cellData -> {
-			    Nastavnik nastavnik = cellData.getValue().getNastavnikN();
-			    String fullName = nastavnik.getIme() + " " + nastavnik.getPrezime();
-			    return new SimpleStringProperty(fullName);
+				Nastavnik nastavnik = cellData.getValue().getNastavnikN();
+				String fullName = nastavnik.getIme() + " " + nastavnik.getPrezime();
+				return new SimpleStringProperty(fullName);
 			});
 
 		} catch (SQLException e) {
@@ -238,24 +239,29 @@ public class nastavnik_detalji_iducaGodinaController implements Initializable {
 	}
 
 	public void setPredavaci() {
-//		predavac.setText("");
-//		predavacEmail.setText("");
-//		mysql.Connect();
-//		try {
-//			mysql.pst = mysql.con.prepareStatement("select ime, prezime, email from predaje\n"
-//					+ "inner join nastavnik on nastavnik.sifNast = predaje.sifNastavnik \n"
-//					+ "where sifPred = ? and nosioc = false and godina = 2023;");
-//			mysql.pst.setString(1, predmet.getSifraPred());
-//			ResultSet rs = mysql.pst.executeQuery();
-//			if (rs.next()) {
-//				predavac.setText("Predavaci: " + rs.getString("ime") + " " + rs.getString("prezime"));
-//				predavacEmail.setText("Email: " + rs.getString("email"));
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
+		predavac.setText("");
 
+		ArrayList<String> predavaci = new ArrayList<>();
+		mysql.Connect();
+		try {
+			mysql.pst = mysql.con.prepareStatement("select ime, prezime from predaje\n"
+					+ "inner join nastavnik on nastavnik.sifNast = predaje.sifNastavnik \n"
+					+ "where sifPred = ? and nosioc = false and godina = 2024;");
+			mysql.pst.setString(1, predmet.getSifraPred());
+			ResultSet rs = mysql.pst.executeQuery();
+			while (rs.next()) {
+				String s = rs.getString("ime") + " " + rs.getString("prezime");
+				predavaci.add(s);
+			}
+
+			String predavaciText = String.join(" ", predavaci);
+			if (!predavaci.isEmpty()) {
+				predavac.setText("Predavaci: " + predavaciText);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setupSearch() {

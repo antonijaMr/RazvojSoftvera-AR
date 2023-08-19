@@ -117,8 +117,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		ObservableList<ZahtjevZaSlusanjePredmeta> zahtjevi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select student_id,ime,prezime,email,godStudija,statusStud,sifUsmjerenja,ostvareniECTS,nazivPred,zahtjevZaSlusanje.poruka,predmet.sifPred from student \n"
-							+ "inner join zahtjevZaSlusanje on zahtjevZaSlusanje.idStud = student.student_id\n"
+					"select brojIndeksa,ime,prezime,email,godStudija,statusStud,sifUsmjerenja,ostvareniECTS,nazivPred,poruka,predmet.sifPred from student \n"
+							+ "inner join zahtjevZaSlusanje on zahtjevZaSlusanje.idStud = student.brojIndeksa\n"
 							+ "inner join predmet on predmet.sifPred = zahtjevZaSlusanje.sifPred\n"
 							+ "where sifNast = ? and odobreno is null;");
 			mysql.pst.setString(1, currentNastavnik.getSifNast());
@@ -126,7 +126,7 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 			{
 				while (rs.next()) {
 					ZahtjevZaSlusanjePredmeta z = new ZahtjevZaSlusanjePredmeta();
-					z.getStud().setId(rs.getString("student_id"));
+					z.getStud().setId(rs.getString("brojIndeksa"));
 					z.getStud().setIme(rs.getString("ime"));
 					z.getStud().setPrezime(rs.getString("prezime"));
 					z.getStud().setEmail(rs.getString("email"));
@@ -205,7 +205,6 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 
 		if (clickedButton.get() == ButtonType.OK) {
 			odgovoriC.updateData();
-			System.out.println("Updatated");
 			TableZahtjevi();
 		}
 	}

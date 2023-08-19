@@ -35,7 +35,6 @@ public class administrator_dodajNastavnikaController implements Initializable {
 	private String[] zvanja = { "vanredni profesor", "redovni profesor", "docent" };
 	private String[] smjer = { "AR", "RI", "EEMS", "ESKE", "TK", "Ostalo" };
 
-	
 	@FXML
 	private TextField ime_tf;
 	@FXML
@@ -86,22 +85,22 @@ public class administrator_dodajNastavnikaController implements Initializable {
 
 	@FXML
 	public void dodaj(ActionEvent event) {
-		dodajUBazu();
+		if (!empty()) {
+			dodajUBazu();
+		}
 	}
 
 	public int provjeri() {
-		if (!empty()) {
-			try {
-				mysql.pst = mysql.con.prepareStatement("select count(1) from nastavnik where ime = ? and prezime=?;");
-				mysql.pst.setString(1, ime_tf.getText());
-				mysql.pst.setString(2, prezime_tf.getText());
-				ResultSet rs = mysql.pst.executeQuery();
-				if (rs.next()) {
-					return rs.getInt(1);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+		try {
+			mysql.pst = mysql.con.prepareStatement("select count(1) from nastavnik where ime = ? and prezime=?;");
+			mysql.pst.setString(1, ime_tf.getText());
+			mysql.pst.setString(2, prezime_tf.getText());
+			ResultSet rs = mysql.pst.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return 999;
 	}
@@ -132,6 +131,7 @@ public class administrator_dodajNastavnikaController implements Initializable {
 	}
 
 	private boolean empty() {
+		System.out.println(ime_tf.getText() + " " + prezime_tf.getText() + lozinka.getText());
 		return ime_tf.getText().isEmpty() || prezime_tf.getText().isEmpty() || lozinka.getText().isEmpty()
 				|| zvanje.getValue() == null || odsjek.getValue() == null;
 	}
