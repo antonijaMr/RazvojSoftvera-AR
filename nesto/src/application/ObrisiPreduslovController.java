@@ -64,7 +64,7 @@ public  void Connect() {
 		
 		System.out.println(sifraPr);
 		try {
-		String query = "SELECT sifraPreduslov FROM preduslov WHERE sifraPred = ?";
+		String query = "SELECT sifPreduslov FROM preduslov WHERE sifPred = ?";
         PreparedStatement preparedStatement = con.prepareStatement(query);
         preparedStatement.setString(1,sifraPr);
 
@@ -72,7 +72,7 @@ public  void Connect() {
 
         
         while (resultSet.next()) {
-            String sifraPreduslov = resultSet.getString("sifraPreduslov");
+            String sifraPreduslov = resultSet.getString("sifPreduslov");
             prerequisitesList.add(sifraPreduslov);
         }
     } catch (SQLException e) {
@@ -93,7 +93,7 @@ public  void Connect() {
 
 	        try {
 	            
-	            String query = "DELETE FROM preduslov WHERE sifraPred = ? AND sifraPreduslov = ?";
+	            String query = "DELETE FROM preduslov WHERE sifPred = ? AND sifPreduslov = ?";
 	            PreparedStatement preparedStatement = con.prepareStatement(query);
 	            preparedStatement.setString(1, sifraPr);
 	            preparedStatement.setString(2, selectedPrerequisite);

@@ -66,6 +66,8 @@ public class Prodekan_nastavnici_Controller implements Initializable{
 	@FXML
 	private Button btn_noviplan;
 	@FXML
+	private Button btn_bitniDatumi;
+	@FXML
 	private Button refreshButton;
 	@FXML
 	private Button btn_prijavljeniPredmeti;
@@ -113,14 +115,14 @@ public class Prodekan_nastavnici_Controller implements Initializable{
 				res=pst.executeQuery();
 			
 				 while (res.next()) {
-			            List.add(new Nastavnik(
-			            		res.getString("sifNast"),
-			                    res.getString("ime"),
-			                    res.getString("prezime"),
-			                    res.getString("email"),
-			                    res.getString("zvanje"),
-			                    res.getString("odsjek"),
-			                    res.getString("prodekan")));
+						Nastavnik n = new Nastavnik();
+						n.setSifNast(res.getString("sifNast"));
+						n.setPrezime(res.getString("prezime"));
+						n.setIme(res.getString("ime"));
+						n.setEmail(res.getString("email"));
+						n.setZvanje(res.getString("zvanje"));
+						n.setOdsjek(res.getString("odsjek"));
+						List.add(n);
 			        }
 					nastavnik_table.setItems(List);
 					//handleSearch();
@@ -283,5 +285,12 @@ public class Prodekan_nastavnici_Controller implements Initializable{
 			stage.setScene(scene);
 			stage.show();
 	    }
-
+	 @FXML
+	 private void to_bitni_datumi(ActionEvent e) throws IOException {
+	    	root = FXMLLoader.load(getClass().getResource("ProdekanBitniDatumi.fxml"));
+			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+	    }
 }

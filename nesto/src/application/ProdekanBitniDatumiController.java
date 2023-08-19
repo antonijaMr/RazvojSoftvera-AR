@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -19,28 +20,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.Nastavnik;
 import models.Predmet;
-import models.Student_predmet;
 
-public class ProdekanPrijavljeniPredmetiController implements Initializable{
+public class ProdekanBitniDatumiController implements Initializable {
 
-	
-	@FXML
-	private TableView<Student_predmet> PrijavljeniStudentiTable;
-	
-	@FXML
-	private TableColumn<Student_predmet,String> StudentCol;
-	@FXML
-	private TableColumn<Student_predmet,String> PredmetCol;
-	
-	
-	
 	private Stage stage;
 	private Scene scene;
 	private Parent root;
@@ -55,16 +42,17 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable{
 	@FXML
 	private Button btn_noviplan;
 	@FXML
-	private Button btn_prijavljeniPredmeti;
-	@FXML
-	private Button refreshButton;
-	@FXML
 	private Button btn_bitniDatumi;
-	@FXML 
-	private TextField search_tf;
-	@FXML 
-	private Button search_btn;
+	@FXML
+	private Button btn_prijavljeniPredmeti;
 	
+    @FXML
+    private DatePicker PocetakRegistracije;
+    @FXML
+    private DatePicker KrajRegistracije;
+    @FXML
+    private Button btn_potvrdi;
+
 	
 	String query=null;
 	Connection con=null;
@@ -73,8 +61,8 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable{
 	Predmet predmet=null;
 	
 	
-	ObservableList<Student_predmet>List=FXCollections.observableArrayList();
-	private ObservableList<Student_predmet> filteredList = FXCollections.observableArrayList();
+	ObservableList<Nastavnik>List=FXCollections.observableArrayList();
+	private ObservableList<Nastavnik> filteredList = FXCollections.observableArrayList();
 	public  void Connect() {
 		
 		try {
@@ -93,68 +81,36 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable{
 		@Override
 		public void initialize(URL arg0, ResourceBundle arg1) {	
 			Connect();	  
-			load();
-		}
-	
-		private void refreshTable() {
-			
-			try {
-				List.clear();
-			query="SELECT student.brojIndeksa,predmeti.sifPred,nazivPred,CONCAT(ime,' ',prezime) AS StudIme FROM student INNER JOIN slusaPred ON student.brojIndeksa=slusaPred.brojIndeksa"
-					+ " INNER JOIN predmeti ON predmeti.sifPred=slusaPred.sifPred ORDER BY prezime DESC";
-						
-			
-				pst=con.prepareStatement(query);
-				res=pst.executeQuery();
-			
-				 while (res.next()) {
-			            List.add(new Student_predmet(
-			                    res.getInt("student.brojIndeksa"),
-			                    res.getString("StudIme"),
-			                    res.getString("sifPred"),
-			                    res.getString("nazivPred")
-			                    ));
-			        }
-					PrijavljeniStudentiTable.setItems(List);
-
-					
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		
 		}
-        @FXML
-		private void handleSearch() {
-		    String searchText = search_tf.getText().toLowerCase();
+	
+		@FXML
+		private void potvrdi(ActionEvent e) {
+			LocalDate pocetak = PocetakRegistracije.getValue();
+			LocalDate kraj = KrajRegistracije.getValue();
+			String query = "INSERT INTO periodregistracije (akademskaGodina,datumPocetka,datumZavrsetka) VALUES (YEAR(NOW()),?,?)";
+            try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+           
+                preparedStatement.setDate(1, java.sql.Date.valueOf(pocetak));
+                preparedStatement.setDate(2, java.sql.Date.valueOf(kraj));
+                int rowsAffected = preparedStatement.executeUpdate();
 
-		    filteredList.clear();
-
-		    for (Student_predmet nastavnik : List) {
-		        if (nastavnik.getImePrezimeStud().toLowerCase().contains(searchText)
-		                ||Integer.toString(nastavnik.getStudent_id()).toLowerCase().contains(searchText)
-		                || nastavnik.getSifraPred().toLowerCase().contains(searchText)
-		                || nastavnik.getNazivPred().toLowerCase().contains(searchText)
-		                ) {
-		            filteredList.add(nastavnik);
-		        }
-		    }
-
-		    // Update your TableView with the filtered data
-		    PrijavljeniStudentiTable.setItems(filteredList);
+                if (rowsAffected > 0) {
+                    System.out.println("Data inserted successfully.");
+                } else {
+                    System.out.println("Insertion failed.");
+                }
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-
-		 void load() {
-			refreshTable();
-			
-			StudentCol.setCellValueFactory(new PropertyValueFactory<>("ImePrezimeStud"));
-			PredmetCol.setCellValueFactory(new PropertyValueFactory<>("NazivPred"));
 		
-			
-		 }
+		}
 	
 	
-
+	
+	
+	
 	 @FXML
 	    private void logout(ActionEvent e) throws IOException {
 	    	root = FXMLLoader.load(getClass().getResource("Arnela.fxml"));
@@ -213,4 +169,5 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable{
 			stage.setScene(scene);
 			stage.show();
 	    }
+
 }

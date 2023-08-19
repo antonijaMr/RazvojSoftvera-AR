@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -27,6 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.TextInputDialog;
 import models.Nastavnik;
 import models.Predmet;
 import models.Student_predmet;
@@ -70,6 +72,8 @@ public class prodekan_zahtjevi_Controller implements Initializable {
 	private Button btn_prijavljeniPredmeti;
 	@FXML
 	private Button refreshButton;
+	@FXML
+	private Button btn_bitniDatumi;
 	
 	
 	
@@ -107,8 +111,9 @@ public class prodekan_zahtjevi_Controller implements Initializable {
 			
 			try {
 				List.clear();
-			query="SELECT ime,prezime,brIndeks,predmeti1.nazivPred as prvipredmet,predmeti2.nazivPred as drugipredmet,obrazlozenje FROM zahtjevi_promjena INNER JOIN predmeti predmeti1"
-					+ " ON sifraPrijavljeniPredmet=predmeti1.sifraPred INNER JOIN predmeti predmeti2 ON sifraZamjenskiPredmet=predmeti2.sifraPred INNER JOIN student ON id=brIndeks";
+			query="SELECT ime,prezime,student.brojIndeksa,predmeti1.nazivPred as prvipredmet,predmeti2.nazivPred as drugipredmet,poruka FROM zahtjevZaPromjenu INNER JOIN predmeti predmeti1"
+					+ " ON sifPred1=predmeti1.sifPred INNER JOIN predmeti predmeti2 ON sifPred2=predmeti2.sifPred INNER JOIN student ON zahtjevZaPromjenu.brojIndeksa=student.brojIndeksa"
+					+ " WHERE odobreno IS NULL";
 						
 			
 				pst=con.prepareStatement(query);
@@ -118,10 +123,10 @@ public class prodekan_zahtjevi_Controller implements Initializable {
 			            List.add(new Zahtjevi(
 			                    res.getString("ime"),
 			                    res.getString("prezime"),
-			                    res.getInt("brIndeks"),
+			                    res.getInt("student.brojIndeksa"),
 			                    res.getString("prvipredmet"),
 			                    res.getString("drugipredmet"),
-			                    res.getString("obrazlozenje")
+			                    res.getString("poruka")
 			                    ));
 			        }
 				zahtjeviTable.setItems(List);
@@ -156,38 +161,39 @@ public class prodekan_zahtjevi_Controller implements Initializable {
 			                prihvatiButton.setOnAction(event -> {
 			                try {
 			                    Zahtjevi zahtjev = getTableView().getItems().get(getIndex());
-			                    query="SELECT sifraPred as sifra1 FROM predmeti WHERE nazivPred=?";
+			                    query="SELECT sifPred as sifra1 FROM predmeti WHERE nazivPred=?";
 			                    pst=con.prepareStatement(query);
 			                    pst.setString(1, zahtjev.getPredmet1());
 			                    res=pst.executeQuery();
 			                    res.next();
 			                    String sifra1=res.getString("sifra1");
-			                    query="SELECT sifraPred as sifra2 FROM predmeti WHERE nazivPred=?";
+			                    query="SELECT sifPred as sifra2 FROM predmeti WHERE nazivPred=?";
 			                    pst=con.prepareStatement(query);
 			                    pst.setString(1, zahtjev.getPredmet2());
 			                    res=pst.executeQuery();
 			                    res.next();
 			                    String sifra2=res.getString("sifra2");
-			                    String deleteQuery1 = "DELETE FROM jeprijavio WHERE id = ? AND sifraP=?";
-			                    PreparedStatement deleteStatement = con.prepareStatement(deleteQuery1);
-			                    deleteStatement.setInt(1, zahtjev.getBrIndeks());
-			                    deleteStatement.setString(2, sifra1);
-			                    int rowsAffected1 = deleteStatement.executeUpdate();
-			                    String deleteQuery2 = "DELETE FROM zahtjevi_promjena WHERE brIndeks = ? AND sifraPrijavljeniPredmet=? AND "
-			                    		+ "sifraZamjenskiPredmet=?";
-			                    PreparedStatement deleteStatement2 = con.prepareStatement(deleteQuery2);
-			                    deleteStatement2.setInt(1, zahtjev.getBrIndeks());
-			                    deleteStatement2.setString(2, sifra1);
-			                    deleteStatement2.setString(3, sifra2);
+			                    String updateQuery = "UPDATE slusaPred SET sifPred = ? WHERE sifPred = ? AND brojIndeksa=?";
+			                    PreparedStatement updateStatement = con.prepareStatement(updateQuery);
+			                    updateStatement.setString(1, sifra2);
+			                    updateStatement.setString(2, sifra1);
+			                    updateStatement.setInt(3, zahtjev.getBrIndeks());
+			                    int rowsAffected1 = updateStatement.executeUpdate();
+			                    String updateQuery2 = "UPDATE zahtjevZaPromjenu SET odobreno=1 WHERE brojIndeksa = ? AND sifPred1=? AND "
+			                    		+ "sifPred2=?";
+			                    PreparedStatement updateStatement2 = con.prepareStatement(updateQuery2);
+			                    updateStatement2.setInt(1, zahtjev.getBrIndeks());
+			                    updateStatement2.setString(2, sifra1);
+			                    updateStatement2.setString(3, sifra2);
 			                    
-			                    int rowsAffected2 = deleteStatement2.executeUpdate();
+			                    int rowsAffected2 = updateStatement2.executeUpdate();
 
 			                    if (rowsAffected1 > 0 && rowsAffected2>0) {
 	
-			                        refreshTable();
+			                    	List.remove(zahtjev);
 			                   
 			                    } else {
-			                        // Handle deletion failure
+			                        System.out.println("Failed");
 			                    }
 			               
 			                    			                    
@@ -198,9 +204,56 @@ public class prodekan_zahtjevi_Controller implements Initializable {
 			                });
 
 			                odbijButton.setOnAction(event -> {
-			                    // Handle delete action here
-			                    Zahtjevi selectedItem = getTableView().getItems().get(getIndex());
-			                    // Implement the delete action based on the selectedItem
+			     
+			                    Zahtjevi zahtjev = getTableView().getItems().get(getIndex());
+			                    TextInputDialog dialog = new TextInputDialog();
+			                   
+			                    dialog.setHeaderText("Unesite poruku obrazlozenja");
+			                    dialog.setContentText("Obrazlozenje:");
+
+			                    Optional<String> result = dialog.showAndWait();
+			                    if (result.isPresent()) {
+			                        String explanation = result.get();
+			                        try {
+					                    
+					                    query="SELECT sifPred as sifra1 FROM predmeti WHERE nazivPred=?";
+					                    pst=con.prepareStatement(query);
+					                    pst.setString(1, zahtjev.getPredmet1());
+					                    res=pst.executeQuery();
+					                    res.next();
+					                    String sifra1=res.getString("sifra1");
+					                    query="SELECT sifPred as sifra2 FROM predmeti WHERE nazivPred=?";
+					                    pst=con.prepareStatement(query);
+					                    pst.setString(1, zahtjev.getPredmet2());
+					                    res=pst.executeQuery();
+					                    res.next();
+					                    String sifra2=res.getString("sifra2");
+					                    
+					                    String updateQuery2 = "UPDATE zahtjevZaPromjenu SET odgovor=? WHERE brojIndeksa = ? AND sifPred1=? AND "
+					                    		+ "sifPred2=?";
+					                    PreparedStatement updateStatement2 = con.prepareStatement(updateQuery2);
+					                    updateStatement2.setString(1, explanation);
+					                    updateStatement2.setInt(2, zahtjev.getBrIndeks());
+					                    updateStatement2.setString(3, sifra1);
+					                    updateStatement2.setString(4, sifra2);
+					                    
+					                    int rowsAffected2 = updateStatement2.executeUpdate();
+
+					                    if ( rowsAffected2>0) {
+			
+					                    	List.remove(zahtjev);
+					                   
+					                    } else {
+					                        System.out.println("Failed");
+					                    }
+					               
+					                    			                    
+					                }catch(SQLException e) {
+					                	e.printStackTrace();
+					                }
+			                      
+			                    }
+			                    
 			                });
 			            }
 
@@ -274,6 +327,14 @@ public class prodekan_zahtjevi_Controller implements Initializable {
 	 @FXML
 	 private void to_prijavljeni_predmeti(ActionEvent e) throws IOException {
 	    	root = FXMLLoader.load(getClass().getResource("ProdekanPrijavljeniPredmeti.fxml"));
+			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+	    }
+	 @FXML
+	 private void to_bitni_datumi(ActionEvent e) throws IOException {
+	    	root = FXMLLoader.load(getClass().getResource("ProdekanBitniDatumi.fxml"));
 			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
 			scene=new Scene(root);
 			stage.setScene(scene);

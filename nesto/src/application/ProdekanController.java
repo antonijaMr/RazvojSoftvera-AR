@@ -91,7 +91,8 @@ public class ProdekanController implements Initializable{
 	private Button Search;
 	@FXML
 	private Button btn_prijavljeniPredmeti;
-	
+	@FXML
+	private Button btn_bitniDatumi;
 	String query=null;
 	Connection con=null;
 	PreparedStatement pst=null;
@@ -131,27 +132,37 @@ public class ProdekanController implements Initializable{
 				res=pst.executeQuery();
 				ResultSet res2;
 				while(res.next()) {
-					query="SELECT preduslov.sifraPreduslov FROM preduslov  WHERE preduslov.sifraPred=?";
+					query="SELECT preduslov.sifPreduslov FROM preduslov  WHERE preduslov.sifPred=?";
 					pst=con.prepareStatement(query);
-					pst.setString(1, res.getString("sifraPred"));
+					pst.setString(1, res.getString("sifPred"));
 					res2=pst.executeQuery();
 					String Preduslov="";
 					
 					while(res2.next()) {
-						Preduslov+=res2.getString("sifraPreduslov")+",";
+						Preduslov+=res2.getString("sifPreduslov")+",";
 					}
-					
-					
-					List.add(new Predmet(
-							res.getString("sifraPred"),
-							res.getString("nazivPred"),
-							res.getString("usmjerenje"),
-							res.getInt("predavanja_sati"),
-							res.getInt("lab_sati"),
-							res.getInt("av_sati"),
-							res.getInt("ECTS"),
-							res.getString("semestar")
-							,Preduslov));
+					Predmet p = new Predmet();
+					p.setSifraPred(res.getString("sifPred"));
+					p.setKratPred("");
+					p.setNazivPred(res.getString("nazivPred"));
+					p.setUzaNaucnaOblast(res.getString("uzaNaucnaOblast"));
+					p.setPredavanja_sati(res.getString("satiPredavanja"));
+					p.setAv_sati(res.getString("satiAV"));
+					p.setLab_sati(res.getString("satiLV"));
+					p.setECTS(res.getString("ECTS"));
+					p.setSemestar(res.getString("semestar"));
+					p.setPreduslovi(Preduslov);
+				    List.add(p);
+//					List.add(new Predmet(
+//							res.getString("sifraPred"),
+//							res.getString("nazivPred"),
+//							res.getString("usmjerenje"),
+//							res.getInt("predavanja_sati"),
+//							res.getInt("lab_sati"),
+//							res.getInt("av_sati"),
+//							res.getInt("ECTS"),
+//							res.getString("semestar")
+//							,Preduslov));
 					predmeti_table.setItems(List);
 					
 				}
@@ -359,6 +370,13 @@ public class ProdekanController implements Initializable{
 			stage.setScene(scene);
 			stage.show();
 	    }
-
+	 @FXML
+	 private void to_bitni_datumi(ActionEvent e) throws IOException {
+	    	root = FXMLLoader.load(getClass().getResource("ProdekanBitniDatumi.fxml"));
+			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+	    }
 }
 

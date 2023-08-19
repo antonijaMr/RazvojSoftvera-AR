@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +50,8 @@ public class ProdekanPregledPlanaController implements Initializable{
 	private Button dodajUnosButton;
 	@FXML
 	private Button btn_prijavljeniPredmeti;
-	
+	@FXML
+	private Button btn_bitniPredmeti;
 	
 
     @FXML
@@ -110,27 +112,28 @@ public class ProdekanPregledPlanaController implements Initializable{
 		List<Nastavnik_predmet> subjectTeacherList = new ArrayList<>();
 
         try {
-        	String query = "SELECT predmeti.nazivPred AS subjectName, predmeti.predavanja_sati, predmeti.lab_sati, predmeti.av_sati,semestar," +
-                    "GROUP_CONCAT(CONCAT(nastavnik.ime, nastavnik.prezime, '(', nastavnik.zvanje, ')', '/',nosioc)) AS teachers " +
+        	String query = "SELECT predmeti.nazivPred AS subjectName, predmeti.satiPredavanja, predmeti.satiLV, predmeti.satiAV,semestar," +
+                    "GROUP_CONCAT(CONCAT(nastavnik.ime,' ', nastavnik.prezime, '(', nastavnik.zvanje, ')', '/',nosioc)) AS teachers " +
                     "FROM predmeti " +
-                    "INNER JOIN nastavnik_predmet ON predmeti.sifraPred = nastavnik_predmet.sifraPred " +
-                    "INNER JOIN nastavnik ON nastavnik_predmet.nastavnik_id = nastavnik.nastavnik_id " +
+                    "INNER JOIN predaje ON predmeti.sifPred = predaje.sifPred " +
+                    "INNER JOIN nastavnik ON predaje.sifNastavnik = nastavnik.sifNast WHERE godina=YEAR(NOW())" +
                     "GROUP BY predmeti.nazivPred";
 
             PreparedStatement preparedStatement=con.prepareStatement(query);
+           // preparedStatement.setYear(1,Year.now());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
             	Nastavnik_predmet nast_pred=new Nastavnik_predmet();
                 nast_pred.setNastavniPredmet(resultSet.getString("subjectName"));
                 if(resultSet.getString("semestar").equals("zimski")) {
-                nast_pred.setPZ(resultSet.getInt("predmeti.predavanja_sati"));
-                nast_pred.setAZ(resultSet.getInt("av_sati"));
-                nast_pred.setLZ(resultSet.getInt("lab_sati"));
+                nast_pred.setPZ(resultSet.getInt("predmeti.satiPredavanja"));
+                nast_pred.setAZ(resultSet.getInt("satiAV"));
+                nast_pred.setLZ(resultSet.getInt("satiLV"));
                 }else {
-                	nast_pred.setPLJ(resultSet.getInt("predmeti.predavanja_sati"));
-                    nast_pred.setALJ(resultSet.getInt("av_sati"));
-                    nast_pred.setLLJ(resultSet.getInt("lab_sati"));	
+                	nast_pred.setPLJ(resultSet.getInt("predmeti.satiPredavanja"));
+                    nast_pred.setALJ(resultSet.getInt("satiAV"));
+                    nast_pred.setLLJ(resultSet.getInt("satiLV"));	
                 }
                 String teachers = resultSet.getString("teachers");
                 String[] teacherArray = teachers.split(",");
@@ -267,6 +270,14 @@ public class ProdekanPregledPlanaController implements Initializable{
 	 @FXML
 	 private void to_prijavljeni_predmeti(ActionEvent e) throws IOException {
 	    	root = FXMLLoader.load(getClass().getResource("ProdekanPrijavljeniPredmeti.fxml"));
+			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+	    }
+	 @FXML
+	 private void to_bitni_datumi(ActionEvent e) throws IOException {
+	    	root = FXMLLoader.load(getClass().getResource("ProdekanBitniDatumi.fxml"));
 			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
 			scene=new Scene(root);
 			stage.setScene(scene);

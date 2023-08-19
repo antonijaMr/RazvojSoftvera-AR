@@ -33,7 +33,7 @@
                         <Label fx:id="Prodekan_ime" layoutX="89.0" layoutY="7.0" prefHeight="24.0" prefWidth="109.0" />
                      </children>
                   </Pane>
-                  <VBox layoutX="-1.0" layoutY="105.0" prefHeight="367.0" prefWidth="234.0">
+                  <VBox layoutX="-1.0" layoutY="105.0" prefHeight="424.0" prefWidth="234.0">
                      <children>
                         <Button fx:id="btn_predmeti" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#predmeti" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Predmeti" textFill="WHITE">
                            <font>
@@ -103,6 +103,21 @@
                               <ImageView fitHeight="41.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../Downloads/Checklist-Logo-PNG.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <padding>
+                              <Insets left="50.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="btn_bitniDatumi" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_bitni_datumi" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Bitni datumi" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../Downloads/logout.png" />
                                  </image>
                               </ImageView>
                            </graphic>

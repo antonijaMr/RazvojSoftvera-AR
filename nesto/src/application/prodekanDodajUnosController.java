@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -47,6 +48,8 @@ public class prodekanDodajUnosController implements Initializable {
 	private Button PregledPlanaButton;
 	@FXML
 	private Button btn_prijavljeniPredmeti;
+	@FXML
+	private Button btn_bitniDatumi;
 	
 	@FXML
 	private ComboBox<String> nastavnik_choice;
@@ -130,7 +133,7 @@ public class prodekanDodajUnosController implements Initializable {
 		 String odabraniPredmet = (String)predmet_choice.getSelectionModel().getSelectedItem();
 		 String odabraniNosioc = (String)nosioc_choice.getSelectionModel().getSelectedItem();
 		 String[] imePrezime=odabraniNastavnik[0].split(" ");
-		 query="SELECT nastavnik_id FROM nastavnik WHERE ime=? AND prezime=?";
+		 query="SELECT sifNast FROM nastavnik WHERE ime=? AND prezime=?";
 		 pst=con.prepareStatement(query);
 		 pst.setString(1, imePrezime[0]);
 		 pst.setString(2, imePrezime[1]);
@@ -138,22 +141,28 @@ public class prodekanDodajUnosController implements Initializable {
 		 int id=0;
 		
 		 if(res.next()) {
-		 id=res.getInt("nastavnik_id"); 
+		 id=res.getInt("sifNast"); 
 	
 		 }
-		 query="SELECT sifraPred FROM predmeti WHERE nazivPred=?";
+		 query="SELECT sifPred FROM predmeti WHERE nazivPred=?";
 		 pst=con.prepareStatement(query);
 		 pst.setString(1, odabraniPredmet);
 		 res=pst.executeQuery();
 		 res.next();
-		 String sifraP=res.getString("sifraPred");
+		 String sifraP=res.getString("sifPred");
 		
 		
-		 query="INSERT INTO nastavnik_predmet (nastavnik_id, sifraPred,nosioc) VALUES ( ?,?,?)";
+		 query="INSERT INTO predaje (sifNastavnik, sifPred,godina,nosioc) VALUES ( ?,?,YEAR(NOW()),?)";
 		 pst=con.prepareStatement(query);
 		 pst.setInt(1, id);
 		 pst.setString(2, sifraP);
-		 pst.setString(3, odabraniNosioc);
+		
+		// pst.setString(3, Year.now());
+		 boolean n=false;
+		 if(odabraniNosioc.equals("Da")) {
+			 n=true;
+		 }
+		 pst.setBoolean(3, n);
 		  int rowsAffected = pst.executeUpdate();
 		 
 		 if (rowsAffected > 0) {
@@ -219,6 +228,14 @@ public class prodekanDodajUnosController implements Initializable {
 	 @FXML
 	 private void to_prijavljeni_predmeti(ActionEvent e) throws IOException {
 	    	root = FXMLLoader.load(getClass().getResource("ProdekanPrijavljeniPredmeti.fxml"));
+			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+	    }
+	 @FXML
+	 private void to_bitni_datumi(ActionEvent e) throws IOException {
+	    	root = FXMLLoader.load(getClass().getResource("ProdekanBitniDatumi.fxml"));
 			stage=(Stage)((Node)e.getSource()).getScene().getWindow();
 			scene=new Scene(root);
 			stage.setScene(scene);

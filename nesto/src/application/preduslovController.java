@@ -62,7 +62,7 @@ public class preduslovController implements Initializable {
 	@FXML
 	private void potvrdi(ActionEvent e){
 		
-		  query = "INSERT INTO preduslov (sifraPred, sifraPreduslov) VALUES ( ?, ?)";
+		  query = "INSERT INTO preduslov (sifPred, sifPreduslov) VALUES ( ?, ?)";
          
         
          try {
