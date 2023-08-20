@@ -20,7 +20,6 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 
 	private ZahtjevZaPrenosBodova zahtjev;
 	private Nastavnik nastavnik;
-	private boolean btnPressed;
 
 	@FXML
 	private Label ime;

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="900.0" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Scene1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="900.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Scene1">
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="511.0" prefWidth="206.0" styleClass="left-bar-background" stylesheets="@application.css" BorderPane.alignment="CENTER">
          <children>
@@ -38,7 +38,7 @@
                   <Insets bottom="5.0" right="10.0" top="5.0" />
                </VBox.margin>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css">
+            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0" >
                <children>
                   <Pane prefHeight="34.0" prefWidth="170.0" />
                   <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
@@ -51,7 +51,7 @@
                               <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Registracija" fx:id="RegistracijaMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="126.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Registracija" textAlignment="CENTER">
+                        <Label id="Registracija" fx:id="RegistracijaMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="126.0" styleClass="MenuItem" text="Registracija" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -83,7 +83,7 @@
                               <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Predmet" fx:id="PredmetiMenu" accessibleRole="BUTTON" contentDisplay="CENTER" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Predmeti" textAlignment="CENTER">
+                        <Label id="Predmet" fx:id="PredmetiMenu" accessibleRole="BUTTON" contentDisplay="CENTER" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" text="Predmeti" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -109,7 +109,7 @@
                               <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Registracija" fx:id="ZahtjeviMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Zahtjevi" textAlignment="CENTER">
+                        <Label id="Registracija" fx:id="ZahtjeviMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" text="Zahtjevi" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -142,7 +142,7 @@
                               <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Odjava" accessibleRole="BUTTON" contentDisplay="CENTER" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Odjava" textAlignment="CENTER">
+                        <Label id="Odjava" accessibleRole="BUTTON" contentDisplay="CENTER" onMouseClicked="#logout" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" text="Odjava" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
