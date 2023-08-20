@@ -10,15 +10,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
-
-
 
 public class prodekanDodajUnosController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
@@ -45,10 +40,10 @@ public class prodekanDodajUnosController implements Initializable {
 	@FXML
 	private Button btn_bitniDatumi;
 
-	 @FXML
-	 private ComboBox<String> nastavnik_choice;
-	 @FXML
-	private  ComboBox<String> predmet_choice;
+	@FXML
+	private ComboBox<String> nastavnik_choice;
+	@FXML
+	private ComboBox<String> predmet_choice;
 	@FXML
 	private ChoiceBox<String> nosioc_choice;
 
@@ -65,9 +60,13 @@ public class prodekanDodajUnosController implements Initializable {
 		ucitajNastavnike();
 		ucitajPredmete();
 		nosioc_choice.getItems().addAll(nosioc);
-	    
-	    }
+
+	}
 	
+	private boolean empty() {
+		return nastavnik_choice.getValue() == null || predmet_choice.getValue() == null ||
+				nosioc_choice.getValue() == null;
+	}
 
 	private void ucitajNastavnike() {
 		try {
@@ -108,65 +107,61 @@ public class prodekanDodajUnosController implements Initializable {
 
 	@FXML
 	private void potvrdiUnos(ActionEvent e) throws SQLException {
-		String[] odabraniNastavnik = (String[]) nastavnik_choice.getSelectionModel().getSelectedItem().split(",");
-		String odabraniPredmet = (String) predmet_choice.getSelectionModel().getSelectedItem();
-		String odabraniNosioc = (String) nosioc_choice.getSelectionModel().getSelectedItem();
-		String[] imePrezime = odabraniNastavnik[0].split(" ");
-		query = "SELECT sifNast FROM nastavnik WHERE ime=? AND prezime=?";
-		mysql.pst = mysql.con.prepareStatement(query);
-		mysql.pst.setString(1, imePrezime[0]);
-		mysql.pst.setString(2, imePrezime[1]);
-		res = mysql.pst.executeQuery();
-		int id = 0;
+		if (!empty()) {
+			String[] odabraniNastavnik = (String[]) nastavnik_choice.getSelectionModel().getSelectedItem().split(",");
+			String odabraniPredmet = (String) predmet_choice.getSelectionModel().getSelectedItem();
+			String odabraniNosioc = (String) nosioc_choice.getSelectionModel().getSelectedItem();
+			String[] imePrezime = odabraniNastavnik[0].split(" ");
+			query = "SELECT sifNast FROM nastavnik WHERE ime=? AND prezime=?";
+			mysql.pst = mysql.con.prepareStatement(query);
+			mysql.pst.setString(1, imePrezime[0]);
+			mysql.pst.setString(2, imePrezime[1]);
+			res = mysql.pst.executeQuery();
+			int id = 0;
 
-		if (res.next()) {
-			id = res.getInt("sifNast");
+			if (res.next()) {
+				id = res.getInt("sifNast");
 
-		}
-		query = "SELECT sifPred FROM predmet WHERE nazivPred=?";
-		mysql.pst = mysql.con.prepareStatement(query);
-		mysql.pst.setString(1, odabraniPredmet);
-		res = mysql.pst.executeQuery();
-		res.next();
-		String sifraP = res.getString("sifPred");
-		query = "SELECT COUNT(*) FROM predaje WHERE sifPred=?";
-		mysql.pst = mysql.con.prepareStatement(query);
-		mysql.pst.setString(1, sifraP);
-		res = mysql.pst.executeQuery();
-	    res.next();
-		if(res.getInt("COUNT(*)")==1 && odabraniNosioc.equals("Da")) {
-			showAlert("Predmet vec ima nosica");
-		}else {
+			}
+			query = "SELECT sifPred FROM predmet WHERE nazivPred=?";
+			mysql.pst = mysql.con.prepareStatement(query);
+			mysql.pst.setString(1, odabraniPredmet);
+			res = mysql.pst.executeQuery();
+			res.next();
+			String sifraP = res.getString("sifPred");
+			query = "SELECT COUNT(*) FROM predaje WHERE sifPred=?";
+			mysql.pst = mysql.con.prepareStatement(query);
+			mysql.pst.setString(1, sifraP);
+			res = mysql.pst.executeQuery();
+			res.next();
+			if (res.getInt("COUNT(*)") == 1 && odabraniNosioc.equals("Da")) {
+				s.alertEror("Predmet vec ima nosioca");
+			} else {
 
-		query = "INSERT INTO predaje (sifNastavnik, sifPred,godina,nosioc) VALUES ( ?,?,YEAR(NOW()),?)";
-		mysql.pst = mysql.con.prepareStatement(query);
-		mysql.pst.setInt(1, id);
-		mysql.pst.setString(2, sifraP);
+				query = "INSERT INTO predaje (sifNastavnik, sifPred,godina,nosioc) VALUES ( ?,?,YEAR(NOW()),?)";
+				mysql.pst = mysql.con.prepareStatement(query);
+				mysql.pst.setInt(1, id);
+				mysql.pst.setString(2, sifraP);
 
-		// pst.setString(3, Year.now());
-		boolean n = false;
-		if (odabraniNosioc.equals("Da")) {
-			n = true;
-		}
-		mysql.pst.setBoolean(3, n);
-		int rowsAffected = mysql.pst.executeUpdate();
+				// pst.setString(3, Year.now());
+				boolean n = false;
+				if (odabraniNosioc.equals("Da")) {
+					n = true;
+				}
+				mysql.pst.setBoolean(3, n);
+				int rowsAffected = mysql.pst.executeUpdate();
 
-		if (rowsAffected > 0) {
-			showAlert("Row inserted successfully.");
+				if (rowsAffected > 0) {
+					s.alert("Uspjesan update");
+				} else {
+					s.alertEror("Doslo je do greske");
+				}
+			}
 		} else {
-			showAlert("Failed to insert row.");
-		}
+			s.alert("Ispunite sva polja!");
 		}
 	}
 
-	private void showAlert(String message) {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Information");
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
-	
 	@FXML
 	private void logout(MouseEvent e) {
 		s.logout(e);

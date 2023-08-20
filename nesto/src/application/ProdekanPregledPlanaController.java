@@ -87,7 +87,7 @@ public class ProdekanPregledPlanaController implements Initializable {
 					+ "GROUP_CONCAT(CONCAT(nastavnik.ime,' ', nastavnik.prezime, '(', nastavnik.zvanje, ')', '/',nosioc)) AS teachers "
 					+ "FROM predmet " + "INNER JOIN predaje ON predmet.sifPred = predaje.sifPred "
 					+ "INNER JOIN nastavnik ON predaje.sifNastavnik = nastavnik.sifNast WHERE godina=YEAR(NOW())"
-					+ "GROUP BY predmet.nazivPred";
+					+ "GROUP BY 1,2,3,4;";
 
 			PreparedStatement preparedStatement = mysql.con.prepareStatement(query);
 			// preparedStatement.setYear(1,Year.now());

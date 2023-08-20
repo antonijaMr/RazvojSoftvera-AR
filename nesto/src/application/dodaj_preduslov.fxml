@@ -5,12 +5,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="187.0" prefWidth="391.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.preduslovController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="241.0" prefWidth="463.0" stylesheets="@applicationP.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.preduslovController">
    <children>
-      <TextField fx:id="preduslov_tf" layoutX="155.0" layoutY="75.0" />
+      <TextField fx:id="preduslov_tf" layoutX="195.0" layoutY="83.0" />
       <Label layoutX="54.0" layoutY="79.0" text="Sifra Preduslova" />
-      <Label layoutX="47.0" layoutY="28.0" text="Unesite ime predmeta kojeg zelite dodati kao preduslov" />
-      <Button fx:id="potvrdi_preduslov" layoutX="162.0" layoutY="138.0" mnemonicParsing="false" onAction="#potvrdi" text="Potvrdi" />
+      <Label layoutX="17.0" layoutY="33.0" text="Unesite ime predmeta kojeg zelite dodati kao preduslov" />
+      <Button fx:id="potvrdi_preduslov" layoutX="199.0" layoutY="138.0" mnemonicParsing="false" onAction="#potvrdi" text="Potvrdi" />
    </children>
 </Pane>

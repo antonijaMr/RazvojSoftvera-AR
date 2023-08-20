@@ -38,7 +38,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 
 public class nastavnik_zahtjeviZaPredmetController implements Initializable {
-	MySQLConnection mysql = new MySQLConnection();
+	private MySQLConnection mysql = new MySQLConnection();
 
 	private Nastavnik currentNastavnik;
 	private SceneLoader s = new SceneLoader();

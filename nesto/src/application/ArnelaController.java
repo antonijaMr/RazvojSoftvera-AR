@@ -32,8 +32,7 @@ public class ArnelaController implements Initializable {
 	private Stage stage;
 	private Scene scene;
 	private Parent root;
-//	private String username1;
-	// private String password1;
+
 	@FXML
 	private TextField tf_username;
 	@FXML
@@ -69,13 +68,13 @@ public class ArnelaController implements Initializable {
 			selectedItem = (String) MyChoiceBox.getSelectionModel().getSelectedItem();
 
 			if (selectedItem.equals("student"))
-				changeColor("#6CE48B");
+				changeColor("green");
 			if (selectedItem.equals("administrator"))
 				changeColor("red");
 			if (selectedItem.equals("nastavnik"))
-				changeColor("grey");
+				changeColor("blue");
 			if (selectedItem.equals("prodekan"))
-				changeColor("#5b6ad0");
+				changeColor("orange");
 
 		});
 	}

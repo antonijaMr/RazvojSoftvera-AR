@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -32,9 +34,6 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable {
 	@FXML
 	private TableColumn<Student_predmet, String> PredmetCol;
 
-	private Stage stage;
-	private Scene scene;
-	private Parent root;
 	@FXML
 	private Button logout;
 	@FXML
@@ -53,8 +52,6 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable {
 	private Button btn_bitniDatumi;
 	@FXML
 	private TextField search_tf;
-	@FXML
-	private Button search_btn;
 
 	String query = null;
 	ResultSet res = null;
@@ -67,6 +64,7 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 		load();
+		setupSearch();
 	}
 
 	private void refreshTable() {
@@ -117,6 +115,32 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable {
 		PredmetCol.setCellValueFactory(new PropertyValueFactory<>("NazivPred"));
 
 	}
+	
+	private void setupSearch() {
+		FilteredList<Student_predmet> filteredData = new FilteredList<>(PrijavljeniStudentiTable.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(zahtjev -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+
+				if (zahtjev.getImePrezimeStud().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (zahtjev.getNazivPred().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+
+				return false;
+			});
+		});
+
+		SortedList<Student_predmet> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(PrijavljeniStudentiTable.comparatorProperty());
+
+		PrijavljeniStudentiTable.setItems(sortedData);
+	}	
 
 	@FXML
 	private void logout(MouseEvent e) {

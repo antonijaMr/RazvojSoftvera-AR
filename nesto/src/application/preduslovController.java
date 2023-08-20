@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 
 public class preduslovController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
+	private SceneLoader s = new SceneLoader();
 
 	String query = null;
 	ResultSet res = null;
@@ -48,27 +49,36 @@ public class preduslovController implements Initializable {
 
 	@FXML
 	private void potvrdi(ActionEvent e) {
+		if (!empty()) {
 
-		query = "INSERT INTO preduslov (sifPred, sifPreduslov) VALUES ( ?, ?)";
+			query = "INSERT INTO preduslov (sifPred, sifPreduslov) VALUES ( ?, ?)";
 
-		try {
-			mysql.pst = mysql.con.prepareStatement(query);
-			mysql.pst.setString(1, sifraPredmet);
-			mysql.pst.setString(2, preduslov_tf.getText());
-			int rowsAffected = mysql.pst.executeUpdate();
+			try {
+				mysql.pst = mysql.con.prepareStatement(query);
+				mysql.pst.setString(1, sifraPredmet);
+				mysql.pst.setString(2, preduslov_tf.getText());
+				int rowsAffected = mysql.pst.executeUpdate();
 
-			if (rowsAffected > 0) {
-				System.out.println("Row inserted successfully.");
-			} else {
-				System.out.println("Failed to insert row.");
+				if (rowsAffected > 0) {
+					System.out.println("Row inserted successfully.");
+				} else {
+					System.out.println("Failed to insert row.");
+				}
+
+			} catch (SQLException e1) {
+
+				e1.printStackTrace();
 			}
+			stage.close();
+		} else
 
-		} catch (SQLException e1) {
-
-			e1.printStackTrace();
+		{
+			s.alert("Ispunite sva polja!");
 		}
-		stage.close();
+	}
 
+	private boolean empty() {
+		return preduslov_tf.getText().isEmpty();
 	}
 
 }

@@ -66,7 +66,7 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 					+ "where idStud = ? and sifNast = ? and sifPred = ?;" ;
 
 			mysql.pst = mysql.con.prepareStatement(query);
-			mysql.pst.setBoolean(1, b);
+			mysql.pst.setInt(1, b?1:0);
 			mysql.pst.setString(2, tf_odgovor.getText());
 			mysql.pst.setString(3, zahtjev.getStud().getId());
 			mysql.pst.setString(4, nastavnik.getSifNast());
