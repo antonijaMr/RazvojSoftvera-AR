@@ -38,7 +38,9 @@
                   <Insets bottom="5.0" right="10.0" top="5.0" />
                </VBox.margin>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0" >
+
+            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0" stylesheets="@application.css">
+
                <children>
                   <Pane prefHeight="34.0" prefWidth="170.0" />
                   <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">

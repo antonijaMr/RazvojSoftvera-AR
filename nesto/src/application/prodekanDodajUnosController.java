@@ -111,6 +111,10 @@ public class prodekanDodajUnosController implements Initializable {
 		String[] odabraniNastavnik = (String[]) nastavnik_choice.getSelectionModel().getSelectedItem().split(",");
 		String odabraniPredmet = (String) predmet_choice.getSelectionModel().getSelectedItem();
 		String odabraniNosioc = (String) nosioc_choice.getSelectionModel().getSelectedItem();
+		if (nastavnik_choice.getValue() == null || predmet_choice.getValue()==null || nosioc_choice.getValue()==null) {
+		    showAlert("Popunite sva polja");
+		} else {
+		 
 		String[] imePrezime = odabraniNastavnik[0].split(" ");
 		query = "SELECT sifNast FROM nastavnik WHERE ime=? AND prezime=?";
 		mysql.pst = mysql.con.prepareStatement(query);
@@ -155,6 +159,7 @@ public class prodekanDodajUnosController implements Initializable {
 			showAlert("Row inserted successfully.");
 		} else {
 			showAlert("Failed to insert row.");
+		}
 		}
 		}
 	}
