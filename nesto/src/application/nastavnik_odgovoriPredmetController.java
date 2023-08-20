@@ -37,38 +37,30 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 	@FXML
 	private Label poruka;
 
-	private Popup popup;
-
-	private boolean btnPressed;
 
 	@FXML
 	public void ponisti(ActionEvent event) {
-		btnPressed = false;
+		update(false);
 		s.alert("Zahtjev odbijen.");
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
-		btnPressed = true;
+		update(true);
 		s.alert("Zahtjev odobren.");
 	}
 
 	public void setData(ZahtjevZaSlusanjePredmeta z) {
 		zahtjev = z;
-		ime.setText(z.getStud().getIme() + " " + z.getStud().getPrezime());
+		ime.setText(z.getStud().getIme());
+		prezime.setText(z.getStud().getPrezime());
+		studID.setText(z.getStud().getId());
+		smjer.setText(z.getStud().getSifUsmjerenja());
 		predmet.setText(z.getPred().getNazivPred());
 		poruka.setText(z.getPoruka());
 	}
 
-	public void updateData() {
-		if (btnPressed) {
-			update(true);
-		} else {
-			update(false);
-		}
-	}
-
-	public void update(boolean b) {
+	private void update(boolean b) {
 		try {
 			String query ="update zahtjevZaSlusanje set odobreno = ?,odgovor=?"
 					+ "where idStud = ? and sifNast = ? and sifPred = ?;" ;

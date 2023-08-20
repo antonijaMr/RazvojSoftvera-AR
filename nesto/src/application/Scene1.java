@@ -93,7 +93,7 @@ public class Scene1 implements Initializable {
 	private Connection getConnection() throws Exception {
 	String url = "jdbc:mysql://localhost:3306/projekat"; //
     String user = "root";
-    String password = "";
+    String password = "2481632am*";
 	
     return DriverManager.getConnection(url, user, password);
 	}

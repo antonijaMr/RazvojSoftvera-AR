@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 import models.Nastavnik;
 
 public class ArnelaController implements Initializable {
+	private MySQLConnection mysql = new MySQLConnection();
+	private SceneLoader s = new SceneLoader();
 
 	DataSingleton ds;
 	private Stage stage;
@@ -41,7 +43,6 @@ public class ArnelaController implements Initializable {
 	@FXML
 	private ChoiceBox<String> MyChoiceBox;
 
-
 	private String selectedItem;
 
 	@FXML
@@ -53,21 +54,7 @@ public class ArnelaController implements Initializable {
 	@FXML
 	private Label L4;
 
-	Connection con;
-	PreparedStatement pst;
 	ResultSet res = null;
-
-	public void Connect() {
-
-		try {
-	
-			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "");
-		}
-		catch (SQLException exe) {
-			exe.printStackTrace();
-		}
-
-	}
 
 	private String[] uloge = { "nastavnik", "prodekan", "administrator", "student" };
 
@@ -76,13 +63,13 @@ public class ArnelaController implements Initializable {
 		ds = DataSingleton.getInstance();
 		MyChoiceBox.getItems().addAll(uloge);
 
-		Connect();
+		mysql.Connect();
 
 		MyChoiceBox.setOnAction((event) -> {
 			selectedItem = (String) MyChoiceBox.getSelectionModel().getSelectedItem();
 
 			if (selectedItem.equals("student"))
-				changeColor("#7CE48B");
+				changeColor("#6CE48B");
 			if (selectedItem.equals("administrator"))
 				changeColor("red");
 			if (selectedItem.equals("nastavnik"))
@@ -104,53 +91,57 @@ public class ArnelaController implements Initializable {
 
 	@FXML
 	private void login(ActionEvent e) throws IOException {
-		String nextScene = selectedItem + ".fxml";
-		String pass = tf_password.getText();
-		String user = tf_username.getText();
-		String query = null;
-		try {
+		if (!empty()) {
+			String nextScene = selectedItem + ".fxml";
+			String pass = tf_password.getText();
+			String user = tf_username.getText();
+			String query = null;
+			try {
 
-			if (selectedItem.equals("nastavnik"))
-				query = "SELECT lozinka FROM nastavnik WHERE email=? ";
-			else if (selectedItem.equals("student")) {
-				query = "SELECT lozinka FROM student WHERE email=? ";
-				Scene1 controller = new Scene1();
-				controller.setEmail(user);
-					
+				if (selectedItem.equals("nastavnik"))
+					query = "SELECT lozinka FROM nastavnik WHERE email=? ";
+				else if (selectedItem.equals("student")) {
+					query = "SELECT lozinka FROM student WHERE email=? ";
+					Scene1 controller = new Scene1();
+					controller.setEmail(user);
+
+				} else if (selectedItem.equals("prodekan"))
+					query = "SELECT lozinka FROM nastavnik WHERE email=? AND prodekan=1";
+				else if (selectedItem.equals("administrator"))
+					query = "SELECT lozinka FROM administrator WHERE email=?";
+
+				mysql.pst = mysql.con.prepareStatement(query);
+				mysql.pst.setString(1, user);
+				res = mysql.pst.executeQuery();
+				if (res.next()) {
+					do {
+						String retrievedPassword = res.getString("lozinka");
+
+						if (retrievedPassword.equals(pass)) {
+							setNastavnik();
+							root = FXMLLoader.load(getClass().getResource(nextScene));
+							stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+							scene = new Scene(root);
+							stage.setScene(scene);
+							stage.setResizable(true);
+
+						} else {
+							Alert a = new Alert(AlertType.ERROR);
+							a.setContentText("Wrong password");
+							a.show();
+						}
+					} while (res.next());
+				} else {
+					Alert a = new Alert(AlertType.ERROR);
+					a.setContentText("User not found");
+					a.show();
+				}
+
+			} catch (SQLException e1) {
+				e1.printStackTrace();
 			}
-			else if (selectedItem.equals("prodekan"))
-				query = "SELECT lozinka FROM nastavnik WHERE email=? AND prodekan=1";
-			else if (selectedItem.equals("administrator"))
-				query = "SELECT lozinka FROM administrator WHERE email=?";
-
-			pst = con.prepareStatement(query);
-			pst.setString(1, user);
-			res = pst.executeQuery();
-			if (res.next()) {
-				do {
-					String retrievedPassword = res.getString("lozinka");
-
-					if (retrievedPassword.equals(pass)) {
-						setNastavnik();
-						root = FXMLLoader.load(getClass().getResource(nextScene));
-						stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-						scene = new Scene(root);
-						stage.setScene(scene);
-
-					} else {
-						Alert a = new Alert(AlertType.ERROR);
-						a.setContentText("Wrong password");
-						a.show();
-					}
-				} while (res.next());
-			} else {
-				Alert a = new Alert(AlertType.ERROR);
-				a.setContentText("User not found");
-				a.show();
-			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		} else {
+			s.alert("Ispunite sva polja!");
 		}
 
 	}
@@ -160,9 +151,9 @@ public class ArnelaController implements Initializable {
 			try {
 				Nastavnik n = new Nastavnik();
 				String query = "SELECT * from nastavnik where email=?";
-				pst = con.prepareStatement(query);
-				pst.setString(1, tf_username.getText());
-				res = pst.executeQuery();
+				mysql.pst = mysql.con.prepareStatement(query);
+				mysql.pst.setString(1, tf_username.getText());
+				res = mysql.pst.executeQuery();
 				if (res.next()) {
 					n.setSifNast(res.getString("sifNast"));
 					n.setIme(res.getString("ime"));
@@ -177,6 +168,10 @@ public class ArnelaController implements Initializable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private boolean empty() {
+		return selectedItem == null || tf_username.getText().isEmpty() || tf_password.getText().isEmpty();
 	}
 
 }

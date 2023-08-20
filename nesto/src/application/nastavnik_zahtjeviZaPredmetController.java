@@ -173,7 +173,6 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 				}
 			});
 
-		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -191,6 +190,7 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 			return myRow;
 		});
 	}
+
 	public void openOdgovoriDialog(ZahtjevZaSlusanjePredmeta z) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("nastavnik_odgovoriPredmet.fxml"));
@@ -201,12 +201,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		dialog.setDialogPane(odgovoriDialog);
 		dialog.setTitle("Zahtjev za slusanje predmeta");
 
-		Optional<ButtonType> clickedButton = dialog.showAndWait();
-
-		if (clickedButton.get() == ButtonType.OK) {
-			odgovoriC.updateData();
-			TableZahtjevi();
-		}
+		dialog.showAndWait();
+		TableZahtjevi();
 	}
 
 	public void TablePreduslovi() {
@@ -214,10 +210,8 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 
 		ObservableList<Preduslov> preduslovi = FXCollections.observableArrayList();
 		try {
-			mysql.pst = mysql.con.prepareStatement(
-					"SELECT DISTINCT p.nazivPred, s.ocjena, s.obnova\n"
-					+ "FROM predmet p\n"
-					+ "INNER JOIN preduslov pr ON pr.sifPreduslov = p.sifPred\n"
+			mysql.pst = mysql.con.prepareStatement("SELECT DISTINCT p.nazivPred, s.ocjena, s.obnova\n"
+					+ "FROM predmet p\n" + "INNER JOIN preduslov pr ON pr.sifPreduslov = p.sifPred\n"
 					+ "LEFT JOIN slusaPred s ON s.sifPred = pr.sifPreduslov AND s.idStud = ?"
 					+ "WHERE pr.sifPred = ?;");
 			mysql.pst.setString(1, studIndex);
@@ -275,7 +269,7 @@ public class nastavnik_zahtjeviZaPredmetController implements Initializable {
 		}
 
 	}
-	
+
 	private void setupSearch() {
 		FilteredList<ZahtjevZaSlusanjePredmeta> filteredData = new FilteredList<>(zahtjeviTable.getItems(), p -> true);
 
