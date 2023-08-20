@@ -15,7 +15,7 @@ public class Student {
 	private final StringProperty statusStud;
 	private final StringProperty sifUsmjerenja;
 	private final StringProperty ostvareniECTS;
-
+    private final StringProperty zavrsioReg;
 	private final Button actionButton;
 
 	public Student() {
@@ -29,9 +29,31 @@ public class Student {
 		statusStud = new SimpleStringProperty(this, "statusStud");
 		sifUsmjerenja = new SimpleStringProperty(this, "sifUsmjerenja");
 		ostvareniECTS = new SimpleStringProperty(this, "ostvareniECTS");
+		zavrsioReg=new SimpleStringProperty(this,"zavrsioReg");
 
 		actionButton = new Button("Update");
 	}
+
+	
+	public Student(SlusaPredmet slusaPred, StringProperty student_id, StringProperty ime, StringProperty prezime,
+			StringProperty lozinka, StringProperty email, StringProperty godStudija, StringProperty statusStud,
+			StringProperty sifUsmjerenja, StringProperty ostvareniECTS, StringProperty zavrsioReg,
+			Button actionButton) {
+		super();
+		this.slusaPred = slusaPred;
+		this.student_id = student_id;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.lozinka = lozinka;
+		this.email = email;
+		this.godStudija = godStudija;
+		this.statusStud = statusStud;
+		this.sifUsmjerenja = sifUsmjerenja;
+		this.ostvareniECTS = ostvareniECTS;
+		this.zavrsioReg = zavrsioReg;
+		this.actionButton = actionButton;
+	}
+
 
 	public Button getActionButton() {
 		return actionButton;
@@ -152,5 +174,21 @@ public class Student {
 	public void setSlusaPred(SlusaPredmet slusaPred) {
 		this.slusaPred = slusaPred;
 	}
+
+	public final StringProperty zavrsioRegProperty() {
+		return this.zavrsioReg;
+	}
+	
+
+	public final String getZavrsioReg() {
+		return this.zavrsioRegProperty().get();
+	}
+	
+
+	public final void setZavrsioReg(final String zavrsioReg) {
+		this.zavrsioRegProperty().set(zavrsioReg);
+	}
+	
+	
 
 }

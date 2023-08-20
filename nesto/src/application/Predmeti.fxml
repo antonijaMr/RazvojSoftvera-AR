@@ -51,7 +51,7 @@
                               <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Registracija" fx:id="RegistracijaMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Registracija" textAlignment="CENTER">
+                        <Label id="Registracija" fx:id="RegistracijaMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="126.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Registracija" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -172,44 +172,61 @@
    <center>
       <VBox id="RegistracijaView" alignment="CENTER" prefHeight="441.0" prefWidth="717.0" stylesheets="@application.css" BorderPane.alignment="CENTER">
          <children>
-            <HBox id="RegistracijaPane" prefHeight="462.0" prefWidth="571.0">
+            <HBox id="RegistracijaPane" prefHeight="502.0" prefWidth="694.0">
                <children>
-                  <TitledPane id="PredmetiIzbor" alignment="CENTER" animated="false" collapsible="false" prefHeight="439.0" prefWidth="335.0" text="Predmeti" textFill="WHITE">
+                  <TitledPane id="PredmetiIzbor" alignment="CENTER" animated="false" collapsible="false" prefHeight="473.0" prefWidth="331.0" text="Registrovani Predmeti" textFill="WHITE">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" />
                      </HBox.margin>
                      <content>
-                        <ListView fx:id="PredmetiLista" prefHeight="200.0" prefWidth="200.0" />
+                        <ListView fx:id="RegistrovaniPredmetiLista" prefHeight="422.0" prefWidth="282.0" />
                      </content>
                   </TitledPane>
-                  <VBox prefHeight="444.0" prefWidth="335.0">
+                  <HBox prefHeight="478.0" prefWidth="350.0">
                      <children>
-                        <TitledPane id="ZimskiSemestar" alignment="CENTER" collapsible="false" prefHeight="250.0" prefWidth="200.0" text="Zimski Semestar" textFill="WHITE">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" />
-                           </VBox.margin>
-                           <content>
-                              <ListView fx:id="PredmetiZimski" prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </TitledPane>
-                        <TitledPane id="LjetniSemestar" alignment="CENTER" animated="false" collapsible="false" prefHeight="250.0" prefWidth="200.0" text="Ljetni Semestar" textFill="WHITE">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                           <content>
-                              <ListView fx:id="PredmetiLjetni" prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </TitledPane>
+                        <VBox prefHeight="478.0" prefWidth="116.0">
+                           <children>
+                              <Pane prefHeight="31.0" prefWidth="114.0" />
+                              <Label prefHeight="35.0" prefWidth="114.0" text="Nastavnik:" />
+                              <Label prefHeight="35.0" prefWidth="114.0" text="Sifra:" />
+                              <Label prefHeight="35.0" prefWidth="114.0" text="ECTS" />
+                              <Label prefHeight="35.0" prefWidth="114.0" text="Sati predavanja:" />
+                              <Label prefHeight="35.0" prefWidth="114.0" text="Sati AV:" />
+                              <Label prefHeight="35.0" prefWidth="114.0" text="Sati LV:" />
+                              <Label prefHeight="35.0" prefWidth="114.0" text="Preduslov:" />
+                              <Label prefHeight="35.0" prefWidth="114.0" text="Ocjena:" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="478.0" prefWidth="237.0">
+                           <children>
+                              <Pane prefHeight="32.0" prefWidth="236.0" />
+                              <Label fx:id="InfoNastavnik" prefHeight="35.0" prefWidth="243.0" />
+                              <Label fx:id="InfoSifra" prefHeight="35.0" prefWidth="243.0" />
+                              <Label fx:id="InfoECTS" prefHeight="35.0" prefWidth="243.0" />
+                              <Label fx:id="InfoSatiP" prefHeight="35.0" prefWidth="243.0" />
+                              <Label fx:id="InfoSatiAV" prefHeight="35.0" prefWidth="243.0" />
+                              <Label fx:id="InfoSatiLV" prefHeight="35.0" prefWidth="243.0" />
+                              <Label fx:id="InfoPreduslov" prefHeight="35.0" prefWidth="243.0" />
+                              <Label fx:id="InfoOcjena" prefHeight="35.0" prefWidth="243.0" />
+                           </children>
+                        </VBox>
                      </children>
-                  </VBox>
+                  </HBox>
                </children>
             </HBox>
-            <Button fx:id="PotvrdiButton" mnemonicParsing="false" onAction="#PotvrdiButton" prefHeight="54.0" prefWidth="111.0" text="POTVRDI">
+            <Button fx:id="ZahtjevButton" mnemonicParsing="false" onAction="#PotvrdiZahtjevButton" prefHeight="32.0" prefWidth="111.0" text="ZAHTJEV" visible="false">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Button>
-            <Label id="StatusStudenta" fx:id="StatusStudenta" graphicTextGap="2.0" prefHeight="35.0" prefWidth="693.0" text="Label" />
+            <Label id="StatusStudenta" fx:id="StatusStudenta" graphicTextGap="1.0" prefHeight="31.0" prefWidth="740.0" text="Godina 1. obnova AR" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
          </children>
       </VBox>
    </center>

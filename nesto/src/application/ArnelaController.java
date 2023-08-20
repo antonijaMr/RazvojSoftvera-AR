@@ -55,15 +55,13 @@ public class ArnelaController implements Initializable {
 
 	Connection con;
 	PreparedStatement pst;
-	int myIndex;
-	int id;
 	ResultSet res = null;
 
 	public void Connect() {
 
 		try {
 	
-			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "2481632am*");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "");
 		}
 		catch (SQLException exe) {
 			exe.printStackTrace();
@@ -114,8 +112,12 @@ public class ArnelaController implements Initializable {
 
 			if (selectedItem.equals("nastavnik"))
 				query = "SELECT lozinka FROM nastavnik WHERE email=? ";
-			else if (selectedItem.equals("student"))
+			else if (selectedItem.equals("student")) {
 				query = "SELECT lozinka FROM student WHERE email=? ";
+				Scene1 controller = new Scene1();
+				controller.setEmail(user);
+					
+			}
 			else if (selectedItem.equals("prodekan"))
 				query = "SELECT lozinka FROM nastavnik WHERE email=? AND prodekan=1";
 			else if (selectedItem.equals("administrator"))
