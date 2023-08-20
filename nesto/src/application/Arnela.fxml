@@ -11,49 +11,49 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ArnelaController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ArnelaController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="191.0" fitWidth="262.0" layoutX="14.0" layoutY="97.0">
+            <ImageView fitHeight="161.0" fitWidth="186.0" layoutX="65.0" layoutY="110.0">
                <image>
-                  <Image url="@../../../../Downloads/edu-removebg-preview.png" />
+                  <Image url="@images/download-removebg-preview.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
    </left>
    <right>
-      <AnchorPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="400.0" prefWidth="316.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="L1" layoutX="113.0" layoutY="60.0" text="Sign in" textFill="#5b6ad0">
+            <Label id="labelLogin" fx:id="L1" layoutX="113.0" layoutY="60.0" styleClass="labelLogin" text="Sign in" textFill="#5b6ad0">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="L3" layoutX="45.0" layoutY="148.0" text="Username" textFill="#5b6ad0">
+            <Label fx:id="L3" layoutX="46.0" layoutY="160.0" styleClass="labelLogin" text="Email" textFill="#5b6ad0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="L4" layoutX="45.0" layoutY="187.0" text="Password" textFill="#5b6ad0">
+            <Label fx:id="L4" layoutX="39.0" layoutY="203.0" styleClass="labelLogin" text="Lozinka" textFill="#5b6ad0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="tf_username" layoutX="138.0" layoutY="149.0" />
-            <PasswordField fx:id="tf_password" layoutX="138.0" layoutY="188.0" />
-            <Button fx:id="b_login" layoutX="123.0" layoutY="256.0" mnemonicParsing="false" onAction="#login" prefHeight="35.0" prefWidth="74.0" text="Log In" textFill="#5b6ad0">
+            <TextField fx:id="tf_username" layoutX="139.0" layoutY="164.0" prefHeight="24.0" prefWidth="153.0" />
+            <PasswordField fx:id="tf_password" layoutX="139.0" layoutY="207.0" prefHeight="24.0" prefWidth="154.0" />
+            <Button id="buttonLogin" fx:id="b_login" layoutX="122.0" layoutY="271.0" mnemonicParsing="false" onAction="#login" prefHeight="35.0" prefWidth="74.0" stylesheets="@application.css" text="Log In" textFill="#5b6ad0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Label fx:id="L2" layoutX="45.0" layoutY="109.0" text="Uloga" textFill="#5b6ad0">
+            <Label fx:id="L2" layoutX="45.0" layoutY="109.0" styleClass="labelLogin" text="Uloga" textFill="#5b6ad0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="MyChoiceBox" layoutX="138.0" layoutY="110.0" prefWidth="150.0" />
+            <ChoiceBox id="choiceboxLogin" fx:id="MyChoiceBox" layoutX="138.0" layoutY="110.0" prefHeight="19.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
    </right>

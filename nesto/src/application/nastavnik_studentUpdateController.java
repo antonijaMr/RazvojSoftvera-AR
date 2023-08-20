@@ -51,7 +51,7 @@ public class nastavnik_studentUpdateController implements Initializable {
 			System.out.println("sifra2: " + predmet.getSifraPred());
 			String query = "update slusaPred set bodovi = ? where idStud = ? and sifPred =?;";
 			mysql.pst = mysql.con.prepareStatement(query);
-			mysql.pst.setString(1, tf_bodovi.getText());
+			mysql.pst.setDouble(1, tf_bodovi.getText().isEmpty()? 0: Double.parseDouble(tf_bodovi.getText()));
 			mysql.pst.setString(2, studID.getText());
 			mysql.pst.setString(3, predmet.getSifraPred());
 			mysql.pst.executeUpdate();
@@ -64,8 +64,12 @@ public class nastavnik_studentUpdateController implements Initializable {
 
 	@FXML
 	public void dodaj(ActionEvent e) {
+		if(Double.parseDouble(tf_bodovi.getText())<1000) {
 		update();
 		s.alert("Bodovi promijenjeni");
+		}else {
+			s.alertEror("Pogresna vrijednost.");
+		}
 	}
 
 	@Override

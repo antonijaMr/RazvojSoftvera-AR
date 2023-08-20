@@ -186,3 +186,40 @@
 }
 
 
+#choiceboxLogin {
+    -fx-background-color: #E0E0E0; /* Grayish background color */
+    -fx-border-color: #ccc;
+    -fx-text-fill: #6B6B6B; /* Grayish text color */
+}
+
+#choiceboxLogin:hover {
+    -fx-background-color: #D0D0D0; /* Slightly darker gray background color */
+    -fx-text-fill: #6B6B6B; /* Grayish text color */
+}
+
+#labelLogin {
+    -fx-font-size: 13px;
+    -fx-padding: 8px;
+    -fx-text-fill: #6B6B6B; /* Grayish text color */
+    -fx-font-weight: bold;
+}
+
+#buttonLogin {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px;
+    -fx-background-color: #D0D0D0; /* Grayish background color */
+    -fx-text-fill: white; /* White text color */
+}
+
+#buttonLogin:hover {
+    -fx-background-color: #C0C0C0; /* Slightly darker gray background color */
+}
+
+#buttonLogin:pressed {
+    -fx-background-color: #C0C0C0; /* Slightly darker gray background color */
+}
+
+
+
+

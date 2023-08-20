@@ -29,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import models.Predmet2;
@@ -38,6 +39,8 @@ import javafx.scene.control.TextArea;
 
 public class Scene1 implements Initializable {
 	 private static String email;
+		private SceneLoader s = new SceneLoader();
+
 	 
 	 public void setEmail(String e) {
 		 email=e;
@@ -60,7 +63,11 @@ public class Scene1 implements Initializable {
 	 ObservableList<String> Zimski = FXCollections.observableArrayList();
 	 ObservableList<String> Ljetni = FXCollections.observableArrayList();
 	 ObservableList<String> Trenutni = FXCollections.observableArrayList();
+
 	 ObservableList<String> ListaZahtjeva = FXCollections.observableArrayList();
+
+	 ObservableList<String> VrstaZahtjeva = FXCollections.observableArrayList("Za prenos bodova","Za slusanje predmeta","Za prenos predispitnih bodova");
+
 	 
 	 @FXML private ListView<String> RegistrovaniPredmetiLista = new ListView<>(Trenutni);
 	 @FXML private ListView<String> PredmetiTrenutni = new ListView<>(Trenutni);
@@ -101,7 +108,7 @@ public class Scene1 implements Initializable {
 	private Connection getConnection() throws Exception {
 	String url = "jdbc:mysql://localhost:3306/projekat"; //
     String user = "root";
-    String password = "";
+    String password = "2481632am*";
 	
     return DriverManager.getConnection(url, user, password);
 	}
@@ -115,7 +122,7 @@ public class Scene1 implements Initializable {
             Statement statement = connection.createStatement();
               
 //           String query2 = "SELECT * FROM Predmet";
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Predmet");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM predmet");
 
             while (resultSet.next()) {
             	String nazivpred = resultSet.getString("nazivpred");
@@ -144,7 +151,7 @@ public class Scene1 implements Initializable {
         try {  
         	Class.forName("com.mysql.cj.jdbc.Driver");
         	Connection connection = getConnection();
-        	String query="SELECT * FROM Student WHERE email=?";
+        	String query="SELECT * FROM student WHERE email=?";
             PreparedStatement statement = connection.prepareStatement(query);
             System.out.println(email);
             statement.setString(1,email) ;
@@ -181,7 +188,7 @@ public class Scene1 implements Initializable {
               
             ResultSet resultSet = 
             statement.executeQuery("SELECT obnova FROM slusaPred WHERE idStud = "+indeks+" "
-            		+ "AND sifPred= (SELECT sifpred FROM Predmet WHERE nazivPred = '"+pred+"')"
+            		+ "AND sifPred= (SELECT sifpred FROM predmet WHERE nazivPred = '"+pred+"')"
             				+ " AND godina = YEAR(current_date())");
             while (resultSet.next()) {
             	
@@ -260,11 +267,11 @@ public class Scene1 implements Initializable {
 
 	        String insertQuery = "INSERT INTO slusaPred (idStud, sifPred, godina, obnova, bodovi, ocjena) " +
 	                            "VALUES (" + indeks + ", " +
-	                            "(SELECT sifPred FROM Predmet WHERE nazivPred = '" + pred + "'), " +
+	                            "(SELECT sifPred FROM predmet WHERE nazivPred = '" + pred + "'), " +
 	                            "YEAR(CURRENT_DATE()), false, 0.00, 5)";
 
 	        int rowsAffected = statement.executeUpdate(insertQuery);
-	        System.out.println("Registrovan je Predmet: "+pred+" " + "za ID:"+indeks.toString());
+	        System.out.println("Registrovan je predmet: "+pred+" " + "za ID:"+indeks.toString());
 
 	        statement.close();
 	        connection.close();
@@ -280,11 +287,11 @@ public class Scene1 implements Initializable {
 	        Statement statement = connection.createStatement();
 
 	        String deleteQuery = "DELETE FROM slusaPred WHERE idStud = " + indeks +
-	                            " AND sifPred = (SELECT sifPred FROM Predmet WHERE nazivPred = '" + pred + "')" +
+	                            " AND sifPred = (SELECT sifPred FROM predmet WHERE nazivPred = '" + pred + "')" +
 	                            " AND godina = YEAR(CURRENT_DATE())";
 
 	        int rowsAffected = statement.executeUpdate(deleteQuery);
-	        System.out.println("Obrisan je Predmet: "+pred+" " + "za ID:"+indeks.toString());
+	        System.out.println("Obrisan je predmet: "+pred+" " + "za ID:"+indeks.toString());
 
 	        statement.close();
 	        connection.close();
@@ -300,8 +307,8 @@ public class Scene1 implements Initializable {
         	Connection connection = getConnection();
             Statement statement = connection.createStatement();
               
-            ResultSet resultSet = statement.executeQuery("SELECT nazivPred from Predmet JOIN"
-            		+ " slusaPred on slusaPred.sifPred = Predmet.sifPred "
+            ResultSet resultSet = statement.executeQuery("SELECT nazivPred from predmet JOIN"
+            		+ " slusaPred on slusaPred.sifPred = predmet.sifPred "
             		+ "WHERE idStud = "+stud.getBrojIndeksa()+" AND godina = YEAR(current_date())"
             		+ "AND semestar = 'ljetni';");
             while (resultSet.next()) {
@@ -429,7 +436,7 @@ public class Scene1 implements Initializable {
         	Connection connection = getConnection();
             Statement statement = connection.createStatement();
               
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Predmet WHERE nazivPred = '"+naziv+"'");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM predmet WHERE nazivPred = '"+naziv+"'");
             while (resultSet.next()) {
             	String nazivpred = resultSet.getString("nazivpred");
             	String sifraPred = resultSet.getString("sifpred");
@@ -457,8 +464,8 @@ public class Scene1 implements Initializable {
         	Connection connection = getConnection();
             Statement statement = connection.createStatement();
               
-            ResultSet resultSet = statement.executeQuery("SELECT nazivPred from Predmet JOIN"
-            		+ " slusaPred on slusaPred.sifPred = Predmet.sifPred "
+            ResultSet resultSet = statement.executeQuery("SELECT nazivPred from predmet JOIN"
+            		+ " slusaPred on slusaPred.sifPred = predmet.sifPred "
             		+ "WHERE idStud = "+stud.getBrojIndeksa()+" AND godina = YEAR(current_date())"
             		+ "AND semestar = 'zimski';");
             while (resultSet.next()) {
@@ -485,7 +492,7 @@ public class Scene1 implements Initializable {
 		 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		 alert.setTitle("Potvrda registracije");
 		 alert.setHeaderText("Jeste li sigurni da zelite zavrsiti registraciju?");
-		 alert.setContentText("Ukoliko naknadno budete htjeli modificirati registrovane Predmete morat cete slati zahtjev za izmjenu registrovanih Predmet2a prodekanu!");
+		 alert.setContentText("Ukoliko naknadno budete htjeli modificirati registrovane predmete morat cete slati zahtjev za izmjenu registrovanih predmet2a prodekanu!");
 		 Optional<ButtonType> result = alert.showAndWait();
 		 if (result.isPresent() && result.get() == ButtonType.OK) {
 			 PredmetiLista.setDisable(true);
@@ -518,12 +525,12 @@ public class Scene1 implements Initializable {
 		 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		 alert.setTitle("Potvrda registracije");
 		 alert.setHeaderText("Jeste li sigurni da zelite zavrsiti registraciju?");
-		 alert.setContentText("Ukoliko naknadno budete htjeli modificirati registrovane Predmet2e morat cete slati zahtjev za izmjenu registrovanih Predmeta prodekanu!");
+		 alert.setContentText("Ukoliko naknadno budete htjeli modificirati registrovane predmete morat cete slati zahtjev za izmjenu registrovanih predmeta prodekanu!");
 		 Optional<ButtonType> result = alert.showAndWait();
 		 if (result.isPresent() && result.get() == ButtonType.OK) {
 			ZakljucajRegistraciju();
 			stud.setZavrsioReg(true);
-			insertQuery("UPDATE Student SET zavrsioReg = true WHERE brojIndeksa = "+stud.getBrojIndeksa());
+			insertQuery("UPDATE student SET zavrsioReg = true WHERE brojIndeksa = "+stud.getBrojIndeksa());
 		 }
 	 }
 	
@@ -531,7 +538,7 @@ public class Scene1 implements Initializable {
 		 if(stud.getGodStudija()==1 && stud.getOstvareniECTS() == 0)
 		 {
 			 stud.setStatusStud("prvi put");
-				insertQuery("UPDATE Student SET statusStud = 'prvi put' WHERE brojIndeksa = "+stud.getBrojIndeksa()+"");
+				insertQuery("UPDATE student SET statusStud = 'prvi put' WHERE brojIndeksa = "+stud.getBrojIndeksa()+"");
 				return true;
 		 }
 		 else
@@ -540,16 +547,16 @@ public class Scene1 implements Initializable {
 	 public void setStatusStudenta() {
 		if(stud.getOstvareniECTS()>=(stud.getGodStudija()*60-12)) {
 			stud.setGodStudija(stud.getGodStudija()+1);
-			insertQuery("UPDATE Student SET godStudija="+stud.getGodStudija()+" WHERE brojIndeksa = "+stud.getBrojIndeksa()+"");
+			insertQuery("UPDATE student SET godStudija="+stud.getGodStudija()+" WHERE brojIndeksa = "+stud.getBrojIndeksa()+"");
 		}
 		if(!ZakljucanaRegistracija() && stud.getOstvareniECTS()<stud.getGodStudija()*60-12 && !JeBrucos()) {
 			stud.setStatusStud("obnova");
-			insertQuery("UPDATE Student SET statusStud = 'obnova' WHERE brojIndeksa = "+stud.getBrojIndeksa()+"");
+			insertQuery("UPDATE student SET statusStud = 'obnova' WHERE brojIndeksa = "+stud.getBrojIndeksa()+"");
 		}
 		else if(!ZakljucanaRegistracija() && (stud.getOstvareniECTS()>=stud.getGodStudija()*60-12))
 		{
 			stud.setStatusStud("redovan");
-			insertQuery("UPDATE Student SET statusStud = 'redovan' WHERE brojIndeksa = "+stud.getBrojIndeksa()+"");
+			insertQuery("UPDATE student SET statusStud = 'redovan' WHERE brojIndeksa = "+stud.getBrojIndeksa()+"");
 		}
 	 }
 	 
@@ -647,7 +654,7 @@ public class Scene1 implements Initializable {
 		
 		try{Ljetni.addAll(PredmetiLjetni.getItems());
 		    Zimski.addAll(PredmetiZimski.getItems());
-		    VrstaZahtjevaLista.getItems().addAll("Za prenos Bodova","Za slusanje Predmeta","Za zamjenu Predmeta");
+		    VrstaZahtjevaLista.getItems().addAll("Za prenos Bodova","Za slusanje predmeta","Za zamjenu predmeta");
 		    }
 		catch(Exception e) {System.out.println();};
 		System.out.println(Zimski);
@@ -708,7 +715,7 @@ public class Scene1 implements Initializable {
 		 RegistracijaMenu.setOnMouseClicked(event -> {
 			    if (event.getClickCount() == 1) { // Check for single-click
 			        try {
-			            root = FXMLLoader.load(getClass().getResource("Student.fxml"));
+			            root = FXMLLoader.load(getClass().getResource("student.fxml"));
 			            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			            scene = new Scene(root);
 			            stage.setScene(scene);
@@ -838,9 +845,10 @@ public class Scene1 implements Initializable {
 		 
 	
 	 }
-
-	
-
-	
+	 
+	 @FXML
+	 public void logout(MouseEvent e) {
+		 s.logout(e);
+	 }
 	
 }
