@@ -107,6 +107,7 @@ public class prodekanDodajUnosController implements Initializable {
 
 	@FXML
 	private void potvrdiUnos(ActionEvent e) throws SQLException {
+
 		if (!empty()) {
 			String[] odabraniNastavnik = (String[]) nastavnik_choice.getSelectionModel().getSelectedItem().split(",");
 			String odabraniPredmet = (String) predmet_choice.getSelectionModel().getSelectedItem();
@@ -121,6 +122,7 @@ public class prodekanDodajUnosController implements Initializable {
 
 			if (res.next()) {
 				id = res.getInt("sifNast");
+
 
 			}
 			query = "SELECT sifPred FROM predmet WHERE nazivPred=?";
@@ -159,6 +161,7 @@ public class prodekanDodajUnosController implements Initializable {
 			}
 		} else {
 			s.alert("Ispunite sva polja!");
+		}
 		}
 	}
 

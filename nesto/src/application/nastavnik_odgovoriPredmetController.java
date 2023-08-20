@@ -72,7 +72,12 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 			mysql.pst.setString(4, nastavnik.getSifNast());
 			mysql.pst.setString(5, zahtjev.getPred().getSifraPred());
 
-			mysql.pst.executeUpdate();
+			int rowsAffected=mysql.pst.executeUpdate();
+			if(rowsAffected>0) {
+				s.alert("Zahtjev odbijen.");	
+			}else {
+				s.alert("Failed");
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
