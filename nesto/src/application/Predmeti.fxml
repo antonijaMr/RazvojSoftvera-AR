@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="900.0" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Scene1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="900.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Scene1">
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="511.0" prefWidth="206.0" styleClass="left-bar-background" stylesheets="@application.css" BorderPane.alignment="CENTER">
          <children>
@@ -38,7 +38,7 @@
                   <Insets bottom="5.0" right="10.0" top="5.0" />
                </VBox.margin>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css">
+            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0" stylesheets="@application.css">
                <children>
                   <Pane prefHeight="34.0" prefWidth="170.0" />
                   <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">

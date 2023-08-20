@@ -33,6 +33,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import models.Predmet2;
 import models.Student2;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 
 public class Scene1 implements Initializable {
 	 private static String email;
@@ -54,18 +56,24 @@ public class Scene1 implements Initializable {
 	 //ArrayList<String> nizLjetni = new ArrayList<>();
 	 //ArrayList<String> nizZimski = new ArrayList<>();
 	 
-	 ObservableList<String> Predmet2i = FXCollections.observableArrayList();
+	 ObservableList<String> Predmeti = FXCollections.observableArrayList();
 	 ObservableList<String> Zimski = FXCollections.observableArrayList();
 	 ObservableList<String> Ljetni = FXCollections.observableArrayList();
 	 ObservableList<String> Trenutni = FXCollections.observableArrayList();
-	 ObservableList<String> VrstaZahtjeva = FXCollections.observableArrayList("Za prenos bodova","Za slusanje Predmet2a","Za prenos predispitnih bodova");
+	 ObservableList<String> ListaZahtjeva = FXCollections.observableArrayList();
 	 
 	 @FXML private ListView<String> RegistrovaniPredmetiLista = new ListView<>(Trenutni);
 	 @FXML private ListView<String> PredmetiTrenutni = new ListView<>(Trenutni);
-	 @FXML private ListView<String> PredmetiLista = new ListView<>(Predmet2i);
+	 @FXML private ListView<String> PredmetiLista = new ListView<>(Predmeti);
 	 @FXML private ListView<String> PredmetiZimski = new ListView<>(Zimski);
 	 @FXML private ListView<String> PredmetiLjetni = new ListView<>(Ljetni);
-	 @FXML private ListView<String> VrstaZahtjevaLista = new ListView<>(VrstaZahtjeva);
+	 @FXML private ListView<String> ZahtjeviLista = new ListView<>(ListaZahtjeva);
+	 @FXML private ComboBox<String> VrstaZahtjevaLista = new ComboBox<>();
+	 @FXML private ComboBox<String> PrviPredmet = new ComboBox<>();
+	 @FXML private ComboBox<String> DrugiPredmet = new ComboBox<>();
+	 @FXML private ComboBox<String> NemaPreduslove = new ComboBox<>();
+	 
+	 @FXML private TextArea ZahtjevPoruka = new TextArea();
 	 
 	 @FXML private Label RegistracijaMenu;
 	 @FXML private Label PredmetiMenu;
@@ -192,12 +200,14 @@ public class Scene1 implements Initializable {
 	        Statement statement = connection.createStatement();
 	          
 	        ResultSet resultSet = 
-	        statement.executeQuery("SELECT COUNT(*)"
-	        		+ "FROM preduslov p"
-	        		+ "LEFT JOIN slusaPred sp ON p.sifPreduslov = sp.sifPred"
-	        		+ "WHERE p.sifPred = '"+getPredmet(naziv).getSifraPred()+"'"
-	        		+ "      AND sp.brojIndeksa = '"+stud.getBrojIndeksa()+"'"
-	        		+ "      AND (sp.sifPred IS NULL OR sp.ocjena < 6);");
+	        		statement.executeQuery(
+	        			    "SELECT COUNT(*) " +
+	        			    "FROM preduslov p " +
+	        			    "LEFT JOIN slusaPred sp ON p.sifPreduslov = sp.sifPred " +
+	        			    "WHERE p.sifPred = '" + getPredmet(naziv).getSifraPred() + "' " +
+	        			    "      AND sp.idStud = '" + stud.getBrojIndeksa() + "' " +
+	        			    "      AND (sp.sifPred IS NULL OR sp.ocjena < 6);"
+	        			);
 	        while (resultSet.next()) {
 	        	
 	        	potvrda = resultSet.getInt(1);
@@ -338,6 +348,63 @@ public class Scene1 implements Initializable {
             e.printStackTrace();
         }
 		return predavaci;
+	}
+	
+	private ArrayList<String> getZahtjeviZaSlusanje(String naziv) {
+		ArrayList<String> zahtjevi = new ArrayList<>();
+		try {  
+        	Class.forName("com.mysql.cj.jdbc.Driver");
+        	Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+              
+            ResultSet resultSet = statement.executeQuery("SELECT sifPred FROM zahtjevZaSlusanje "
+            		+ "WHERE sifPred = '"+getPredmet(naziv).getSifraPred()+"' AND idStud='"+stud.getBrojIndeksa()+"'");
+            while (resultSet.next()) {
+            	
+            	String zahtjev = resultSet.getString("sifPred");
+            	zahtjevi.add(zahtjev);
+                 }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return zahtjevi;
+	}
+	private Integer getBodoviOdprosleGodine(String naziv) {
+		Integer bodovi = 0;
+		try {  
+        	Class.forName("com.mysql.cj.jdbc.Driver");
+        	Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+              
+            ResultSet resultSet = statement.executeQuery("SELECT bodovi FROM slusaPred WHERE sifPred='"+getPredmet(naziv).getSifraPred()+"'"
+            		+ " AND idStud = '"+stud.getBrojIndeksa()+"' AND godina = YEAR(CURRENT_DATE())-1");
+            while (resultSet.next()) {	
+            	
+            	bodovi = resultSet.getInt(1);
+                 }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return bodovi;
+	}
+	private String getOdgovorni(Predmet2 pred) {
+		String odgovorni = new String();
+		try {  
+        	Class.forName("com.mysql.cj.jdbc.Driver");
+        	Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+              
+            ResultSet resultSet = statement.executeQuery("SELECT sifNastavnik FROM predaje "
+            		+ " WHERE sifPred = '"+pred.getSifraPred()+"' AND "
+            				+ "nosioc = true");
+            while (resultSet.next()) {	
+            	System.out.println(resultSet.getString("sifNastavnik")); 
+            	odgovorni = resultSet.getString("sifNastavnik");
+                 }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return odgovorni;
 	}
 	private String getOcjena(Predmet2 pred) {
 	    Integer ocjena = 5;
@@ -486,6 +553,74 @@ public class Scene1 implements Initializable {
 		}
 	 }
 	 
+	 public void ListaMogucihZahtjeva() {
+         String selectedValue = VrstaZahtjevaLista.getValue();
+		     if(selectedValue.equals("Za slusanje predmeta"))
+		     {
+		     NemaPreduslove.setVisible(true);	    
+		     PrviPredmet.setVisible(false);
+		     DrugiPredmet.setVisible(false);
+		     ZahtjevPoruka.setDisable(false); }
+		     if(selectedValue.equals("Za prenos bodova"))
+		     {NemaPreduslove.setVisible(false);
+		     PrviPredmet.setVisible(true);
+		     DrugiPredmet.setVisible(false);
+		     ZahtjevPoruka.setDisable(true);}
+		     if(selectedValue.equals("Za zamjenu predmeta"))
+		     {NemaPreduslove.setVisible(false);
+		     PrviPredmet.setVisible(true);
+		     DrugiPredmet.setVisible(true);
+		     ZahtjevPoruka.setDisable(false);}
+		};
+	 public void PrviPredmetAction()
+	 {
+		 String selectedValue = PrviPredmet.getValue();
+		 System.out.println(selectedValue);
+	 }
+	 public void DrugiPredmetAction()
+	 {
+		 String selectedValue = DrugiPredmet.getValue();
+		 System.out.println(selectedValue);
+	 }
+	 public void NemaPreduslovaPredmetAction()
+	 {
+		 String selectedValue = NemaPreduslove.getValue();
+		 System.out.println(selectedValue);
+	 }
+	 public void PosaljiZahtjevAction(ActionEvent event) throws IOException {
+		 
+		 String vrstaZahtjeva = "";
+		 if(VrstaZahtjevaLista.getValue().equals("Za zamjenu predmeta")) {vrstaZahtjeva = "zahtjevZaPromjenu";}
+		 else if(VrstaZahtjevaLista.getValue().equals("Za prenos bodova")) {vrstaZahtjeva = "zahtjevZaPrenos";}
+		 else if(VrstaZahtjevaLista.getValue().equals("Za slusanje predmeta")) {vrstaZahtjeva = "zahtjevZaSlusanje";}
+		
+        if(vrstaZahtjeva.equals("zahtjevZaPrenos"))
+        	insertQuery("INSERT INTO " + vrstaZahtjeva +
+        	        "    (idStud,sifNast,brojBodova,sifPred) VALUES (" +
+        	        "'" + stud.getBrojIndeksa() + "'," +
+        	        "'" + getOdgovorni(getPredmet(PrviPredmet.getValue())) + "'," +
+        	        "'" + getBodoviOdprosleGodine(PrviPredmet.getValue()).toString() + "'," +
+        	        "'" + getPredmet(PrviPredmet.getValue()).getSifraPred() + "')");
+                
+	 
+        else if(vrstaZahtjeva.equals("zahtjevZaSlusanje"))
+     	insertQuery("INSERT INTO " + vrstaZahtjeva +
+     	        "    (idStud,sifNast,sifPred,poruka) VALUES (" +
+     	        "'" + stud.getBrojIndeksa() + "'," +
+     	        "'" + getOdgovorni(getPredmet(NemaPreduslove.getValue())) + "'," +
+     	        "'" + getPredmet(NemaPreduslove.getValue()).getSifraPred() + "'," +  
+     	        "'" + ZahtjevPoruka.getText() + "')"); 
+        else if(vrstaZahtjeva.equals("zahtjevZaPromjenu"))
+         	insertQuery("INSERT INTO " + vrstaZahtjeva +
+         	        "    (idStud,sifPred1,sifPred2,poruka) VALUES (" +
+         	        "'" + stud.getBrojIndeksa() + "'," +
+         	        "'" + getPredmet(PrviPredmet.getValue()).getSifraPred() + "'," +
+         	        "'" + getPredmet(DrugiPredmet.getValue()).getSifraPred() + "'," +
+         	        "'" + ZahtjevPoruka.getText() + "')");   
+	   
+	 }
+	 
+	 
 	 @Override
 	 public void initialize(URL location, ResourceBundle resources) {
 		 getStudent();
@@ -504,6 +639,11 @@ public class Scene1 implements Initializable {
 		PredmetiZimski.getItems().addAll(getZimskiPredmeti(stud));
 		RegistrovaniPredmetiLista.getItems().addAll(getLjetniPredmeti(stud));
 		RegistrovaniPredmetiLista.getItems().addAll(getZimskiPredmeti(stud));
+		if(VrstaZahtjevaLista.getItems().isEmpty())
+	        VrstaZahtjevaLista.getItems().addAll("Za prenos bodova","Za slusanje predmeta","Za zamjenu predmeta");
+			RegistrovaniPredmetiLista.getItems().addAll(getLjetniPredmeti(stud));
+			RegistrovaniPredmetiLista.getItems().addAll(getZimskiPredmeti(stud));
+		
 		
 		try{Ljetni.addAll(PredmetiLjetni.getItems());
 		    Zimski.addAll(PredmetiZimski.getItems());
@@ -520,6 +660,35 @@ public class Scene1 implements Initializable {
 	                .collect(Collectors.toList()));
 		 
 		 /////////////////////////////////////////////////////////////////////////////
+		 if(PrviPredmet.getItems().isEmpty())
+			{
+		    PrviPredmet.getItems().addAll(Trenutni);
+			}
+			
+			if(DrugiPredmet.getItems().isEmpty()) {
+				ArrayList<String> sviPredmeti = new ArrayList<>();
+				sviPredmeti.addAll(PredmetiLista.getItems());
+				for(int i = 0; i < Trenutni.size(); i++)
+					for(int n = 0; n < sviPredmeti.size();n++)
+					if(Trenutni.get(i).equals(sviPredmeti.get(n)))
+						sviPredmeti.remove(n);
+				sviPredmeti.add(PredmetiLista.getItems().get(0));
+				for(int i = 0; i<sviPredmeti.size(); i++) {
+				if(ImaPreduslove(sviPredmeti.get(i)))
+					DrugiPredmet.getItems().add(sviPredmeti.get(i));
+				}
+			}
+	        if(NemaPreduslove.getItems().isEmpty())
+	        	for(int i = 0; i < PredmetiLista.getItems().size(); i++)
+	        	{
+	        		if(!ImaPreduslove(PredmetiLista.getItems().get(i)))
+	        		{
+	        			NemaPreduslove.getItems().add(PredmetiLista.getItems().get(i));
+	        		}
+	        	}
+			
+		 
+		 
 		 PredmetiMenu.setOnMouseClicked(event -> {
 			    if (event.getClickCount() == 1) { // Check for single-click
 			        try {
@@ -570,7 +739,7 @@ public class Scene1 implements Initializable {
 			    if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
 			        // Double-click logic
 			        String current = PredmetiLista.getSelectionModel().getSelectedItem();
-System.out.println(getPredmet(current).getSemestar());
+                    
 			        int pos = getSubjects().stream()
 			                .map(Predmet2::getNazivpred)
 			                .collect(Collectors.toList())
@@ -623,14 +792,7 @@ System.out.println(getPredmet(current).getSemestar());
 			    }
 			});
 		 
-		 VrstaZahtjevaLista.setOnMouseClicked(event -> {
-			    if (event.getClickCount() == 1) { // Check for single-click
-			        String Selected = VrstaZahtjevaLista.getSelectionModel().getSelectedItem();
-			        VrstaZahtjevaLista.getItems().addAll(VrstaZahtjeva);
-			        System.out.println(Selected);
-			      
-			    }
-			});
+		
 		 
 		 PredmetiZimski.setOnMouseClicked(event -> {
 			    if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {

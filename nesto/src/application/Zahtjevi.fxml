@@ -3,9 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
@@ -52,7 +53,7 @@
                               <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Registracija" fx:id="RegistracijaMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Registracija" textAlignment="CENTER">
+                        <Label id="MenuItem" fx:id="RegistracijaMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="90.0" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Registracija" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -84,7 +85,7 @@
                               <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Predmet" fx:id="PredmetiMenu" accessibleRole="BUTTON" contentDisplay="CENTER" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Predmeti" textAlignment="CENTER">
+                        <Label id="MenuItem" fx:id="PredmetiMenu" accessibleRole="BUTTON" contentDisplay="CENTER" prefHeight="42.0" prefWidth="90.0" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Predmeti" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -110,7 +111,7 @@
                               <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Registracija" fx:id="ZahtjeviMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Zahtjevi" textAlignment="CENTER">
+                        <Label id="MenuItem" fx:id="ZahtjeviMenu" accessibleRole="BUTTON" opacity="0.99" prefHeight="42.0" prefWidth="90.0" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Zahtjevi" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -143,7 +144,7 @@
                               <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="Odjava" accessibleRole="BUTTON" contentDisplay="CENTER" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Odjava" textAlignment="CENTER">
+                        <Label id="MenuItem" accessibleRole="BUTTON" contentDisplay="CENTER" prefHeight="42.0" prefWidth="90.0" stylesheets="@../eclipse-workspace/StudentMenu/bin/application/application.css" text="Odjava" textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -175,24 +176,44 @@
          <children>
             <HBox id="RegistracijaPane" prefHeight="504.0" prefWidth="694.0">
                <children>
-                  <TitledPane id="PredmetiIzbor" alignment="CENTER" animated="false" collapsible="false" prefHeight="475.0" prefWidth="274.0" text="Podneseni Zahtjevi" textFill="WHITE">
+                  <VBox prefHeight="448.0" prefWidth="286.0">
+                     <children>
+                        <ComboBox fx:id="NemaPreduslove" onAction="#NemaPreduslovaPredmetAction" prefHeight="38.0" prefWidth="299.0" promptText="Predmet 1" visible="false" />
+                        <ComboBox fx:id="PrviPredmet" onAction="#PrviPredmetAction" prefHeight="38.0" prefWidth="287.0" promptText="Predmet 1" />
+                        <ComboBox fx:id="DrugiPredmet" onAction="#DrugiPredmetAction" prefHeight="38.0" prefWidth="287.0" promptText="Zamijeni sa predmetom" visible="false" />
+                        <ComboBox fx:id="VrstaZahtjevaLista" onAction="#ListaMogucihZahtjeva" prefHeight="38.0" prefWidth="287.0" promptText="Vrsta Zahtjeva" />
+                        <TitledPane id="PredmetiIzbor" alignment="CENTER" animated="false" collapsible="false" prefHeight="360.0" prefWidth="286.0" text="Podneseni Zahtjevi" textFill="WHITE">
+                           <content>
+                              <ListView fx:id="ZahtjeviLista" prefHeight="171.0" prefWidth="266.0" />
+                           </content>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </TitledPane>
+                     </children>
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                        <Insets right="5.0" />
                      </HBox.margin>
-                     <content>
-                        <ListView fx:id="ZahtjeviLista" prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                  </TitledPane>
+                  </VBox>
                   <VBox prefHeight="504.0" prefWidth="390.0">
                      <children>
-                        <TitledPane id="PredmetiIzbor" alignment="CENTER" animated="false" collapsible="false" prefHeight="115.0" prefWidth="390.0" text="Vrsta Zahtjeva" textFill="WHITE">
-                           <content>
-                              <ListView fx:id="VrstaZahtjevaLista" prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </TitledPane>
-                        <HBox prefHeight="33.0" prefWidth="390.0">
+                        <Pane prefHeight="59.0" prefWidth="390.0" />
+                        <VBox prefHeight="212.0" prefWidth="381.0">
                            <children>
-                              <Label prefHeight="35.0" prefWidth="114.0" text="STATUS:" />
+                              <TextArea fx:id="ZahtjevPoruka" prefHeight="130.0" prefWidth="381.0" promptText="Vasa Poruka" wrapText="true" />
+                              <Button fx:id="ZahtjevButton" alignment="CENTER" mnemonicParsing="false" onAction="#PosaljiZahtjevAction" prefHeight="26.0" prefWidth="99.0" text="Pošalji" wrapText="true">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <HBox prefHeight="27.0" prefWidth="390.0">
+                           <children>
+                              <Label prefHeight="35.0" prefWidth="106.0" text="STATUS:" />
                               <Label prefHeight="35.0" prefWidth="354.0" />
                            </children>
                         </HBox>
@@ -202,30 +223,16 @@
                               <Label prefHeight="35.0" prefWidth="354.0" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="96.0" prefWidth="390.0">
+                        <HBox prefHeight="137.0" prefWidth="390.0">
                            <children>
                               <Label prefHeight="100.0" prefWidth="87.0" text="PORUKA:" />
                               <Label id="TekstDokumenti" prefHeight="96.0" prefWidth="306.0" textFill="#333232" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="98.0" prefWidth="390.0">
+                        <HBox prefHeight="138.0" prefWidth="390.0">
                            <children>
                               <Label prefHeight="98.0" prefWidth="134.0" text="ODGOVOR:" />
                               <Label id="TekstDokumenti" prefHeight="98.0" prefWidth="350.0" textFill="#262525" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="99.0" prefWidth="390.0">
-                           <children>
-                              <Button fx:id="ZahtjevButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="90.0" prefWidth="80.0" text="Pošalji Zahtjev" wrapText="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <TextField fx:id="ZahtjevPoruka" alignment="TOP_LEFT" prefHeight="99.0" prefWidth="305.0" promptText="Vasa poruka" style="-fx-background-color: white;" stylesheets="@application.css">
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
-                              </TextField>
                            </children>
                         </HBox>
                      </children>
