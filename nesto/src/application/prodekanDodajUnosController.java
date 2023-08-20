@@ -84,7 +84,7 @@ public class prodekanDodajUnosController implements Initializable {
 
 	private void ucitajPredmete() {
 		try {
-			String query = "SELECT nazivPred FROM predmeti";
+			String query = "SELECT nazivPred FROM predmet";
 			PreparedStatement preparedStatement = mysql.con.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -117,7 +117,7 @@ public class prodekanDodajUnosController implements Initializable {
 			id = res.getInt("sifNast");
 
 		}
-		query = "SELECT sifPred FROM predmeti WHERE nazivPred=?";
+		query = "SELECT sifPred FROM predmet WHERE nazivPred=?";
 		mysql.pst = mysql.con.prepareStatement(query);
 		mysql.pst.setString(1, odabraniPredmet);
 		res = mysql.pst.executeQuery();
@@ -181,7 +181,7 @@ public class prodekanDodajUnosController implements Initializable {
 	}
 
 	@FXML
-	private void to_pregled_plana(MouseEvent e) {
+	private void to_pregled_plana(ActionEvent e) {
 		s.loadProdekan_to_pregled_plana(e);
 	}
 

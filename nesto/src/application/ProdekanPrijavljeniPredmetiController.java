@@ -1,21 +1,14 @@
 package application;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,8 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import models.Nastavnik;
 import models.Predmet;
 import models.Student_predmet;
 
@@ -80,8 +73,8 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable {
 
 		try {
 			List.clear();
-			query = "SELECT student.brojIndeksa,predmeti.sifPred,nazivPred,CONCAT(ime,' ',prezime) AS StudIme FROM student INNER JOIN slusaPred ON student.brojIndeksa=slusaPred.brojIndeksa"
-					+ " INNER JOIN predmeti ON predmeti.sifPred=slusaPred.sifPred ORDER BY prezime DESC";
+			query = "SELECT student.brojIndeksa,predmet.sifPred,nazivPred,CONCAT(ime,' ',prezime) AS StudIme FROM student INNER JOIN slusaPred ON student.brojIndeksa=slusaPred.idStud"
+					+ " INNER JOIN predmet ON predmet.sifPred=slusaPred.sifPred ORDER BY prezime DESC";
 
 			mysql.pst = mysql.con.prepareStatement(query);
 			res = mysql.pst.executeQuery();
@@ -114,7 +107,6 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable {
 			}
 		}
 
-		// Update your TableView with the filtered data
 		PrijavljeniStudentiTable.setItems(filteredList);
 	}
 
@@ -127,37 +119,37 @@ public class ProdekanPrijavljeniPredmetiController implements Initializable {
 	}
 
 	@FXML
-	private void logout(ActionEvent e) {
+	private void logout(MouseEvent e) {
 		s.logout(e);
 	}
 
 	@FXML
-	private void nastavnici(ActionEvent e) {
+	private void nastavnici(MouseEvent e) {
 		s.loadProdekan_nastavnici(e);
 	}
 
 	@FXML
-	private void predmeti(ActionEvent e) {
+	private void predmeti(MouseEvent e) {
 		s.loadProdekan_to_predmeti(e);
 	}
 
 	@FXML
-	private void to_zahtjevi(ActionEvent e) {
+	private void to_zahtjevi(MouseEvent e) {
 		s.loadProdekan_to_zahtjevi(e);
 	}
 
 	@FXML
-	private void to_plan_realizacije(ActionEvent e) {
+	private void to_plan_realizacije(MouseEvent e) {
 		s.loadProdekan_to_plan_realizacije(e);
 	}
 
 	@FXML
-	private void to_prijavljeni_predmeti(ActionEvent e) {
+	private void to_prijavljeni_predmeti(MouseEvent e) {
 		s.loadProdekan_to_prijavljeni_predmeti(e);
 	}
 
 	@FXML
-	private void to_bitni_datumi(ActionEvent e) {
+	private void to_bitni_datumi(MouseEvent e) {
 		s.loadProdekan_to_bitni_datumi(e);
 	}
 }
