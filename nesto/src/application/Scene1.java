@@ -101,14 +101,17 @@ public class Scene1 implements Initializable {
 	 @FXML private Button ZahtjevButton;
 	 
 	 
-	 
+	 @FXML public Label ZahtjevStatus;
+	 @FXML public Label ZahtjevTip;
+	 @FXML public Label ZahtjevPorukaInfo;
+	 @FXML public Label ZahtjevOdgovor;
 	
 	 
 	Student2 stud=new Student2();
 	private Connection getConnection() throws Exception {
 	String url = "jdbc:mysql://localhost:3306/projekat"; //
     String user = "root";
-    String password = "2481632am*";
+    String password = "";
 	
     return DriverManager.getConnection(url, user, password);
 	}
@@ -376,6 +379,46 @@ public class Scene1 implements Initializable {
         }
 		return zahtjevi;
 	}
+	
+	private ArrayList<String> getZahtjeviZaPrenos() {
+		ArrayList<String> zahtjevi = new ArrayList<>();
+		try {  
+        	Class.forName("com.mysql.cj.jdbc.Driver");
+        	Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+              
+            ResultSet resultSet = statement.executeQuery("SELECT sifPred FROM zahtjevZaPrenos "
+            		+ "WHERE idStud='"+stud.getBrojIndeksa()+"'");
+            while (resultSet.next()) {
+            	
+            	String zahtjev = resultSet.getString("sifPred");
+            	zahtjevi.add(zahtjev);
+                 }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return zahtjevi;
+	}
+	private ArrayList<String> getZahtjeviZaZamjenu() {
+		ArrayList<String> zahtjevi = new ArrayList<>();
+		try {  
+        	Class.forName("com.mysql.cj.jdbc.Driver");
+        	Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+              
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM zahtjevZaPromjenu "
+            		+ "WHERE idStud='"+stud.getBrojIndeksa()+"'");
+            while (resultSet.next()) {
+            	
+            	String zahtjev = resultSet.getString("sifPred1") +","+ resultSet.getString("sifPred2");
+            	
+            	zahtjevi.add(zahtjev);
+                 }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return zahtjevi;
+	}
 	private Integer getBodoviOdprosleGodine(String naziv) {
 		Integer bodovi = 0;
 		try {  
@@ -412,6 +455,146 @@ public class Scene1 implements Initializable {
             e.printStackTrace();
         }
 		return odgovorni;
+	}
+	
+	private String getZahtjevStatus(String sifra) {
+	    String odgovorni = "";
+	    String vrstaZahtjeva = "";
+	    String prvaRijec = "";
+	    String SP = "sifPred";
+	    
+	    if (VrstaZahtjevaLista.getValue().equals("Za zamjenu predmeta")) {
+	        vrstaZahtjeva = "zahtjevZaPromjenu";
+	    } else if (VrstaZahtjevaLista.getValue().equals("Za prenos bodova")) {
+	        vrstaZahtjeva = "zahtjevZaPrenos";
+	    } else if (VrstaZahtjevaLista.getValue().equals("Za slusanje predmeta")) {
+	        vrstaZahtjeva = "zahtjevZaSlusanje";
+	    }
+	    
+	    try {  
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	        Connection connection = getConnection();
+	        Statement statement = connection.createStatement();
+	        
+	        if (vrstaZahtjeva.equals("zahtjevZaPromjenu")) {
+	            String input = sifra;
+	            String[] parts = input.split(",");
+	            prvaRijec = parts[0];
+	            sifra = prvaRijec;
+	            SP = "sifPred1";
+	        }
+	        
+	        String query = "SELECT odobreno FROM " + vrstaZahtjeva + " WHERE idStud = ? AND " + SP + " = ?";
+	        
+	        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	            preparedStatement.setInt(1, stud.getBrojIndeksa());
+	            preparedStatement.setString(2, sifra);
+
+	            ResultSet resultSet = preparedStatement.executeQuery();
+
+	            while (resultSet.next()) {   
+	                odgovorni = resultSet.getString("odobreno");
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    if(odgovorni == null) odgovorni = "NA CEKANJU";
+	    System.out.println(odgovorni);
+	    return odgovorni;
+	}
+
+	private String getZahtjevPoruka(String sifra) {
+	    String poruka = "";
+	    String vrstaZahtjeva = "";
+	    String prvaRijec = "";
+	    String SP = "sifPred";
+	    
+	    if (VrstaZahtjevaLista.getValue().equals("Za zamjenu predmeta")) {
+	        vrstaZahtjeva = "zahtjevZaPromjenu";
+	    } else if (VrstaZahtjevaLista.getValue().equals("Za prenos bodova")) {
+	        vrstaZahtjeva = "zahtjevZaPrenos";
+	    } else if (VrstaZahtjevaLista.getValue().equals("Za slusanje predmeta")) {
+	        vrstaZahtjeva = "zahtjevZaSlusanje";
+	    }
+	    
+	    try {  
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	        Connection connection = getConnection();
+	        Statement statement = connection.createStatement();
+	        
+	        if (vrstaZahtjeva.equals("zahtjevZaPromjenu")) {
+	            String input = sifra;
+	            String[] parts = input.split(",");
+	            prvaRijec = parts[0];
+	            sifra = prvaRijec;
+	            SP = "sifPred1";
+	        }
+	        String query = "SELECT poruka FROM " + vrstaZahtjeva + " WHERE idStud = ? AND " + SP + " = ?";
+	        
+	        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	            preparedStatement.setInt(1, stud.getBrojIndeksa());
+	            preparedStatement.setString(2, sifra);
+
+	            ResultSet resultSet = preparedStatement.executeQuery();
+
+	            while (resultSet.next()) {   
+	                poruka = resultSet.getString("poruka");
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return poruka;
+	}
+	
+	private String getZahtjevOdgovor(String sifra) {
+	    String odgovor = "";
+	    String vrstaZahtjeva = "";
+	    String prvaRijec = "";
+	    String SP = "sifPred";
+	    
+	    if (VrstaZahtjevaLista.getValue().equals("Za zamjenu predmeta")) {
+	        vrstaZahtjeva = "zahtjevZaPromjenu";
+	    } else if (VrstaZahtjevaLista.getValue().equals("Za prenos bodova")) {
+	        vrstaZahtjeva = "zahtjevZaPrenos";
+	    } else if (VrstaZahtjevaLista.getValue().equals("Za slusanje predmeta")) {
+	        vrstaZahtjeva = "zahtjevZaSlusanje";
+	    }
+	    
+	    try {  
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	        Connection connection = getConnection();
+	        Statement statement = connection.createStatement();
+	        
+	        if (vrstaZahtjeva.equals("zahtjevZaPromjenu")) {
+	            String input = sifra;
+	            String[] parts = input.split(",");
+	            prvaRijec = parts[0];
+	            sifra = prvaRijec;
+	            SP = "sifPred1";
+	        }
+	        
+	        String query = "SELECT odgovor FROM " + vrstaZahtjeva + " WHERE idStud = ? AND " + SP + " = ?";
+	        
+	        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	            preparedStatement.setInt(1, stud.getBrojIndeksa());
+	            preparedStatement.setString(2, sifra);
+
+	            ResultSet resultSet = preparedStatement.executeQuery();
+
+	            while (resultSet.next()) {   
+	                odgovor = resultSet.getString("odgovor");
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    if (odgovor == null) odgovor = "NIJE ODGOVORENO";
+	    return odgovor;
 	}
 	private String getOcjena(Predmet2 pred) {
 	    Integer ocjena = 5;
@@ -798,7 +981,16 @@ public class Scene1 implements Initializable {
 			      
 			    }
 			});
-		 
+		 ZahtjeviLista.setOnMouseClicked(event -> {
+			    if (event.getClickCount() == 1) { // Check for single-click
+			        String Selected = ZahtjeviLista.getSelectionModel().getSelectedItem();
+			        ZahtjevTip.setText(VrstaZahtjevaLista.getValue());
+			        ZahtjevStatus.setText(getZahtjevStatus(Selected));
+			        if(!VrstaZahtjevaLista.getValue().equals("Za prenos bodova"));{
+			        ZahtjevPorukaInfo.setText(getZahtjevPoruka(Selected));
+			        ZahtjevOdgovor.setText(getZahtjevOdgovor(Selected));}	      
+			    }
+			});
 		
 		 
 		 PredmetiZimski.setOnMouseClicked(event -> {

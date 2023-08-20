@@ -37,30 +37,39 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 	@FXML
 	private Label poruka;
 
+	private Popup popup;
+
+	private boolean btnPressed;
 
 	@FXML
 	public void ponisti(ActionEvent event) {
-		update(false);
+		btnPressed = false;
 		s.alert("Zahtjev odbijen.");
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
-		update(true);
+		btnPressed = true;
 		s.alert("Zahtjev odobren.");
 	}
 
 	public void setData(ZahtjevZaSlusanjePredmeta z) {
 		zahtjev = z;
-		ime.setText(z.getStud().getIme());
-		prezime.setText(z.getStud().getPrezime());
-		studID.setText(z.getStud().getId());
-		smjer.setText(z.getStud().getSifUsmjerenja());
+		ime.setText(z.getStud().getIme() + " " + z.getStud().getPrezime());
 		predmet.setText(z.getPred().getNazivPred());
 		poruka.setText(z.getPoruka());
 	}
 
-	private void update(boolean b) {
+	public void updateData() {
+		if (btnPressed) {
+			System.out.println("tuu sam");
+			update(true);
+		} else {
+			update(false);
+		}
+	}
+
+	public void update(boolean b) {
 		try {
 			String query ="update zahtjevZaSlusanje set odobreno = ?,odgovor=?"
 					+ "where idStud = ? and sifNast = ? and sifPred = ?;" ;
@@ -72,12 +81,9 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 			mysql.pst.setString(4, nastavnik.getSifNast());
 			mysql.pst.setString(5, zahtjev.getPred().getSifraPred());
 
-			int rowsAffected=mysql.pst.executeUpdate();
-			if(rowsAffected>0) {
-				s.alert("Zahtjev odbijen.");	
-			}else {
-				s.alert("Failed");
-			}
+			int rows=mysql.pst.executeUpdate();
+			System.out.println(rows);
+		
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -68,7 +68,8 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 			mysql.pst.setString(3, nastavnik.getSifNast());
 			mysql.pst.setString(4, zahtjev.pred.getSifraPred());
 
-			mysql.pst.executeUpdate();
+			int rows=mysql.pst.executeUpdate();
+			System.out.println(rows);
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -163,7 +163,7 @@ public class prodekanDodajUnosController implements Initializable {
 			s.alert("Ispunite sva polja!");
 		}
 		}
-	}
+	
 
 	@FXML
 	private void logout(MouseEvent e) {
