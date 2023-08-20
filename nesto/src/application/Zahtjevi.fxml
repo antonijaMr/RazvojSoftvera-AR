@@ -40,7 +40,7 @@
                   <Insets bottom="5.0" right="10.0" top="5.0" />
                </VBox.margin>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0" >
+            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0">
                <children>
                   <Pane prefHeight="34.0" prefWidth="170.0" />
                   <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
@@ -223,25 +223,25 @@
                         <HBox prefHeight="27.0" prefWidth="390.0">
                            <children>
                               <Label prefHeight="35.0" prefWidth="106.0" text="STATUS:" />
-                              <Label prefHeight="35.0" prefWidth="354.0" />
+                              <Label fx:id="ZahtjevStatus" prefHeight="35.0" prefWidth="354.0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="33.0" prefWidth="390.0">
                            <children>
                               <Label alignment="TOP_LEFT" prefHeight="35.0" prefWidth="114.0" text="TIP:" />
-                              <Label prefHeight="35.0" prefWidth="354.0" />
+                              <Label fx:id="ZahtjevTip" prefHeight="35.0" prefWidth="354.0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="137.0" prefWidth="390.0">
                            <children>
                               <Label prefHeight="100.0" prefWidth="87.0" text="PORUKA:" />
-                              <Label id="TekstDokumenti" prefHeight="96.0" prefWidth="306.0" textFill="#333232" />
+                              <Label id="TekstDokumenti" fx:id="ZahtjevPorukaInfo" prefHeight="96.0" prefWidth="306.0" textFill="#333232" />
                            </children>
                         </HBox>
                         <HBox prefHeight="138.0" prefWidth="390.0">
                            <children>
                               <Label prefHeight="98.0" prefWidth="134.0" text="ODGOVOR:" />
-                              <Label id="TekstDokumenti" prefHeight="98.0" prefWidth="350.0" textFill="#262525" />
+                              <Label id="TekstDokumenti" fx:id="ZahtjevOdgovor" prefHeight="98.0" prefWidth="350.0" textFill="#262525" />
                            </children>
                         </HBox>
                      </children>

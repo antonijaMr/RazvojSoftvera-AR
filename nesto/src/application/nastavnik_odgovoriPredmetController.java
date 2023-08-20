@@ -43,13 +43,13 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 
 	@FXML
 	public void ponisti(ActionEvent event) {
-		btnPressed = false;
+		update(false);
 		s.alert("Zahtjev odbijen.");
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
-		btnPressed = true;
+		update(false);
 		s.alert("Zahtjev odobren.");
 	}
 
