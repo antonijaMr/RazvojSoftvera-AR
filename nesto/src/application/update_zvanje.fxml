@@ -5,12 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="294.0" prefWidth="474.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UpdateZvanjeController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="294.0" prefWidth="474.0" stylesheets="@applicationP.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UpdateZvanjeController">
    <children>
       <Label layoutX="45.0" layoutY="60.0" text="Sadasnje zvanje" />
-      <Label layoutX="45.0" layoutY="128.0" text="Novo zvanje" />
-      <ChoiceBox fx:id="zvanja" layoutX="144.0" layoutY="124.0" prefWidth="150.0" />
+      <Label layoutX="59.0" layoutY="128.0" text="Novo zvanje" />
+      <ChoiceBox fx:id="zvanja" layoutX="203.0" layoutY="128.0" prefWidth="150.0" />
       <Button fx:id="updateButton" layoutX="203.0" layoutY="217.0" mnemonicParsing="false" onAction="#updateZvanjeButtonClicked" text="Potvrdi" />
-      <Label fx:id="sadasnje_zvanje" layoutX="144.0" layoutY="60.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label fx:id="sadasnje_zvanje" layoutX="193.0" layoutY="60.0" prefHeight="25.0" prefWidth="150.0" />
    </children>
 </Pane>

@@ -2,6 +2,7 @@ package models;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Button;
 
 public class Nastavnik {
 
@@ -12,7 +13,14 @@ public class Nastavnik {
 	private StringProperty zvanje;
 	private StringProperty odsjek;
 	private StringProperty prodekan;
+	private final Button actionButton;
 
+
+	public Button getActionButton() {
+		return actionButton;
+	}
+
+	
 	public Nastavnik() {
 		sifNast = new SimpleStringProperty(this, "sifNast");
 		ime = new SimpleStringProperty(this, "ime");
@@ -21,6 +29,7 @@ public class Nastavnik {
 		zvanje = new SimpleStringProperty(this, "zvanje");
 		odsjek = new SimpleStringProperty(this, "odsjek");
 		prodekan = new SimpleStringProperty(this, "prodekan");
+		actionButton = new Button("Update");
 	}
 
 	public Nastavnik(String sifNast, String ime, String prezime, String email, String zvanje, String odsjek,
@@ -34,6 +43,7 @@ public class Nastavnik {
 		this.zvanjeProperty().set(zvanje);
 		this.odsjekProperty().set(odsjek);
 		this.prezimeProperty().set(prodekan);
+		actionButton = new Button("Update");
 	}
 
 	@Override

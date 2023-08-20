@@ -1,19 +1,25 @@
 package application;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -25,6 +31,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import models.Nastavnik;
 import models.Predmet;
+import models.Student;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -54,6 +61,8 @@ public class administrator_pogledajPredmeteController implements Initializable {
 	private TableColumn<Predmet, String> ectsC;
 	@FXML
 	private TableColumn<Predmet, String> semestarC;
+	@FXML
+	private TableColumn<Predmet, Button> actionC;
 
 	@FXML
 	public void studenti(MouseEvent event) {
@@ -125,11 +134,51 @@ public class administrator_pogledajPredmeteController implements Initializable {
 			lvC.setCellValueFactory(f -> f.getValue().lab_satiProperty());
 			ectsC.setCellValueFactory(f -> f.getValue().ECTSProperty());
 			semestarC.setCellValueFactory(f -> f.getValue().semestarProperty());
+			actionC.setCellValueFactory(
+					cellData -> new ReadOnlyObjectWrapper<Button>(cellData.getValue().getActionButton()));
+			actionC.setCellFactory(param -> new TableCell<Predmet, Button>() {
+				@Override
+				protected void updateItem(Button item, boolean empty) {
+					super.updateItem(item, empty);
+					if (empty || item == null) {
+						setGraphic(null);
+					} else {
+						setGraphic(item);
+						item.setOnAction(event -> {
+							int rowIndex = getIndex();
+							Predmet selected = getTableView().getItems().get(rowIndex);
+							openDialog(selected, event);
+						});
+					}
+				}
+			});
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void openDialog(Predmet p, ActionEvent e) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("administrator_updatePredmet.fxml"));
+			DialogPane odgovoriDialog;
+			odgovoriDialog = loader.load();
+			System.out.println("eror");
+			administrator_updatePredmetController  cont = loader.getController();
+			System.out.println("eror");
+			cont.setData(p);
+			Dialog<ButtonType> dialog = new Dialog<>();
+			dialog.setDialogPane(odgovoriDialog);
+			dialog.setTitle("Promjena studenta");
+
+			dialog.showAndWait();
+			tablePred();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
 	
 	private void setupSearch() {
 		FilteredList<Predmet> filteredData = new FilteredList<>(predmetiT.getItems(), p -> true);

@@ -182,7 +182,17 @@ public class SceneLoader {
 		loadScene("prodekan_PregledPlana.fxml","applicationP.css",e);
 	}	
 	
-	
+	public void loadNastavnkUpdate(ActionEvent e) {
+		loadScene("administrator_updateNastavnik.fxml", "applicationAdmin.css", e);
+	}
+
+	public void loadStudentUpdate(ActionEvent e) {
+		loadScene("administrator_updateStudent.fxml", "applicationAdmin.css", e);
+	}	
+
+	public void loadPredmetUpdate(ActionEvent e) {
+		loadScene("administrator_updatePredmet.fxml", "applicationAdmin.css", e);
+	}	
 	public void alert(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Obavijest");

@@ -20,6 +20,7 @@ import models.Predmet;
 
 public class UpdateZvanjeController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
+	private SceneLoader s = new SceneLoader();
 
 	@FXML
 	private Label sadasnje_zvanje;
@@ -54,28 +55,28 @@ public class UpdateZvanjeController implements Initializable {
 
 	@FXML
 	private void updateZvanjeButtonClicked() {
-		String newZvanje = zvanja.getValue();
-		// Perform the update operation here using the nastavnikIdentifier and newZvanje
-		// values
-		System.out.println("Nastavnik Identifier: " + nastavnik_email);
+		if (!empty()) {
+			String newZvanje = zvanja.getValue();
+			// Perform the update operation here using the nastavnikIdentifier and newZvanje
+			// values
+			System.out.println("Nastavnik Identifier: " + nastavnik_email);
 
-		// Call a method to update the zvanje for the specific nastavnik in the database
-		boolean success = updateZvanjeInDatabase(nastavnik_email, newZvanje);
+			// Call a method to update the zvanje for the specific nastavnik in the database
+			boolean success = updateZvanjeInDatabase(nastavnik_email, newZvanje);
 
-		if (success) {
-			showAlert("Zvanje updated successfully!");
-			closeScene();
+			if (success) {
+				s.alert("Uspjesno promijenjeno zvanje");
+				closeScene();
+			} else {
+				s.alert("Doslo je do greske");
+			}
 		} else {
-			showAlert("Failed to update zvanje.");
+			s.alert("Ispunite sva polja!");
 		}
 	}
 
-	private void showAlert(String message) {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Information");
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
+	private boolean empty() {
+		return zvanja.getValue() == null;
 	}
 
 	private boolean updateZvanjeInDatabase(String identifier, String newZvanje) {

@@ -49,16 +49,20 @@ public class ProdekanBitniDatumiController implements Initializable {
 	Predmet predmet = null;
 
 	ObservableList<Nastavnik> List = FXCollections.observableArrayList();
-	private ObservableList<Nastavnik> filteredList = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 
 	}
+	
+	private boolean empty() {
+		return PocetakRegistracije.getValue() == null || KrajRegistracije.getValue() == null;
+	}
 
 	@FXML
 	private void potvrdi(ActionEvent e) {
+		if(!empty()) {
 		LocalDate pocetak = PocetakRegistracije.getValue();
 		LocalDate kraj = KrajRegistracije.getValue();
 		String query = "INSERT INTO periodRegistracije (akademskaGodina,datumPocetka,datumZavrsetka) VALUES (YEAR(NOW()),?,?)";
@@ -76,7 +80,9 @@ public class ProdekanBitniDatumiController implements Initializable {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-
+		}else {
+			s.alert("Ispunite sva polja!");
+		}
 	}
 
 	@FXML

@@ -18,7 +18,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@applicationAdmin.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.administrator_pogledajStudenteController">
    <left>
-      <VBox alignment="TOP_CENTER" prefHeight="511.0" prefWidth="206.0"  BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="511.0" prefWidth="206.0" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" prefHeight="150.0" prefWidth="178.0">
                <children>
@@ -214,7 +214,7 @@
       <Cursor fx:constant="DEFAULT" />
    </cursor>
    <center>
-      <Pane prefHeight="200.0" prefWidth="200.0"  BorderPane.alignment="CENTER">
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <VBox layoutX="30.0" layoutY="121.0" prefHeight="453.0" prefWidth="646.0">
                <children>
@@ -240,9 +240,10 @@
                         <TableColumn fx:id="prezimeC" prefWidth="97.0" text="Prezime" />
                         <TableColumn fx:id="emailC" prefWidth="98.0" text="Email" />
                         <TableColumn fx:id="godinaC" text="Godina" />
-                        <TableColumn fx:id="statusC" prefWidth="72.0" text="Status" />
-                        <TableColumn fx:id="smjerC" prefWidth="74.0" text="Smjer" />
-                        <TableColumn fx:id="ectsC" prefWidth="74.0" text="ECTS" />
+                        <TableColumn fx:id="statusC" prefWidth="58.0" text="Status" />
+                        <TableColumn fx:id="smjerC" prefWidth="50.0" text="Smjer" />
+                        <TableColumn fx:id="ectsC" prefWidth="46.0" text="ECTS" />
+                        <TableColumn fx:id="actionC" prefWidth="66.0" />
                     </columns>
                   </TableView>
                </children>

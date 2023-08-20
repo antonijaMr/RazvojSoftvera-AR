@@ -286,8 +286,8 @@
                      <children>
                         <TableView fx:id="Plan_table" prefHeight="533.0" prefWidth="646.0">
                           <columns>
-                            <TableColumn fx:id="NastavniPredmetCol" prefWidth="193.0" text="Predmet" />
-                            <TableColumn prefWidth="196.0" text="Plan">
+                            <TableColumn fx:id="NastavniPredmetCol" prefWidth="147.0" text="Predmet" />
+                            <TableColumn prefWidth="269.0" text="Plan">
                                  <columns>
                                     <TableColumn prefWidth="217.0" text="Zimski">
                                        <columns>
@@ -305,7 +305,7 @@
                                     </TableColumn>
                                  </columns>
                               </TableColumn>
-                              <TableColumn fx:id="NastavnikCol" prefWidth="256.0" text="Nastavnici" />
+                              <TableColumn fx:id="NastavnikCol" prefWidth="275.0" text="Nastavnici" />
                           </columns>
                         </TableView>
                      </children>
