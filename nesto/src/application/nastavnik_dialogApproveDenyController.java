@@ -41,14 +41,12 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 	@FXML
 	public void ponisti(ActionEvent event) {
 		update(false);
-//		btnPressed = false;
 		s.alert("Zahtjev odbijen.");
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
 		update(true);
-//		btnPressed = true;
 		s.alert("Zahtjev odobren");
 	}
 

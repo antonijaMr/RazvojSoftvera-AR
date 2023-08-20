@@ -35,7 +35,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 public class nastavnik_detaljiController implements Initializable {
-	MySQLConnection mysql = new MySQLConnection();
+	private MySQLConnection mysql = new MySQLConnection();
 	private Nastavnik currentNastavnik;
 	private Predmet predmet;
 	private SceneLoader s = new SceneLoader();

@@ -164,6 +164,7 @@ public class nastavnik_zahtjeviController implements Initializable {
 		dialog.setTitle("Zahtjev za prenos bodova");
 
 		dialog.showAndWait();
+		TableZahtjevi();
 	}
 
 	private void setCurrentNastavnik() {
