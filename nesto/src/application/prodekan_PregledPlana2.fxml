@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1088.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ProdekanPregledPlanaController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1088.0" stylesheets="@applicationP.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ProdekanPregledPlanaController">
    <children>
       <VBox prefHeight="674.0" prefWidth="266.0">
          <children>
@@ -80,7 +80,7 @@
                               <Insets left="50.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btn_noviplan" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_plan_realizacije" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Novi Plan" textFill="WHITE">
+                        <Button fx:id="btn_noviplan" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_plan_realizacije" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" stylesheets="@applicationP.css" text="Novi Plan" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -173,7 +173,7 @@
 </TableColumn>
               </columns>
             </TableView>
-            <Button fx:id="dodajUnosButton" layoutX="188.0" layoutY="20.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="109.0" text="Dodaj unos" />
+            <Button fx:id="dodajUnosButton" layoutX="188.0" layoutY="20.0" mnemonicParsing="false" onAction="#to_plan_realizacije_action" prefHeight="36.0" prefWidth="109.0" text="Dodaj unos" />
             <Button fx:id="PregledPlanaButton" layoutX="360.0" layoutY="20.0" mnemonicParsing="false" onAction="#to_pregled_plana" prefHeight="36.0" prefWidth="97.0" text="Pregled plana" />
          </children>
       </Pane>

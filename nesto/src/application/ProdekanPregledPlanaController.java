@@ -1,6 +1,5 @@
 package application;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -148,8 +147,7 @@ public class ProdekanPregledPlanaController implements Initializable {
 							ObservableList<String> teacherNames = FXCollections.observableArrayList();
 
 							for (Pair<String, String> teacher : teachers) {
-								teacherNames
-										.add(teacher.getKey() + (teacher.getValue().equals("Da") ? "(nosioc)" : ""));
+								teacherNames.add(teacher.getKey() + (teacher.getValue().equals("1") ? "-nosioc" : ""));
 							}
 
 							teacherListView.setItems(teacherNames);
@@ -208,6 +206,8 @@ public class ProdekanPregledPlanaController implements Initializable {
 	private void to_bitni_datumi(MouseEvent e) {
 		s.loadProdekan_to_bitni_datumi(e);
 	}
+
+	
 
 	@FXML
 	private void to_pregled_plana(ActionEvent e) {

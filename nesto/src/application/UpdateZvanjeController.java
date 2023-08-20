@@ -22,7 +22,7 @@ public class UpdateZvanjeController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
 
 	@FXML
-	private TextField sadasnje_zvanje;
+	private Label sadasnje_zvanje;
 	@FXML
 	ChoiceBox<String> zvanja;
 	@FXML

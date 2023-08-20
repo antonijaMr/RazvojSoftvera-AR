@@ -131,15 +131,17 @@ public class nastavnik_detaljiController implements Initializable {
 		ObservableList<Preduslov> preduslovi = FXCollections.observableArrayList();
 		try {
 			mysql.pst = mysql.con.prepareStatement(
-					"select distinct nazivPred, satiPredavanja, satiAV, satiLV, ECTS, ime, prezime, semestar from preduslov\n"
+					"select  nazivPred, satiPredavanja, satiAV, satiLV, ECTS, ime, prezime, semestar from preduslov\n"
 							+ "	inner join predmet on predmet.sifPred = preduslov.sifPreduslov\n"
 							+ " left outer join predaje on predaje.sifPred = predmet.sifPred\n"
-							+ " left outer join nastavnik nastavnikN on predaje.sifNastavnik = nastavnikN.sifNast and predaje.nosioc=true\n"
-							+ "	where preduslov.sifPred = ? and predaje.godina = 2023;\n");
+							+ " left outer join nastavnik nastavnikN on predaje.sifNastavnik = nastavnikN.sifNast\n"
+							+ "	where preduslov.sifPred = ? and predaje.godina = YEAR(NOW()) and predaje.nosioc=1;\n");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
+			int count=0;
 			{
 				while (rs.next()) {
+					++count;
 					Preduslov p = new Preduslov();
 					p.getPredmet().setNazivPred(rs.getString("nazivPred"));
 					p.getPredmet().setPredavanja_sati(rs.getString("satiPredavanja"));
@@ -153,7 +155,7 @@ public class nastavnik_detaljiController implements Initializable {
 				}
 
 			}
-
+System.out.println(count);
 			preduslovT.setItems(preduslovi);
 
 			imePredmetaC.setCellValueFactory(f -> f.getValue().getPredmet().nazivPredProperty());

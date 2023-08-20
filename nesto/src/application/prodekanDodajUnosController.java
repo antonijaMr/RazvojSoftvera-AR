@@ -5,16 +5,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
+
+
 
 public class prodekanDodajUnosController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
@@ -41,10 +45,10 @@ public class prodekanDodajUnosController implements Initializable {
 	@FXML
 	private Button btn_bitniDatumi;
 
-	@FXML
-	private ComboBox<String> nastavnik_choice;
-	@FXML
-	private ComboBox<String> predmet_choice;
+	 @FXML
+	 private ComboBox<String> nastavnik_choice;
+	 @FXML
+	private  ComboBox<String> predmet_choice;
 	@FXML
 	private ChoiceBox<String> nosioc_choice;
 
@@ -61,7 +65,9 @@ public class prodekanDodajUnosController implements Initializable {
 		ucitajNastavnike();
 		ucitajPredmete();
 		nosioc_choice.getItems().addAll(nosioc);
-	}
+	    
+	    }
+	
 
 	private void ucitajNastavnike() {
 		try {
@@ -123,6 +129,14 @@ public class prodekanDodajUnosController implements Initializable {
 		res = mysql.pst.executeQuery();
 		res.next();
 		String sifraP = res.getString("sifPred");
+		query = "SELECT COUNT(*) FROM predaje WHERE sifPred=?";
+		mysql.pst = mysql.con.prepareStatement(query);
+		mysql.pst.setString(1, sifraP);
+		res = mysql.pst.executeQuery();
+	    res.next();
+		if(res.getInt("COUNT(*)")==1 && odabraniNosioc.equals("Da")) {
+			showAlert("Predmet vec ima nosica");
+		}else {
 
 		query = "INSERT INTO predaje (sifNastavnik, sifPred,godina,nosioc) VALUES ( ?,?,YEAR(NOW()),?)";
 		mysql.pst = mysql.con.prepareStatement(query);
@@ -138,13 +152,21 @@ public class prodekanDodajUnosController implements Initializable {
 		int rowsAffected = mysql.pst.executeUpdate();
 
 		if (rowsAffected > 0) {
-			System.out.println("Row inserted successfully.");
+			showAlert("Row inserted successfully.");
 		} else {
-			System.out.println("Failed to insert row.");
+			showAlert("Failed to insert row.");
 		}
-
+		}
 	}
 
+	private void showAlert(String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
+	
 	@FXML
 	private void logout(MouseEvent e) {
 		s.logout(e);

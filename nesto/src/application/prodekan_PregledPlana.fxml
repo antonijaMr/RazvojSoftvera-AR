@@ -286,26 +286,26 @@
                      <children>
                         <TableView fx:id="Plan_table" prefHeight="533.0" prefWidth="646.0">
                           <columns>
-                            <TableColumn prefWidth="193.0" text="Predmet" />
+                            <TableColumn fx:id="NastavniPredmetCol" prefWidth="193.0" text="Predmet" />
                             <TableColumn prefWidth="196.0" text="Plan">
                                  <columns>
                                     <TableColumn prefWidth="217.0" text="Zimski">
                                        <columns>
-                                          <TableColumn prefWidth="37.0" text="P" />
-                                          <TableColumn prefWidth="32.0" text="A" />
-                                          <TableColumn prefWidth="43.0" text="L" />
+                                          <TableColumn fx:id="PZimskiCol" prefWidth="37.0" text="P" />
+                                          <TableColumn fx:id="AZimskiCol" prefWidth="32.0" text="A" />
+                                          <TableColumn fx:id="LZimskiCol" prefWidth="43.0" text="L" />
                                        </columns>
                                     </TableColumn>
                                     <TableColumn prefWidth="111.0" text="Ljetni">
                                        <columns>
-                                          <TableColumn prefWidth="37.0" text="P" />
-                                          <TableColumn prefWidth="37.0" text="A" />
-                                          <TableColumn prefWidth="37.0" text="L" />
+                                          <TableColumn fx:id="PLjetnjiCol" prefWidth="37.0" text="P" />
+                                          <TableColumn fx:id="ALjetnjiCol" prefWidth="37.0" text="A" />
+                                          <TableColumn fx:id="LLjetnjiCol" prefWidth="37.0" text="L" />
                                        </columns>
                                     </TableColumn>
                                  </columns>
                               </TableColumn>
-                              <TableColumn prefWidth="256.0" text="Nastavnici" />
+                              <TableColumn fx:id="NastavnikCol" prefWidth="256.0" text="Nastavnici" />
                           </columns>
                         </TableView>
                      </children>
@@ -313,7 +313,7 @@
                </children>
             </VBox>
             <Button fx:id="dodajUnosButton" layoutX="30.0" layoutY="43.0" mnemonicParsing="false" onAction="#to_plan_realizacije_action" prefHeight="40.0" prefWidth="145.0" text="Dodaj unos" />
-            <Button fx:id="PregledPlanaButton" layoutX="194.0" layoutY="43.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="145.0" style="-fx-background-color: #F57C00;" text="Pregled plana" />
+            <Button fx:id="PregledPlanaButton" layoutX="194.0" layoutY="43.0" mnemonicParsing="false" onAction="#to_pregled_plana" prefHeight="40.0" prefWidth="145.0" style="-fx-background-color: #F57C00;" text="Pregled plana" />
          </children></Pane>
    </center>
 </BorderPane>

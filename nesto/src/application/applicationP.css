@@ -52,13 +52,14 @@
 /*///////////////////////////////////////////////////////////////////////////////////////////// */
 /*///////////////////////////////////////////////////////////////////////////////////////////// */
 
-
+/* Stilizacija ComboBox-a */
 .combo-box {
-    -fx-background-color: #f0f0f0; /* Svijetlo siva pozadina */
+    -fx-background-color: white; /* Change to a light background color */
     -fx-border-color: #ccc;
     -fx-border-width: 1px;
     -fx-border-radius: 5px;
     -fx-padding: 5px;
+    -fx-text-fill: black; /* Change the text color to black */
 }
 
 /* Stilizacija ComboBox-a kada je kursor iznad njega (hover efekt) */
@@ -77,9 +78,12 @@
 .combo-box:hover .arrow-button {
     -fx-background-color: #F57C00; /* Tamnija nijansa svijetlo zelene */
 }
-.border-pane{
-	-fx-background-color: #E7A84A;
+.combo-box .text-input {
+	-fx-background-color: white;
+    -fx-text-fill: black; /* Change to a color that contrasts with the background */
 }
+
+
 
 /*///////////////////////////////////////////////////////////////////////////////////////////// */
 /*///////////////////////////////////////////////////////////////////////////////////////////// */

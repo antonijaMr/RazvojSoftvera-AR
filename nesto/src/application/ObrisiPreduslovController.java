@@ -82,9 +82,9 @@ public class ObrisiPreduslovController implements Initializable {
 			int rowsAffected = preparedStatement.executeUpdate();
 
 			if (rowsAffected > 0) {
-				showAlert("Prerequisite deleted successfully.");
+				showAlert("Preduslov obrisan uspjesno");
 			} else {
-				showAlert("Failed to delete prerequisite.");
+				showAlert("Brisanje preduslova nije uspjesno");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -183,7 +183,7 @@ public class ProdekanController implements Initializable {
 		});
 		// Add the button to the "OpcijeCol" column
 		OpcijeCol.setCellFactory(param -> new TableCell<>() {
-			private final Button updateButton = new Button("Update Preduslovi");
+			private final Button updateButton = new Button("Azuriraj preduslove");
 
 			{
 				updateButton.setOnAction(event -> {
@@ -214,8 +214,8 @@ public class ProdekanController implements Initializable {
 		dialog.setHeaderText("Select an option:");
 
 		// Create buttons for each option
-		ButtonType addPrerequisitesButton = new ButtonType("Add New Prerequisites");
-		ButtonType deletePrerequisitesButton = new ButtonType("Delete Existing Prerequisites");
+		ButtonType addPrerequisitesButton = new ButtonType("Dodaj novi preduslov");
+		ButtonType deletePrerequisitesButton = new ButtonType("Obrisi postojeci preduslov");
 
 		// Add buttons to the dialog pane
 		DialogPane dialogPane = dialog.getDialogPane();

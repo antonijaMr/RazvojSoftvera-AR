@@ -195,7 +195,7 @@ public class prodekan_zahtjevi_Controller implements Initializable {
 									res.next();
 									String sifra2 = res.getString("sifra2");
 
-									String updateQuery2 = "UPDATE zahtjevZaPromjenu SET odgovor=? WHERE idStud= ? AND sifPred1=? AND "
+									String updateQuery2 = "UPDATE zahtjevZaPromjenu SET odgovor=?,odobreno=0 WHERE idStud= ? AND sifPred1=? AND "
 											+ "sifPred2=?";
 									PreparedStatement updateStatement2 = mysql.con.prepareStatement(updateQuery2);
 									updateStatement2.setString(1, explanation);
