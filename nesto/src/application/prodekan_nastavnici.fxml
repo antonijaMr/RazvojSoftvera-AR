@@ -23,13 +23,13 @@
             <VBox alignment="CENTER" prefHeight="150.0" prefWidth="178.0">
                <children>
                   <Pane prefHeight="34.0" prefWidth="160.0" />
-                  <Label styleClass="UserData" text="Prodekan" />
+                  <Label styleClass="UserData" />
                   <ImageView fitHeight="87.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" styleClass="UserImage">
                      <image>
                         <Image url="@images/download-removebg-preview%20(1).png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="nastIme" alignment="CENTER" prefHeight="31.0" prefWidth="210.0" styleClass="UserName" text="Ime Prezime" textAlignment="CENTER">
+                  <Label fx:id="nastIme" alignment="CENTER" prefHeight="31.0" prefWidth="210.0" styleClass="UserName" text="Prodekan" textAlignment="CENTER">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>

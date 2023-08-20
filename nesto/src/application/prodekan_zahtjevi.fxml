@@ -1,168 +1,320 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="964.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.prodekan_zahtjevi_Controller">
-   <children>
-      <VBox prefHeight="623.0" prefWidth="234.0">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="936.0" stylesheets="@applicationP.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.prodekan_zahtjevi_Controller">
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="511.0" prefWidth="206.0" styleClass="left-bar-background" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane id="side_anchorpane" fx:id="side_anchorpane" prefHeight="679.0" prefWidth="234.0" stylesheets="@style.css">
+            <VBox alignment="CENTER" prefHeight="150.0" prefWidth="178.0">
                <children>
-                  <Pane fx:id="inner_pane" layoutX="5.0" layoutY="20.0" prefHeight="61.0" prefWidth="222.0" stylesheets="@style.css">
-                     <children>
-                        <ImageView fitHeight="55.0" fitWidth="60.0" layoutX="23.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../Downloads/user-icon-person-icon-client-symbol-profile-icon-vector-removebg-preview.png" />
-                           </image>
-                        </ImageView>
-                        <Label layoutX="89.0" layoutY="28.0" prefHeight="30.0" prefWidth="119.0" text="Prodekan za nastavu">
-                           <font>
-                              <Font name="Bodoni MT Bold" size="13.0" />
-                           </font></Label>
-                        <Label layoutX="89.0" layoutY="7.0" prefHeight="24.0" prefWidth="109.0" />
-                     </children>
-                  </Pane>
-                  <VBox layoutX="-1.0" layoutY="105.0" prefHeight="416.0" prefWidth="234.0">
-                     <children>
-                        <Button fx:id="btn_predmeti" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#predmeti" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Predmeti" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <padding>
-                              <Insets left="50.0" />
-                           </padding>
-                           <graphic>
-                              <ImageView fitHeight="44.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../Downloads/download-removebg-preview%20(6).png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="btn_nastavnici" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#nastavnici" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Nastavnici" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="41.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../Downloads/user-icon-person-icon-client-symbol-profile-icon-vector-removebg-preview.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <padding>
-                              <Insets left="50.0" />
-                           </padding>
-                        </Button>
-                        <Button fx:id="btn_zahtjevi" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_zahtjevi" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Zahtjevi" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="41.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../Downloads/zahtjev.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <padding>
-                              <Insets left="50.0" />
-                           </padding>
-                        </Button>
-                        <Button fx:id="btn_noviplan" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_plan_realizacije" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Novi Plan" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="41.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../Downloads/plusa.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <padding>
-                              <Insets left="50.0" />
-                           </padding>
-                        </Button>
-                        <Button fx:id="btn_prijavljeniPredmeti" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_prijavljeni_predmeti" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Prijavljeni predmeti" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="41.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../Downloads/Checklist-Logo-PNG.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <padding>
-                              <Insets left="50.0" />
-                           </padding>
-                        </Button>
-                        <Button fx:id="btn_bitniDatumi" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#to_bitni_datumi" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Bitni datumi" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="41.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../Downloads/logout.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <padding>
-                              <Insets left="50.0" />
-                           </padding>
-                        </Button>
-                        <Button fx:id="btn_logout" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#logout" prefHeight="61.0" prefWidth="228.0" style="-fx-background-color: #5b6ad0;" text="Log Out" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="41.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../Downloads/logout.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <padding>
-                              <Insets left="50.0" />
-                           </padding>
-                        </Button>
-                     </children>
-                  </VBox>
-               </children></AnchorPane>
-         </children>
-      </VBox>
-      <Pane fx:id="second_pane" prefHeight="632.0" prefWidth="714.0">
-         <children>
-            <VBox layoutX="33.0" layoutY="75.0" prefHeight="493.0" prefWidth="668.0">
-               <children>
-                  <TableView fx:id="zahtjeviTable" prefHeight="494.0" prefWidth="668.0">
-                    <columns>
-                      <TableColumn fx:id="ImeCol" prefWidth="85.0" text="Ime Studenta" />
-                      <TableColumn fx:id="PrezimeCol" prefWidth="109.0" text="Prezime Studenta" />
-                        <TableColumn fx:id="BrIndeksaCol" prefWidth="93.0" text="Br indeksa" />
-                        <TableColumn fx:id="Predmet1Col" prefWidth="82.0" text="Predmet1" />
-                        <TableColumn fx:id="Predmet2Col" prefWidth="85.0" text="Predmet2" />
-                        <TableColumn fx:id="ObrazlozenjeCol" prefWidth="97.0" text="Obrazlozenje" />
-                        <TableColumn fx:id="OpcijeCol" prefWidth="116.0" text="Opcije" />
-                    </columns>
-                  </TableView>
+                  <Pane prefHeight="34.0" prefWidth="160.0" />
+                  <Label styleClass="UserData" />
+                  <ImageView fitHeight="87.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" styleClass="UserImage">
+                     <image>
+                        <Image url="@images/download-removebg-preview%20(1).png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="210.0" styleClass="UserName" text="Prodekan" textAlignment="CENTER">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </Label>
                </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" right="10.0" top="5.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="191.0">
+               <children>
+                  <Pane prefHeight="34.0" prefWidth="170.0" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:/C:/Users/ASUS%20TUF/Desktop/registration-form-icon-6%20(1).jpg" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label id="Registracija" accessibleRole="BUTTON" onMouseClicked="#predmeti" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" text="Predmeti" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <ColorAdjust />
+                           </effect>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </HBox>
+                  <Pane prefHeight="17.0" prefWidth="170.0" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:/C:/Users/ASUS%20TUF/Desktop/registration-form-icon-6%20(1).jpg" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label id="Registracija" accessibleRole="BUTTON" onMouseClicked="#nastavnici" opacity="0.99" prefHeight="39.0" prefWidth="133.0" styleClass="MenuItem" text="Nastavnici" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <ColorAdjust />
+                           </effect>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:/C:/Users/ASUS%20TUF/Desktop/registration-form-icon-6%20(1).jpg" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label id="Registracija" accessibleRole="BUTTON" onMouseClicked="#to_zahtjevi" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" text="Zahtjevi" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <ColorAdjust />
+                           </effect>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:/C:/Users/ASUS%20TUF/Desktop/registration-form-icon-6%20(1).jpg" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label id="Registracija" accessibleRole="BUTTON" onMouseClicked="#to_plan_realizacije" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" text="Novi plan" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <ColorAdjust />
+                           </effect>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:/C:/Users/ASUS%20TUF/Desktop/registration-form-icon-6%20(1).jpg" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label id="Registracija" accessibleRole="BUTTON" onMouseClicked="#to_prijavljeni_predmeti" opacity="0.99" prefHeight="39.0" prefWidth="171.0" styleClass="MenuItem" text="Prijavljeni predmeti" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <ColorAdjust />
+                           </effect>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:/C:/Users/ASUS%20TUF/Desktop/registration-form-icon-6%20(1).jpg" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label id="Registracija" accessibleRole="BUTTON" onMouseClicked="#to_bitni_datumi" opacity="0.99" prefHeight="39.0" prefWidth="135.0" styleClass="MenuItem" text="Bitni datumi" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <ColorAdjust />
+                           </effect>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="152.0" styleClass="HBox-Style">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:/C:/Users/ASUS%20TUF/Desktop/registration-form-icon-6%20(1).jpg" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="22.0" right="3.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label id="Registracija" accessibleRole="BUTTON" onMouseClicked="#logout" opacity="0.99" prefHeight="42.0" prefWidth="90.0" styleClass="MenuItem" text="Log out" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <ColorAdjust />
+                           </effect>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </HBox>
+               </children>
+               <opaqueInsets>
+                  <Insets left="10.0" />
+               </opaqueInsets>
             </VBox>
          </children>
-      </Pane>
-   </children>
-</HBox>
+      </VBox>
+   </left>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="30.0" layoutY="121.0" prefHeight="453.0" prefWidth="646.0">
+               <children>
+                  <VBox prefHeight="458.0" prefWidth="646.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="646.0">
+                           <children>
+                              <Label id="Registracija" accessibleRole="BUTTON" onMouseClicked="#predmeti" opacity="0.99" prefHeight="42.0" prefWidth="275.0" styleClass="MenuItem" text="Zahtjevi za promjenu predmeta" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Calibri Bold" size="12.0" />
+                                 </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <ColorAdjust />
+                                 </effect>
+                              </Label>
+                           </children></HBox>
+                        <TableView fx:id="zahtjeviTable" prefHeight="395.0" prefWidth="646.0">
+                          <columns>
+                            <TableColumn fx:id="BrIndeksaCol" prefWidth="70.0" text="Index" />
+                            <TableColumn fx:id="ImeCol" prefWidth="57.0" text="Ime" />
+                              <TableColumn fx:id="PrezimeCol" prefWidth="85.0" text="Prezime" />
+                              <TableColumn fx:id="Predmet1Col" prefWidth="99.0" text="Predmet 1" />
+                              <TableColumn fx:id="Predmet2Col" prefWidth="98.0" text="Predmet 2" />
+                              <TableColumn fx:id="ObrazlozenjeCol" prefWidth="96.0" text="Obrazlozenje" />
+                              <TableColumn fx:id="OpcijeCol" prefWidth="140.0" text="Opcije" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <TextField fx:id="search_tf" layoutX="505.0" layoutY="68.0" />
+            <Label layoutX="422.0" layoutY="64.0" text="SEARCH" />
+         </children></Pane>
+   </center>
+</BorderPane>

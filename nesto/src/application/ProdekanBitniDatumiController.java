@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.input.MouseEvent;
 import models.Nastavnik;
 import models.Predmet;
 
@@ -60,7 +61,7 @@ public class ProdekanBitniDatumiController implements Initializable {
 	private void potvrdi(ActionEvent e) {
 		LocalDate pocetak = PocetakRegistracije.getValue();
 		LocalDate kraj = KrajRegistracije.getValue();
-		String query = "INSERT INTO periodregistracije (akademskaGodina,datumPocetka,datumZavrsetka) VALUES (YEAR(NOW()),?,?)";
+		String query = "INSERT INTO periodRegistracije (akademskaGodina,datumPocetka,datumZavrsetka) VALUES (YEAR(NOW()),?,?)";
 		try (PreparedStatement preparedStatement = mysql.con.prepareStatement(query)) {
 
 			preparedStatement.setDate(1, java.sql.Date.valueOf(pocetak));
@@ -73,44 +74,43 @@ public class ProdekanBitniDatumiController implements Initializable {
 				System.out.println("Insertion failed.");
 			}
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
 	}
 
 	@FXML
-	private void logout(ActionEvent e) {
+	private void logout(MouseEvent e) {
 		s.logout(e);
 	}
 
 	@FXML
-	private void nastavnici(ActionEvent e) {
+	private void nastavnici(MouseEvent e) {
 		s.loadProdekan_nastavnici(e);
 	}
 
 	@FXML
-	private void predmeti(ActionEvent e) {
+	private void predmeti(MouseEvent e) {
 		s.loadProdekan_to_predmeti(e);
 	}
 
 	@FXML
-	private void to_zahtjevi(ActionEvent e) {
+	private void to_zahtjevi(MouseEvent e) {
 		s.loadProdekan_to_zahtjevi(e);
 	}
 
 	@FXML
-	private void to_plan_realizacije(ActionEvent e) {
+	private void to_plan_realizacije(MouseEvent e) {
 		s.loadProdekan_to_plan_realizacije(e);
 	}
 
 	@FXML
-	private void to_prijavljeni_predmeti(ActionEvent e) {
+	private void to_prijavljeni_predmeti(MouseEvent e) {
 		s.loadProdekan_to_prijavljeni_predmeti(e);
 	}
 
 	@FXML
-	private void to_bitni_datumi(ActionEvent e) {
+	private void to_bitni_datumi(MouseEvent e) {
 		s.loadProdekan_to_bitni_datumi(e);
 	}
 }

@@ -17,6 +17,7 @@ import javafx.scene.control.TableView;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import models.*;
 import javafx.util.Pair;
 import javafx.scene.control.ListView;
@@ -83,11 +84,11 @@ public class ProdekanPregledPlanaController implements Initializable {
 		List<Nastavnik_predmet> subjectTeacherList = new ArrayList<>();
 
 		try {
-			String query = "SELECT predmeti.nazivPred AS subjectName, predmeti.satiPredavanja, predmeti.satiLV, predmeti.satiAV,semestar,"
+			String query = "SELECT predmet.nazivPred AS subjectName, predmet.satiPredavanja, predmet.satiLV, predmet.satiAV,semestar,"
 					+ "GROUP_CONCAT(CONCAT(nastavnik.ime,' ', nastavnik.prezime, '(', nastavnik.zvanje, ')', '/',nosioc)) AS teachers "
-					+ "FROM predmeti " + "INNER JOIN predaje ON predmeti.sifPred = predaje.sifPred "
+					+ "FROM predmet " + "INNER JOIN predaje ON predmet.sifPred = predaje.sifPred "
 					+ "INNER JOIN nastavnik ON predaje.sifNastavnik = nastavnik.sifNast WHERE godina=YEAR(NOW())"
-					+ "GROUP BY predmeti.nazivPred";
+					+ "GROUP BY predmet.nazivPred";
 
 			PreparedStatement preparedStatement = mysql.con.prepareStatement(query);
 			// preparedStatement.setYear(1,Year.now());
@@ -97,11 +98,11 @@ public class ProdekanPregledPlanaController implements Initializable {
 				Nastavnik_predmet nast_pred = new Nastavnik_predmet();
 				nast_pred.setNastavniPredmet(resultSet.getString("subjectName"));
 				if (resultSet.getString("semestar").equals("zimski")) {
-					nast_pred.setPZ(resultSet.getInt("predmeti.satiPredavanja"));
+					nast_pred.setPZ(resultSet.getInt("predmet.satiPredavanja"));
 					nast_pred.setAZ(resultSet.getInt("satiAV"));
 					nast_pred.setLZ(resultSet.getInt("satiLV"));
 				} else {
-					nast_pred.setPLJ(resultSet.getInt("predmeti.satiPredavanja"));
+					nast_pred.setPLJ(resultSet.getInt("predmet.satiPredavanja"));
 					nast_pred.setALJ(resultSet.getInt("satiAV"));
 					nast_pred.setLLJ(resultSet.getInt("satiLV"));
 				}
@@ -169,42 +170,47 @@ public class ProdekanPregledPlanaController implements Initializable {
 	}
 
 	@FXML
-	private void logout(ActionEvent e) {
+	private void logout(MouseEvent e) {
 		s.logout(e);
 	}
 
 	@FXML
-	private void nastavnici(ActionEvent e) {
+	private void nastavnici(MouseEvent e) {
 		s.loadProdekan_nastavnici(e);
 	}
 
 	@FXML
-	private void predmeti(ActionEvent e) {
+	private void predmeti(MouseEvent e) {
 		s.loadProdekan_to_predmeti(e);
 	}
 
 	@FXML
-	private void to_zahtjevi(ActionEvent e) {
+	private void to_zahtjevi(MouseEvent e) {
 		s.loadProdekan_to_zahtjevi(e);
 	}
 
 	@FXML
-	private void to_plan_realizacije(ActionEvent e) {
+	private void to_plan_realizacije(MouseEvent e) {
+		s.loadProdekan_to_plan_realizacije(e);
+	}
+	
+	@FXML
+	private void to_plan_realizacije_action(ActionEvent e) {
 		s.loadProdekan_to_plan_realizacije(e);
 	}
 
 	@FXML
-	private void to_prijavljeni_predmeti(ActionEvent e) {
+	private void to_prijavljeni_predmeti(MouseEvent e) {
 		s.loadProdekan_to_prijavljeni_predmeti(e);
 	}
 
 	@FXML
-	private void to_bitni_datumi(ActionEvent e) {
+	private void to_bitni_datumi(MouseEvent e) {
 		s.loadProdekan_to_bitni_datumi(e);
 	}
 
 	@FXML
-	private void to_pregled_plana(ActionEvent e) throws IOException {
+	private void to_pregled_plana(ActionEvent e) {
 		s.loadProdekan_to_pregled_plana(e);
 	}
 
