@@ -239,12 +239,12 @@
                       <TableColumn fx:id="kraticaC" prefWidth="77.0" text="Kratica" />
                         <TableColumn fx:id="nazivC" prefWidth="85.0" text="Naziv" />
                         <TableColumn fx:id="uzaNC" prefWidth="93.0" text="Uza naucna oblast" />
-                        <TableColumn fx:id="pC" prefWidth="49.0" text="P" />
-                        <TableColumn fx:id="avC" prefWidth="52.0" text="AV" />
-                        <TableColumn fx:id="lvC" minWidth="0.0" prefWidth="41.0" text="LV" />
-                        <TableColumn fx:id="ectsC" prefWidth="60.0" text="ECTS" />
-                        <TableColumn fx:id="semestarC" prefWidth="81.0" text="Semestar" />
-                        <TableColumn fx:id="actionC" prefWidth="49.0" />
+                        <TableColumn fx:id="pC" prefWidth="40.0" text="P" />
+                        <TableColumn fx:id="avC" prefWidth="43.0" text="AV" />
+                        <TableColumn fx:id="lvC" minWidth="0.0" prefWidth="43.0" text="LV" />
+                        <TableColumn fx:id="ectsC" prefWidth="64.0" text="ECTS" />
+                        <TableColumn fx:id="semestarC" prefWidth="78.0" text="Semestar" />
+                        <TableColumn fx:id="actionC" prefWidth="64.0" />
                     </columns>
                   </TableView>
                </children>

@@ -23,13 +23,12 @@
             <VBox alignment="CENTER" prefHeight="150.0" prefWidth="178.0">
                <children>
                   <Pane prefHeight="34.0" prefWidth="160.0" />
-                  <Label styleClass="UserData" text="Prodekan" />
                   <ImageView fitHeight="87.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" styleClass="UserImage">
                      <image>
                         <Image url="@images/download-removebg-preview%20(1).png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="nastIme" alignment="CENTER" prefHeight="31.0" prefWidth="210.0" styleClass="UserName" text="Ime Prezime" textAlignment="CENTER">
+                  <Label fx:id="nastIme" alignment="CENTER" prefHeight="31.0" prefWidth="210.0" styleClass="UserName" text="Prodekan" textAlignment="CENTER">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>
@@ -301,7 +300,7 @@
             </VBox>
             <TextField fx:id="searchTextField" layoutX="505.0" layoutY="51.0" />
             <Button layoutX="30.0" layoutY="43.0" mnemonicParsing="false" onAction="#refresh" prefHeight="40.0" prefWidth="80.0" text="Refresh" />
-            <Button layoutX="402.0" layoutY="43.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="40.0" prefWidth="80.0" text="Search" />
+            <Label layoutX="426.0" layoutY="47.0" text="SEARCH" />
          </children></Pane>
    </center>
 </BorderPane>

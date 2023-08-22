@@ -14,9 +14,9 @@ import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 
-import javafx.scene.control.PasswordField;
 
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 
 public class administrator_updatePredmetController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
@@ -26,7 +26,7 @@ public class administrator_updatePredmetController implements Initializable {
 	private String[] semestar = { "Ljetni", "Zimski" };
 
 	@FXML
-	private TextField sifra;
+	private Label sifra;
 	@FXML
 	private TextField kratica;
 	@FXML
@@ -36,9 +36,9 @@ public class administrator_updatePredmetController implements Initializable {
 	@FXML
 	private TextField p;
 	@FXML
-	private PasswordField a;
+	private TextField a;
 	@FXML
-	private PasswordField l;
+	private TextField l;
 	@FXML
 	private TextField ects;
 	@FXML
@@ -54,47 +54,52 @@ public class administrator_updatePredmetController implements Initializable {
 			int rowsAffected = mysql.pst.executeUpdate();
 			if (rowsAffected > 0) {
 				s.alert("Predmet je izbrisan!");
+				cancel(event);
 			} else {
 				s.alertEror("Doslo je do greske.");
 			}
 		} catch (SQLException e) {
 			s.alertEror("Predmet se ne moze izbrisati");
-			e.printStackTrace();
 		}
 	}
 
 	@FXML
 	public void update(ActionEvent event) {
-		if (provjeri()) {
+		if (!empty()) {
 			try {
-				mysql.pst = mysql.con.prepareStatement("update predmet set sifPred = ?, kratPred = ?, "
+				mysql.pst = mysql.con.prepareStatement("update predmet set kratPred = ?, "
 						+ "nazivPred =?, uzaNaucnaOblast = ?, satiPredavanja = ?,satiAV = ?, satiLV = ?, "
 						+ "ECTS = ?,semestar = ? where sifPred = ?;");
-				mysql.pst.setString(1, sifra.getText());
-				mysql.pst.setString(2, kratica.getText());
-				mysql.pst.setString(3, naziv.getText());
-				mysql.pst.setString(4, naucnaOblast.getText());
-				mysql.pst.setString(5, p.getText());
-				mysql.pst.setString(6, a.getText());
-				mysql.pst.setString(7, l.getText());
-				mysql.pst.setString(8, ects.getText());
+				mysql.pst.setString(1, kratica.getText());
+				mysql.pst.setString(2, naziv.getText());
+				mysql.pst.setString(3, naucnaOblast.getText());
+				mysql.pst.setString(4, p.getText());
+				mysql.pst.setString(5, a.getText());
+				mysql.pst.setString(6, l.getText());
+				mysql.pst.setString(7, ects.getText());
+				mysql.pst.setString(8, semestarChoice.getValue());
 				mysql.pst.setString(9, pred.getSifraPred());
-				mysql.pst.setString(10, pred.getSifraPred());
 				int rowsAffected = mysql.pst.executeUpdate();
 				if (rowsAffected > 0) {
-					s.alert("Predmet je izbrisan!");
+					s.alert("Predmet je promijenjen!");
+					cancel(event);
 				} else {
 					s.alertEror("Doslo je do greske.");
 				}
 			} catch (SQLException e) {
-				s.alertEror("Predmet se ne moze izbrisati");
+				s.alertEror("Doslo je do greske.");
 				e.printStackTrace();
+				cancel(event);
 			}
+		} else {
+			s.alert("Popunite sva polja");
 		}
 	}
 
-	private boolean provjeri() {
-		return true;
+	private boolean empty() {
+		return kratica.getText().isEmpty() || naziv.getText().isEmpty() || naucnaOblast.getText().isEmpty()
+				|| p.getText().isEmpty() || a.getText().isEmpty() || l.getText().isEmpty() || ects.getText().isEmpty()
+				|| semestarChoice.getValue() == null;
 	}
 
 	@FXML

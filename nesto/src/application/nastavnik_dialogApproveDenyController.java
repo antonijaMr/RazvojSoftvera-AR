@@ -3,6 +3,7 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import models.Nastavnik;
 import models.ZahtjevZaPrenosBodova;
 
@@ -41,12 +42,19 @@ public class nastavnik_dialogApproveDenyController implements Initializable {
 	public void ponisti(ActionEvent event) {
 		update(false);
 		s.alert("Zahtjev odbijen.");
+		close(event);
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
 		update(true);
 		s.alert("Zahtjev odobren");
+		close(event);
+	}
+	
+	private void close(ActionEvent event) {
+		Stage stage = (Stage) smjer.getScene().getWindow();
+		stage.close();
 	}
 
 	public void setData(ZahtjevZaPrenosBodova z) {

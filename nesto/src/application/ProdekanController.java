@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,13 +26,13 @@ import javafx.stage.Stage;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import models.Nastavnik;
 import models.Predmet;
 import javafx.scene.control.TextField;
 
 public class ProdekanController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
 	private SceneLoader s = new SceneLoader();
-
 
 	@FXML
 	private TableView<Predmet> predmeti_table;
@@ -85,6 +87,7 @@ public class ProdekanController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 		load();
+		setupSearch();
 	}
 
 	private void refreshTable() {
@@ -210,8 +213,8 @@ public class ProdekanController implements Initializable {
 	private void openCustomDialog(String sifraPredmet) {
 		// Create the custom dialog
 		Dialog<ButtonType> dialog = new Dialog<>();
-		dialog.setTitle("Custom Dialog");
-		dialog.setHeaderText("Select an option:");
+		dialog.setTitle("Preduslovi");
+		dialog.setHeaderText("Odaberi neku opciju:");
 
 		// Create buttons for each option
 		ButtonType addPrerequisitesButton = new ButtonType("Dodaj novi preduslov");
@@ -261,6 +264,29 @@ public class ProdekanController implements Initializable {
 				// Add any necessary cleanup or handling here
 			}
 		});
+	}
+
+	private void setupSearch() {
+		FilteredList<Predmet> filteredData = new FilteredList<>(predmeti_table.getItems(), p -> true);
+
+		searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(item -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = searchTextField.getText().toLowerCase();
+
+				if (item.getNazivPred().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false;
+			});
+		});
+
+		SortedList<Predmet> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(predmeti_table.comparatorProperty());
+
+		predmeti_table.setItems(sortedData);
 	}
 
 	@FXML

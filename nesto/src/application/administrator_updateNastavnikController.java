@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 
 public class administrator_updateNastavnikController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
@@ -28,7 +29,7 @@ public class administrator_updateNastavnikController implements Initializable {
 	@FXML
 	private TextField prezime_tf;
 	@FXML
-	private TextField email;
+	private Label email;
 	@FXML
 	private PasswordField lozinka;
 	@FXML
@@ -51,32 +52,66 @@ public class administrator_updateNastavnikController implements Initializable {
 			}
 		} catch (SQLException e) {
 			s.alertEror("Nastavnik se ne moze izbrisati");
-			e.printStackTrace();
 		}
 
 	}
 
 	@FXML
 	public void update(ActionEvent event) {
-		try {
-			mysql.pst = mysql.con.prepareStatement("update nastavnik where sifNast = ?");
-			mysql.pst.setString(1, nast.getSifNast());
-			int rowsAffected = mysql.pst.executeUpdate();
-			if (rowsAffected > 0) {
-				s.alert("Nastavnik je promijenjen!");
+		if (!empty()) {
+			if (!lozinka.getText().isEmpty()) {
+				try {
+					mysql.pst = mysql.con.prepareStatement("update nastavnik set ime = ?,"
+							+ "prezime = ?,lozinka = ?, zvanje = ?, odsjek= ? where sifNast = ?");
+					mysql.pst.setString(1, ime_tf.getText());
+					mysql.pst.setString(2, prezime_tf.getText());
+					mysql.pst.setString(3, lozinka.getText());
+					mysql.pst.setString(4, zvanjeChoice.getValue());
+					mysql.pst.setString(5, smjerChoice.getValue());
+					mysql.pst.setString(6, nast.getSifNast());
+					int rowsAffected = mysql.pst.executeUpdate();
+					if (rowsAffected > 0) {
+						s.alert("Nastavnik je promijenjen");
+						cancel(event);
+					} else {
+						s.alertEror("Doslo je do greske.");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			} else {
-				s.alertEror("Doslo je do greske.");
+				try {
+					mysql.pst = mysql.con.prepareStatement("update nastavnik set ime = ?,"
+							+ "prezime = ?, zvanje = ?, odsjek= ? where sifNast = ?");
+					mysql.pst.setString(1, ime_tf.getText());
+					mysql.pst.setString(2, prezime_tf.getText());
+					mysql.pst.setString(3, zvanjeChoice.getValue());
+					mysql.pst.setString(4, smjerChoice.getValue());
+					mysql.pst.setString(5, nast.getSifNast());
+					int rowsAffected = mysql.pst.executeUpdate();
+					if (rowsAffected > 0) {
+						s.alert("Nastavnik je promijenjen!");
+						cancel(event);
+					} else {
+						s.alertEror("Doslo je do greske.");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} else
+			s.alert("Isputnite sva polja");
+	}
 
+	private boolean empty() {
+		return ime_tf.getText().isEmpty() || prezime_tf.getText().isEmpty() || smjerChoice.getValue() == null
+				|| zvanjeChoice.getValue() == null;
 	}
 
 	@FXML
 	public void cancel(ActionEvent event) {
 		Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+		stage.close();
 	}
 
 	public void setData(Nastavnik n) {

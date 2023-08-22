@@ -3,6 +3,7 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import models.Predmet;
 import models.Student;
 
@@ -61,12 +62,18 @@ public class nastavnik_studentUpdateController implements Initializable {
 		}
 
 	}
+	
+	private void close(ActionEvent event ) {
+		Stage stage = (Stage) ocjena.getScene().getWindow();
+		stage.close();	
+	}
 
 	@FXML
 	public void dodaj(ActionEvent e) {
 		if(Double.parseDouble(tf_bodovi.getText())<1000) {
 		update();
 		s.alert("Bodovi promijenjeni");
+		close(e);
 		}else {
 			s.alertEror("Pogresna vrijednost.");
 		}

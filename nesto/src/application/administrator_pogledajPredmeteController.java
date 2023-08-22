@@ -170,7 +170,7 @@ public class administrator_pogledajPredmeteController implements Initializable {
 			cont.setData(p);
 			Dialog<ButtonType> dialog = new Dialog<>();
 			dialog.setDialogPane(odgovoriDialog);
-			dialog.setTitle("Promjena studenta");
+			dialog.setTitle("Promjena predmeta");
 
 			dialog.showAndWait();
 			tablePred();

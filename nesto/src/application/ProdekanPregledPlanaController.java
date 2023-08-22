@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -24,7 +28,7 @@ import javafx.scene.control.ListView;
 public class ProdekanPregledPlanaController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
 	private SceneLoader s = new SceneLoader();
-	
+
 	@FXML
 	private Button logout;
 	@FXML
@@ -43,6 +47,8 @@ public class ProdekanPregledPlanaController implements Initializable {
 	private Button btn_prijavljeniPredmeti;
 	@FXML
 	private Button btn_bitniPredmeti;
+	@FXML
+	private TextField search_tf;
 
 	@FXML
 	private TableView<Nastavnik_predmet> Plan_table;
@@ -75,8 +81,8 @@ public class ProdekanPregledPlanaController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
-
 		load();
+		setupSearch();
 	}
 
 	private void load() {
@@ -167,6 +173,29 @@ public class ProdekanPregledPlanaController implements Initializable {
 		}
 	}
 
+	private void setupSearch() {
+		FilteredList<Nastavnik_predmet> filteredData = new FilteredList<>(Plan_table.getItems(), p -> true);
+
+		search_tf.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(i -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = search_tf.getText().toLowerCase();
+
+				if (i.getNastavniPredmet().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false;
+			});
+		});
+
+		SortedList<Nastavnik_predmet> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(Plan_table.comparatorProperty());
+
+		Plan_table.setItems(sortedData);
+	}
+
 	@FXML
 	private void logout(MouseEvent e) {
 		s.logout(e);
@@ -191,7 +220,7 @@ public class ProdekanPregledPlanaController implements Initializable {
 	private void to_plan_realizacije(MouseEvent e) {
 		s.loadProdekan_to_plan_realizacije(e);
 	}
-	
+
 	@FXML
 	private void to_plan_realizacije_action(ActionEvent e) {
 		s.loadProdekan_to_plan_realizacije(e);
@@ -206,8 +235,6 @@ public class ProdekanPregledPlanaController implements Initializable {
 	private void to_bitni_datumi(MouseEvent e) {
 		s.loadProdekan_to_bitni_datumi(e);
 	}
-
-	
 
 	@FXML
 	private void to_pregled_plana(ActionEvent e) {
