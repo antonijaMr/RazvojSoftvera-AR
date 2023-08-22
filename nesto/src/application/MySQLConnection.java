@@ -14,7 +14,7 @@ public class MySQLConnection {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "2481632am*");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/projekat", "root", "1234");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
