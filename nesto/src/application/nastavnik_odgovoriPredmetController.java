@@ -14,11 +14,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 
-public class nastavnik_odgovoriPredmetController implements Initializable{
+public class nastavnik_odgovoriPredmetController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
 	private SceneLoader s = new SceneLoader();
-	
+
 	private ZahtjevZaSlusanjePredmeta zahtjev;
 	private Nastavnik nastavnik;
 
@@ -45,12 +46,19 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 	public void ponisti(ActionEvent event) {
 		update(false);
 		s.alert("Zahtjev odbijen.");
+		close(event);
 	}
 
 	@FXML
 	public void odobri(ActionEvent event) {
 		update(false);
 		s.alert("Zahtjev odobren.");
+		close(event);
+	}
+
+	private void close(ActionEvent event) {
+		Stage stage = (Stage) smjer.getScene().getWindow();
+		stage.close();
 	}
 
 	public void setData(ZahtjevZaSlusanjePredmeta z) {
@@ -71,19 +79,18 @@ public class nastavnik_odgovoriPredmetController implements Initializable{
 
 	public void update(boolean b) {
 		try {
-			String query ="update zahtjevZaSlusanje set odobreno = ?,odgovor=?"
-					+ "where idStud = ? and sifNast = ? and sifPred = ?;" ;
+			String query = "update zahtjevZaSlusanje set odobreno = ?,odgovor=?"
+					+ "where idStud = ? and sifNast = ? and sifPred = ?;";
 
 			mysql.pst = mysql.con.prepareStatement(query);
-			mysql.pst.setInt(1, b?1:0);
+			mysql.pst.setInt(1, b ? 1 : 0);
 			mysql.pst.setString(2, tf_odgovor.getText());
 			mysql.pst.setString(3, zahtjev.getStud().getId());
 			mysql.pst.setString(4, nastavnik.getSifNast());
 			mysql.pst.setString(5, zahtjev.getPred().getSifraPred());
 
-			int rows=mysql.pst.executeUpdate();
+			int rows = mysql.pst.executeUpdate();
 			System.out.println(rows);
-		
 
 		} catch (SQLException e) {
 			e.printStackTrace();

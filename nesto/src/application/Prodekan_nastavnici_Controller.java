@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import models.Nastavnik;
 import models.Predmet;
+import models.Student;
 
 public class Prodekan_nastavnici_Controller implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
@@ -79,6 +82,7 @@ public class Prodekan_nastavnici_Controller implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mysql.Connect();
 		load();
+		setupSearch();
 	}
 
 	private void refreshTable() {
@@ -192,6 +196,31 @@ public class Prodekan_nastavnici_Controller implements Initializable {
 		alert.setHeaderText(null);
 		alert.setContentText(message);
 		alert.showAndWait();
+	}
+	
+	private void setupSearch() {
+		FilteredList<Nastavnik> filteredData = new FilteredList<>(nastavnik_table.getItems(), p -> true);
+
+		searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(item-> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = searchTextField.getText().toLowerCase();
+
+				if (item.getIme().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else if (item.getPrezime().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false;
+			});
+		});
+
+		SortedList<Nastavnik> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(nastavnik_table.comparatorProperty());
+
+		nastavnik_table.setItems(sortedData);
 	}
 
 	@FXML

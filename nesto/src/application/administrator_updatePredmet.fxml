@@ -24,9 +24,9 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="38.0" prefWidth="596.0">
                            <children>
-                              <Label text="Sifra" />
-                              <TextField fx:id="sifra" />
-                              <Label text="Kratica" />
+                              <Label prefHeight="32.0" prefWidth="94.0" text="Sifra" />
+                              <Label fx:id="sifra" styleClass="UserName" text="Label" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="103.0" text="Kratica" />
                               <TextField fx:id="kratica" />
                            </children></HBox>
                         <HBox alignment="CENTER" prefHeight="57.0" prefWidth="596.0" spacing="15.0">

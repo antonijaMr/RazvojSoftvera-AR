@@ -33,7 +33,7 @@
                         <HBox alignment="CENTER" prefHeight="57.0" prefWidth="596.0" spacing="15.0">
                            <children>
                               <Label text="Email" />
-                              <TextField fx:id="email_tf" />
+                              <Label fx:id="email_tf" styleClass="UserName" text="Label" />
                               <Label text="Lozinka" />
                               <PasswordField fx:id="lozinka" />
                            </children>

@@ -216,7 +216,7 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox layoutX="30.0" layoutY="121.0" prefHeight="453.0" prefWidth="646.0">
+            <VBox layoutX="30.0" layoutY="121.0" prefHeight="441.0" prefWidth="655.0">
                <children>
                   <HBox alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="646.0" spacing="10.0">
                      <children>
@@ -233,17 +233,17 @@
                         </Label>
                         <TextField fx:id="search_tf" />
                      </children></HBox>
-                  <TableView fx:id="studentiT" prefHeight="401.0" prefWidth="646.0">
+                  <TableView fx:id="studentiT" prefHeight="399.0" prefWidth="900.0">
                     <columns>
-                      <TableColumn fx:id="indexC" prefWidth="73.0" text="Index" />
-                      <TableColumn fx:id="imeC" prefWidth="77.0" text="Ime" />
-                        <TableColumn fx:id="prezimeC" prefWidth="97.0" text="Prezime" />
-                        <TableColumn fx:id="emailC" prefWidth="98.0" text="Email" />
-                        <TableColumn fx:id="godinaC" text="Godina" />
-                        <TableColumn fx:id="statusC" prefWidth="58.0" text="Status" />
-                        <TableColumn fx:id="smjerC" prefWidth="50.0" text="Smjer" />
-                        <TableColumn fx:id="ectsC" prefWidth="46.0" text="ECTS" />
-                        <TableColumn fx:id="actionC" prefWidth="66.0" />
+                      <TableColumn fx:id="indexC" prefWidth="64.0" text="Index" />
+                      <TableColumn fx:id="imeC" prefWidth="57.0" text="Ime" />
+                        <TableColumn fx:id="prezimeC" prefWidth="87.0" text="Prezime" />
+                        <TableColumn fx:id="emailC" prefWidth="99.0" text="Email" />
+                        <TableColumn fx:id="godinaC" prefWidth="77.0" text="Godina" />
+                        <TableColumn fx:id="statusC" prefWidth="72.0" text="Status" />
+                        <TableColumn fx:id="smjerC" prefWidth="67.0" text="Smjer" />
+                        <TableColumn fx:id="ectsC" prefWidth="68.0" text="ECTS" />
+                        <TableColumn fx:id="actionC" minWidth="4.0" prefWidth="63.0" />
                     </columns>
                   </TableView>
                </children>
