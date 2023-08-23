@@ -148,7 +148,7 @@ public class Scene1 implements Initializable {
 	void getConnection() {
 		String url = "jdbc:mysql://localhost:3306/projekat"; //
 		String user = "root";
-		String password = "2481632am*";
+		String password = "1234";
 
 		try {
 		  connection = DriverManager.getConnection(url, user, password);
@@ -1019,6 +1019,7 @@ public class Scene1 implements Initializable {
 			AlertZahtjevPoslan();
 			
 		}
+
 		else if((DrugiPredmet.getValue() == null && vrstaZahtjeva.equals("zahtjevZaPromjenu")) ||
 				(NemaPreduslove.getValue() == null && vrstaZahtjeva.equals("zahtjevZaSlusanje")) || 
 				PrviPredmet.getValue() == null && vrstaZahtjeva.equals("zahtjevZaPrenos"))
@@ -1026,6 +1027,7 @@ public class Scene1 implements Initializable {
 		else if(PostojiZahtjev(getPredmet(NemaPreduslove.getValue()).getSifraPred()) && vrstaZahtjeva.equals("zahtjevZaSlusanje")) {
 			AlertZahtjevPoslan();
 			
+
 		}
 		else {
         if(vrstaZahtjeva.equals("zahtjevZaPrenos")){
