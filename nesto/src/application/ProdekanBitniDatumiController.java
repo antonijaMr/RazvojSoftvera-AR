@@ -63,20 +63,31 @@ public class ProdekanBitniDatumiController implements Initializable {
 	@FXML
 	private void potvrdi(ActionEvent e) {
 		if(!empty()) {
+			try {
+				
+		String query="SELECT COUNT(*) FROM periodRegistracije WHERE akademskaGodina=YEAR(NOW())";	
+		mysql.pst = mysql.con.prepareStatement(query);
+		res=mysql.pst.executeQuery();
+		res.next();
+		if(res.getInt("COUNT(*)")==0) {
 		LocalDate pocetak = PocetakRegistracije.getValue();
 		LocalDate kraj = KrajRegistracije.getValue();
-		String query = "INSERT INTO periodRegistracije (akademskaGodina,datumPocetka,datumZavrsetka) VALUES (YEAR(NOW()),?,?)";
-		try (PreparedStatement preparedStatement = mysql.con.prepareStatement(query)) {
+	    query = "INSERT INTO periodRegistracije (akademskaGodina,datumPocetka,datumZavrsetka) VALUES (YEAR(NOW()),?,?)";
+		    mysql.pst= mysql.con.prepareStatement(query);
 
-			preparedStatement.setDate(1, java.sql.Date.valueOf(pocetak));
-			preparedStatement.setDate(2, java.sql.Date.valueOf(kraj));
-			int rowsAffected = preparedStatement.executeUpdate();
+			mysql.pst.setDate(1, java.sql.Date.valueOf(pocetak));
+			mysql.pst.setDate(2, java.sql.Date.valueOf(kraj));
+	
+			int rowsAffected = mysql.pst.executeUpdate();
 
 			if (rowsAffected > 0) {
 				System.out.println("Data inserted successfully.");
 			} else {
 				System.out.println("Insertion failed.");
 			}
+		}else {
+			s.alert("Period registracije je vec unesen za ovu akademsku godinu");
+		}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

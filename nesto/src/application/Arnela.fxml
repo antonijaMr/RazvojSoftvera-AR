@@ -17,7 +17,7 @@
          <children>
             <ImageView fitHeight="161.0" fitWidth="186.0" layoutX="65.0" layoutY="110.0">
                <image>
-                  <Image url="@images/download-removebg-preview.png" />
+                  <Image url="@images/zahtjev.png" />
                </image>
             </ImageView>
          </children>

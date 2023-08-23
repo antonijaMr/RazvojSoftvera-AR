@@ -221,7 +221,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Button>
-            <Label id="StatusStudenta" fx:id="StatusStudenta" graphicTextGap="1.0" prefHeight="31.0" prefWidth="740.0" text="Godina 1. obnova AR" textAlignment="CENTER">
+            <Label id="StatusStudenta" fx:id="StatusStudenta" graphicTextGap="1.0" prefHeight="31.0" prefWidth="740.0" text="Godina 1. obnova AR" textAlignment="CENTER" visible="false">
                <font>
                   <Font size="10.0" />
                </font>

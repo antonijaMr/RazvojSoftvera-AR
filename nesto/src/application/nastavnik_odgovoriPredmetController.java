@@ -53,6 +53,18 @@ public class nastavnik_odgovoriPredmetController implements Initializable {
 	public void odobri(ActionEvent event) {
 		update(false);
 		s.alert("Zahtjev odobren.");
+//		try {
+//			mysql.pst = mysql.con.prepareStatement("insert into slusaPred values(?,?,year(now()),false,");
+//			mysql.pst.setString(1, nast.getSifNast());
+//			int rowsAffected = mysql.pst.executeUpdate();
+//			if (rowsAffected > 0) {
+//				s.alert("Nastavnik je izbrisan!");
+//			} else {
+//				s.alertEror("Doslo je do greske.");
+//			}
+//		} catch (SQLException e) {
+//			s.alertEror("Nastavnik se ne moze izbrisati");
+//		}
 		close(event);
 	}
 

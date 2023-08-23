@@ -8,6 +8,7 @@ import models.Predmet;
 import models.Student;
 
 import java.net.URL;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -18,6 +19,7 @@ import javafx.scene.control.Label;
 public class nastavnik_studentUpdateController implements Initializable {
 	private MySQLConnection mysql = new MySQLConnection();
 	private SceneLoader s = new SceneLoader();
+	int staraOcjena;
 
 	private Predmet predmet;
 
@@ -49,32 +51,58 @@ public class nastavnik_studentUpdateController implements Initializable {
 
 	public void update() {
 		try {
+			mysql.pst = mysql.con.prepareStatement("select ocjena from slusaPred where sifPred = ? and idStud = ?");
+			mysql.pst.setString(1, predmet.getSifraPred());
+			mysql.pst.setString(2, studID.getText());
+			ResultSet rs = mysql.pst.executeQuery();
+			rs.next();
+			staraOcjena = rs.getInt("ocjena");
+
 			System.out.println("sifra2: " + predmet.getSifraPred());
 			String query = "update slusaPred set bodovi = ? where idStud = ? and sifPred =?;";
 			mysql.pst = mysql.con.prepareStatement(query);
-			mysql.pst.setDouble(1, tf_bodovi.getText().isEmpty()? 0: Double.parseDouble(tf_bodovi.getText()));
+			mysql.pst.setDouble(1, tf_bodovi.getText().isEmpty() ? 0 : Double.parseDouble(tf_bodovi.getText()));
 			mysql.pst.setString(2, studID.getText());
 			mysql.pst.setString(3, predmet.getSifraPred());
 			mysql.pst.executeUpdate();
 
+			setECTS();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 	}
-	
-	private void close(ActionEvent event ) {
+
+	private void setECTS() {
+		if (staraOcjena <= 5) {
+
+			System.out.println("ECTS: " + predmet.getECTS());
+			String query = "update student set ostvareniECTS = ostvareniECTS + ? where brojIndeksa= ?;";
+			try {
+				mysql.pst = mysql.con.prepareStatement(query);
+				mysql.pst.setInt(1, Integer.parseInt(predmet.getECTS()));
+				mysql.pst.setString(2, studID.getText());
+				mysql.pst.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	private void close(ActionEvent event) {
 		Stage stage = (Stage) ocjena.getScene().getWindow();
-		stage.close();	
+		stage.close();
 	}
 
 	@FXML
 	public void dodaj(ActionEvent e) {
-		if(Double.parseDouble(tf_bodovi.getText())<1000) {
-		update();
-		s.alert("Bodovi promijenjeni");
-		close(e);
-		}else {
+		if (Double.parseDouble(tf_bodovi.getText()) < 1000) {
+			update();
+			s.alert("Bodovi promijenjeni");
+			close(e);
+		} else {
 			s.alertEror("Pogresna vrijednost.");
 		}
 	}
