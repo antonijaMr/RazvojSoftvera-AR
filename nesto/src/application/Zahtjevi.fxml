@@ -248,7 +248,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Label id="StatusStudenta" fx:id="StatusStudenta" prefHeight="17.0" prefWidth="683.0" stylesheets="@application.css" text="Label" />
+            <Label id="StatusStudenta" fx:id="StatusStudenta" prefHeight="17.0" prefWidth="683.0" stylesheets="@application.css" text="Label" visible="false" />
          </children>
       </VBox>
    </center>

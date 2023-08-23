@@ -50,10 +50,19 @@ public class preduslovController implements Initializable {
 	@FXML
 	private void potvrdi(ActionEvent e) {
 		if (!empty()) {
-
+			try {
+			query = "SELECT COUNT(*) FROM predmet WHERE sifPred=?";
+			mysql.pst = mysql.con.prepareStatement(query);
+			mysql.pst.setString(1, preduslov_tf.getText());
+			res=mysql.pst.executeQuery();
+			res.next();
+			
+            if(res.getInt("COUNT(*)")==0) {
+            	s.alert("Ne postoji predmet sa tom sifrom");
+            }else {
 			query = "INSERT INTO preduslov (sifPred, sifPreduslov) VALUES ( ?, ?)";
 
-			try {
+			
 				mysql.pst = mysql.con.prepareStatement(query);
 				mysql.pst.setString(1, sifraPredmet);
 				mysql.pst.setString(2, preduslov_tf.getText());
@@ -61,20 +70,22 @@ public class preduslovController implements Initializable {
 
 				if (rowsAffected > 0) {
 					System.out.println("Row inserted successfully.");
+					stage.close();
 				} else {
 					System.out.println("Failed to insert row.");
 				}
 
-			} catch (SQLException e1) {
+			}} catch (SQLException e1) {
 
 				e1.printStackTrace();
 			}
-			stage.close();
-		} else
+			
+		}else
 
 		{
 			s.alert("Ispunite sva polja!");
 		}
+		
 	}
 
 	private boolean empty() {

@@ -135,7 +135,7 @@ public class nastavnik_detaljiController implements Initializable {
 							+ "	inner join predmet on predmet.sifPred = preduslov.sifPreduslov\n"
 							+ " left outer join predaje on predaje.sifPred = predmet.sifPred\n"
 							+ " left outer join nastavnik nastavnikN on predaje.sifNastavnik = nastavnikN.sifNast\n"
-							+ "	where preduslov.sifPred = ? and predaje.godina = YEAR(NOW()) and predaje.nosioc=1;\n");
+							+ "	where preduslov.sifPred = ? and predaje.godina = 2022 and predaje.nosioc=1;\n");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
 			int count=0;
@@ -181,7 +181,7 @@ System.out.println(count);
 		try {
 			mysql.pst = mysql.con.prepareStatement(
 					"select brojIndeksa, ime, prezime,email,godStudija,statusStud,ostvareniECTS,sifUsmjerenja,bodovi,ocjena from student \n"
-							+ "inner join slusaPred on student.brojIndeksa = slusaPred.idStud where sifPred = ? and godina = 2023;");
+							+ "inner join slusaPred on student.brojIndeksa = slusaPred.idStud where sifPred = ? and godina = 2022;");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
 			{
@@ -277,7 +277,7 @@ System.out.println(count);
 		try {
 			mysql.pst = mysql.con.prepareStatement("select ime, prezime from predaje\n"
 					+ "inner join nastavnik on nastavnik.sifNast = predaje.sifNastavnik \n"
-					+ "where sifPred = ? and nosioc = true and godina = 2023;");
+					+ "where sifPred = ? and nosioc = true and godina = 2022;");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
 			if (rs.next()) {
@@ -298,7 +298,7 @@ System.out.println(count);
 		try {
 			mysql.pst = mysql.con.prepareStatement("select ime, prezime from predaje\n"
 					+ "inner join nastavnik on nastavnik.sifNast = predaje.sifNastavnik \n"
-					+ "where sifPred = ? and nosioc = false and godina = 2023;");
+					+ "where sifPred = ? and nosioc = false and godina = 2022;");
 			mysql.pst.setString(1, predmet.getSifraPred());
 			ResultSet rs = mysql.pst.executeQuery();
 			while (rs.next()) {

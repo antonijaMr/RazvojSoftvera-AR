@@ -211,7 +211,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Button>
-            <Label id="StatusStudenta" fx:id="StatusStudenta" graphicTextGap="2.0" prefHeight="35.0" prefWidth="693.0" text="Label" />
+            <Label id="StatusStudenta" fx:id="StatusStudenta" graphicTextGap="2.0" prefHeight="35.0" prefWidth="693.0" text="Label" visible="false" />
          </children>
       </VBox>
    </center>

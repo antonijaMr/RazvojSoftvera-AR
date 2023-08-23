@@ -1019,10 +1019,15 @@ public class Scene1 implements Initializable {
 			AlertZahtjevPoslan();
 			
 		}
-		else if((DrugiPredmet.getValue() == null && vrstaZahtjeva.equals("zahtjevZaPromjenu")) || (NemaPreduslove.getValue() == null && vrstaZahtjeva.equals("zahtjevZaSlusanje")))
+
+		else if((DrugiPredmet.getValue() == null && vrstaZahtjeva.equals("zahtjevZaPromjenu")) ||
+				(NemaPreduslove.getValue() == null && vrstaZahtjeva.equals("zahtjevZaSlusanje")) || 
+				PrviPredmet.getValue() == null && vrstaZahtjeva.equals("zahtjevZaPrenos"))
 			AlertZahtjev();
 		else if(PostojiZahtjev(getPredmet(NemaPreduslove.getValue()).getSifraPred()) && vrstaZahtjeva.equals("zahtjevZaSlusanje")) {
 			AlertZahtjevPoslan();
+			
+
 		}
 		else {
         if(vrstaZahtjeva.equals("zahtjevZaPrenos")){
