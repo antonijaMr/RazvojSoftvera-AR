@@ -12,3 +12,5 @@ Jedan od nastavnika obavlja ulogu prodekana za nastavu, što donosi dodatne funk
 
 ### Administrator
 Administrator je odgovoran za unos podataka o studentima, nastavnicima i predmetima u sistem. Ima ovlaštenje da pregleda i ažurira informacije vezane za ove entitete. Takođe, administrator može olakšati promjenu lozinki korisnicima.
+
+(prezentacija)[https://www.canva.com/design/DAFs1xc5VSs/NHKHFmE-dYOfFSSD1M6TPA/view?utm_content=DAFs1xc5VSs&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink]
